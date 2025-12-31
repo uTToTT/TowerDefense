@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Ground_with_tower
+  - Ground_far
+  - Block
+  - Path
+  - Button
+  - Sound
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: ground
+    uniqueID: 3247271543
+    locked: 0
+  - name: path
+    uniqueID: 3098827789
+    locked: 0
+  - name: enemy
+    uniqueID: 911900139
+    locked: 0
+  - name: portals
+    uniqueID: 1882213265
+    locked: 0
+  - name: block
+    uniqueID: 2982112653
+    locked: 0
+  - name: tower
+    uniqueID: 1724790439
+    locked: 0
+  - name: projectile
+    uniqueID: 949973751
+    locked: 0
+  - name: UI
+    uniqueID: 1868177139
+    locked: 0

@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9713ca5d555b5ad4e8f123f5e53d82d1, type: 3}
+  m_Name: Level27
+  m_EditorClassIdentifier: 
+  _waves:
+  - _typeofEnemy: 0
+    _enemyCount: 50
+    _timeBtwSpawn: 0.15
+    _hpMultiplier: 2
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 1
+    _enemyCount: 50
+    _timeBtwSpawn: 0.1
+    _hpMultiplier: 3
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 1
+    _enemyCount: 65
+    _timeBtwSpawn: 0.1
+    _hpMultiplier: 3.52
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 0
+    _enemyCount: 50
+    _timeBtwSpawn: 0.3
+    _hpMultiplier: 7.44
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 3
+    _enemyCount: 5
+    _timeBtwSpawn: 5
+    _hpMultiplier: 3
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 0
+    _enemyCount: 65
+    _timeBtwSpawn: 0.23
+    _hpMultiplier: 13
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 0
+    _enemyCount: 90
+    _timeBtwSpawn: 0.25
+    _hpMultiplier: 16.3
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 1
+    _enemyCount: 74
+    _timeBtwSpawn: 0.21
+    _hpMultiplier: 15.9
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 1
+    _enemyCount: 70
+    _timeBtwSpawn: 0.2
+    _hpMultiplier: 17.8
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 3
+    _enemyCount: 10
+    _timeBtwSpawn: 5
+    _hpMultiplier: 15
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 2
+    _enemyCount: 70
+    _timeBtwSpawn: 0.35
+    _hpMultiplier: 18
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 0
+    _enemyCount: 90
+    _timeBtwSpawn: 0.16
+    _hpMultiplier: 47
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 1
+    _enemyCount: 80
+    _timeBtwSpawn: 0.1
+    _hpMultiplier: 35
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 2
+    _enemyCount: 80
+    _timeBtwSpawn: 0.35
+    _hpMultiplier: 30
+    _moneyDropMultiplier: 1
+  - _typeofEnemy: 4
+    _enemyCount: 2
+    _timeBtwSpawn: 7
+    _hpMultiplier: 15
+    _moneyDropMultiplier: 1
