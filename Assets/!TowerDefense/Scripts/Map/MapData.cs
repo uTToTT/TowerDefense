@@ -9,7 +9,7 @@ public class MapData : ScriptableObject
     public int height;
     public CellType[] cells;
 
-    public List<FlowData>[] flows;
+    public CellFlows[] cellFlows;
 
     public CellType Get(int x, int y) =>
         cells[y * width + x];
@@ -18,5 +18,5 @@ public class MapData : ScriptableObject
         x >= 0 && y >= 0 && 
         x < width && y < height;
 
-    public List<FlowData> GetFlows(int x, int y) => flows[y * width + x];
+    public List<FlowData> GetFlows(int x, int y) => cellFlows[y * width + x].flows;
 }

@@ -62,10 +62,10 @@ public class TilemapToMapDataExporter
         mapData.width = width;
         mapData.height = height;
         mapData.cells = new CellType[width * height];
-        mapData.flows = new List<FlowData>[width * height];
+        mapData.cellFlows = new CellFlows[width * height];
 
-        for (int i = 0; i < mapData.flows.Length; i++)
-            mapData.flows[i] = new List<FlowData>();
+        for (int i = 0; i < mapData.cellFlows.Length; i++)
+            mapData.cellFlows[i].flows = new List<FlowData>();
 
         for (int y = 0; y < height; y++)
         {
@@ -94,7 +94,7 @@ public class TilemapToMapDataExporter
                         _ => Direction.None
                     };
 
-                    mapData.flows[index].Add(new FlowData { routeId = r.routeId, dir = dir });
+                    mapData.cellFlows[index].flows.Add(new FlowData { routeId = r.routeId, dir = dir });
                 }
 
                 if (entrance != null && entrance.HasTile(pos))
