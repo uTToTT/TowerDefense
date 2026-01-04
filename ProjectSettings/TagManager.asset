@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Ground
   - Ground_with_tower
@@ -48,27 +48,29 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: ground
+  - name: Ground
     uniqueID: 3247271543
     locked: 0
-  - name: path
+  - name: Path
     uniqueID: 3098827789
-    locked: 0
-  - name: enemy
-    uniqueID: 911900139
     locked: 0
   - name: portals
     uniqueID: 1882213265
     locked: 0
-  - name: block
+  - name: Block
     uniqueID: 2982112653
     locked: 0
-  - name: tower
+  - name: Enemy
+    uniqueID: 911900139
+    locked: 0
+  - name: Tower
     uniqueID: 1724790439
     locked: 0
-  - name: projectile
+  - name: Projectile
     uniqueID: 949973751
     locked: 0
   - name: UI
     uniqueID: 1868177139
     locked: 0
+  m_RenderingLayers:
+  - Default

@@ -18,7 +18,11 @@ public class MapComposer : MonoBehaviour
         {
             for (int x = 0; x < map.width; x++)
             {
-                var cell = _factories.Create(map.Get(x, y));
+                var type = map.Get(x, y);
+
+                if (type == CellType.Empty)  continue; 
+
+                var cell = _factories.Create(type);
                 cell.transform.SetParent(_cellContainer);
                 cell.transform.localPosition = MapUtils.GridToWorld(x, y, map);
             }
