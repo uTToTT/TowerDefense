@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a630f43d3d5a1094ca862a7ff4ab8cc5, type: 3}
-  m_Name: FinishCellFactory
+  m_Name: ExitCellFactory
   m_EditorClassIdentifier: Assembly-CSharp::CellFactory
-  _prefab: {fileID: 5729565920546495480, guid: ecfcb3870cef2f14abef7b00a2d7e8db, type: 3}
+  _prefab: {fileID: 1129580474096841238, guid: 07424b21279db5349b3102ba11cf8154, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

@@ -10,8 +10,10 @@ public class TilemapToMapDataExporter
         var path = GameObject.Find("PathTilemap")?.GetComponent<Tilemap>();
         var build = GameObject.Find("BuildableTilemap")?.GetComponent<Tilemap>();
         var block = GameObject.Find("BlockedTilemap")?.GetComponent<Tilemap>();
+        var entrance = GameObject.Find("EntranceTilemap")?.GetComponent<Tilemap>();
+        var exit = GameObject.Find("ExitTilemap")?.GetComponent<Tilemap>();
 
-        Tilemap[] maps = { path, build, block };
+        Tilemap[] maps = { path, build, block, entrance, exit };
 
         int xMin = int.MaxValue;
         int yMin = int.MaxValue;
@@ -57,8 +59,12 @@ public class TilemapToMapDataExporter
                     mapData.cells[y * width + x] = CellType.Path;
                 else if (build != null && build.HasTile(pos))
                     mapData.cells[y * width + x] = CellType.Buildable;
-                else
+                else if (block != null && block.HasTile(pos))
                     mapData.cells[y * width + x] = CellType.Blocked;
+                else if (entrance != null && entrance.HasTile(pos))
+                    mapData.cells[y * width + x] = CellType.Entrance;
+                else if (exit != null && exit.HasTile(pos))
+                    mapData.cells[y * width + x] = CellType.Exit;
             }
         }
 

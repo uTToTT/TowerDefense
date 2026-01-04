@@ -3,5 +3,7 @@ public enum CellType
     Empty,
     Path,
     Buildable,
-    Blocked
+    Blocked,
+    Entrance,
+    Exit
 }
