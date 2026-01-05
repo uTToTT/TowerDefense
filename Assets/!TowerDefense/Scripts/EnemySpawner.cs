@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class EnemySpawner : Loader<EnemySpawner>
+public class EnemySpawner : Loader<EnemySpawner> //ref
 {
     [Header("Test")]
     [Space]
