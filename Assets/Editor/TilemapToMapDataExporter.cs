@@ -6,34 +6,53 @@ using UnityEngine.Tilemaps;
 
 public class TilemapToMapDataExporter
 {
+    private const string ROUTE_A = "Route_A_TMap";
+    private const string ROUTE_B = "Route_B_TMap";
+    private const string ROUTE_C = "Route_C_TMap";
+
+    private const string BUILDABLE = "Buildable_TMap";
+    private const string BLOCKED = "Blocked_TMap";
+    private const string ENTRANCE = "Entrance_TMap";
+    private const string EXIT = "Exit_TMap";
+
+    private const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Maps/Map_{0}.asset";
+
     public static void Export(int mapIndex = 0)
     {
-        var routes = new (string name, RouteId routeId)[]
+        var mapData = ScriptableObject.CreateInstance<MapData>();
+
+        var routeIds = new (string name, RouteId routeId)[]
         {
-        ("PathATilemap", RouteId.A),
-        ("PathBTilemap", RouteId.B),
-        ("PathCTilemap", RouteId.C)
+            (ROUTE_A, RouteId.A),
+            (ROUTE_B, RouteId.B),
+            (ROUTE_C, RouteId.C)
         };
 
-        var build = GameObject.Find("BuildableTilemap")?.GetComponent<Tilemap>();
-        var block = GameObject.Find("BlockedTilemap")?.GetComponent<Tilemap>();
-        var entrance = GameObject.Find("EntranceTilemap")?.GetComponent<Tilemap>();
-        var exit = GameObject.Find("ExitTilemap")?.GetComponent<Tilemap>();
+        var build = GameObject.Find(BUILDABLE)?.GetComponent<Tilemap>();
+        var block = GameObject.Find(BLOCKED)?.GetComponent<Tilemap>();
+        var entrance = GameObject.Find(ENTRANCE)?.GetComponent<Tilemap>();
+        var exit = GameObject.Find(EXIT)?.GetComponent<Tilemap>();
 
         int xMin = int.MaxValue;
         int yMin = int.MaxValue;
         int xMax = int.MinValue;
         int yMax = int.MinValue;
 
+
+        var routeTmaps = new Dictionary<RouteId, Tilemap>();
         var allMaps = new List<Tilemap>
         {
             build, block, entrance, exit,
         };
 
-        foreach (var r in routes)
+        foreach (var r in routeIds)
         {
             var tm = GameObject.Find(r.name)?.GetComponent<Tilemap>();
-            if (tm != null) allMaps.Add(tm);
+            if (tm != null)
+            {
+                allMaps.Add(tm);
+                routeTmaps.Add(r.routeId, tm);
+            }
         }
 
         foreach (var map in allMaps)
@@ -42,6 +61,7 @@ public class TilemapToMapDataExporter
             foreach (var pos in map.cellBounds.allPositionsWithin)
             {
                 if (!map.HasTile(pos)) continue;
+
                 xMin = Mathf.Min(xMin, pos.x);
                 yMin = Mathf.Min(yMin, pos.y);
                 xMax = Mathf.Max(xMax, pos.x + 1);
@@ -58,14 +78,11 @@ public class TilemapToMapDataExporter
         int width = xMax - xMin;
         int height = yMax - yMin;
 
-        var mapData = ScriptableObject.CreateInstance<MapData>();
         mapData.width = width;
         mapData.height = height;
-        mapData.cells = new CellType[width * height];
-        mapData.cellFlows = new CellFlows[width * height];
 
-        for (int i = 0; i < mapData.cellFlows.Length; i++)
-            mapData.cellFlows[i].flows = new List<FlowData>();
+        mapData.cells = new CellType[width * height];
+        mapData.routes = new List<Route>();
 
         for (int y = 0; y < height; y++)
         {
@@ -74,43 +91,138 @@ public class TilemapToMapDataExporter
                 var pos = new Vector3Int(xMin + x, yMin + y, 0);
                 int index = y * width + x;
 
-                bool isPath = false;
-                foreach (var r in routes)
+                bool hasPath = false;
+
+                foreach (var r in routeTmaps)
                 {
-                    var tilemap = GameObject.Find(r.name)?.GetComponent<Tilemap>();
-                    if (tilemap == null) continue;
-                    if (!tilemap.HasTile(pos)) continue;
-
-                    isPath = true;
-
-                    var matrix = tilemap.GetTransformMatrix(pos);
-                    float angle = Mathf.Round(matrix.rotation.eulerAngles.z / 90f) * 90f;
-                    Direction dir = angle switch
+                    if (r.Value != null && r.Value.HasTile(pos))
                     {
-                        0f => Direction.Right,
-                        90f => Direction.Up,
-                        180f => Direction.Left,
-                        270f => Direction.Down,
-                        _ => Direction.None
-                    };
-
-                    mapData.cellFlows[index].flows.Add(new FlowData { routeId = r.routeId, dir = dir });
+                        hasPath = true;
+                        break;
+                    }
                 }
 
                 if (entrance != null && entrance.HasTile(pos))
+                {
                     mapData.cells[index] = CellType.Entrance;
+                    mapData.entranceCount++;
+                }
                 else if (exit != null && exit.HasTile(pos))
+                {
                     mapData.cells[index] = CellType.Exit;
-                else if (isPath)              
+                    mapData.exitCount++;
+                }
+                else if (hasPath)
+                {
                     mapData.cells[index] = CellType.Path;
+                    mapData.pathCount++;
+                }
                 else if (block != null && block.HasTile(pos))
+                {
                     mapData.cells[index] = CellType.Blocked;
-                else 
+                    mapData.blockedCount++;
+                }
+                else
+                {
                     mapData.cells[index] = CellType.Buildable;
+                    mapData.blockedCount++;
+                }
             }
         }
 
-        string path = $"Assets/!TowerDefense/!Data/Maps/Map_{mapIndex}.asset";
+        int routeCount = Mathf.Max(mapData.entranceCount, mapData.exitCount);
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                var pos = new Vector3Int(xMin + x, yMin + y, 0);
+                int index = y * width + x;
+
+                if (entrance == null || !entrance.HasTile(pos))
+                    continue;
+
+                var usedRoutes = new HashSet<RouteId>();
+
+                for (int i = 0; i < routeCount; i++)
+                {
+                    Route route = new Route();
+                    route.points = new();
+                    route.entrance = (Vector2Int)pos;
+
+                    bool hasPath = false;
+                    RouteId routeId = RouteId.None;
+                    var tmpPos = new Vector3Int(pos.x, pos.y);
+
+                    foreach (var r in routeTmaps)
+                    {
+                        if (r.Value != null && r.Value.HasTile(pos))
+                        {
+                            if (usedRoutes.Add(r.Key) == false)
+                            {
+                                continue;
+                            }
+                            hasPath = true;
+                            routeId = r.Key;
+
+                            break;
+                        }
+                    }
+
+                    if (hasPath)
+                    {
+                        var r = routeTmaps[routeId];
+
+                        var size = width * height;
+
+                        for (int j = 0; j < size; j++)
+                        {
+                            route.points.Add((Vector2Int)tmpPos);
+
+                            var matrix = r.GetTransformMatrix(tmpPos);
+                            float angle = Mathf.Round(matrix.rotation.eulerAngles.z / 90f) * 90f;
+
+                            Direction dir = angle switch
+                            {
+                                0f => Direction.Right,
+                                90f => Direction.Up,
+                                180f => Direction.Left,
+                                270f => Direction.Down,
+                                _ => Direction.None
+                            };
+
+                            if (dir == Direction.Right)
+                                tmpPos.x++;
+                            else if (dir == Direction.Up)
+                                tmpPos.y++;
+                            else if (dir == Direction.Left)
+                                tmpPos.x--;
+                            else if (dir == Direction.Down)
+                                tmpPos.y--;
+
+                            if (mapData.IsInside(tmpPos.x, tmpPos.y) == false)
+                            {
+                                throw new System.ArgumentOutOfRangeException("Out of map");
+                            }
+
+                            if (exit != null && exit.HasTile(tmpPos))
+                            {
+                                route.exit = (Vector2Int)tmpPos;
+                                mapData.routes.Add(route);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        SaveMap(mapIndex, mapData);
+    }
+
+    private static void SaveMap(int mapIndex, MapData mapData)
+    {
+        string path = string.Format(MAP_DATA_PATH, mapIndex);
         var existing = AssetDatabase.LoadAssetAtPath<MapData>(path);
         if (existing != null)
         {
@@ -131,6 +243,6 @@ public class TilemapToMapDataExporter
         AssetDatabase.CreateAsset(mapData, path);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log($"Map exported: {width}x{height}");
+        Debug.Log($"Map exported: {mapData.width}x{mapData.height}");
     }
 }

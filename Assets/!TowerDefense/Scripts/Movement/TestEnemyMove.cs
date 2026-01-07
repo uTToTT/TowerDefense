@@ -24,15 +24,7 @@ public class TestEnemyMove : MonoBehaviour
         {
             for (int x = 0; x < mapData.width; x++)
             {
-                var flows = mapData.GetFlows(x, y);
-                foreach (var f in flows)
-                {
-                    if (f.routeId == routeId)
-                    {
-                        pathPoints.Add(MapUtils.GridToWorld(x, y, mapData));
-                        break;
-                    }
-                }
+                
             }
         }
     }
