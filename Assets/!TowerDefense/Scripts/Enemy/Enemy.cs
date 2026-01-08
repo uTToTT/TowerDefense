@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     public float CurrArmor => _currArmor;
     public bool MaxFreeze => _maxFreeze;
 
-    public bool IsActive { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public bool IsActive { get; set; }
 
     private void Start()
     {
@@ -807,32 +807,32 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void Dispose()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void OnPreload()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void OnActivated()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void OnDeactivated()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void OnReturned()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void OnDestroyed()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     //private void OnBecameInvisible()
