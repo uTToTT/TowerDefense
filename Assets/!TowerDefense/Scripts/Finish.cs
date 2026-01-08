@@ -24,7 +24,7 @@ public class Finish : MonoBehaviour
             _tmpEnemy = collision.GetComponent<Enemy>();
 
             EventBus.HitBase?.Invoke(_tmpEnemy.Getdamage());
-            EnemySpawner.Instance.UnregisterEnemy(_tmpEnemy);
+            WaveController.Instance.UnregisterEnemy(_tmpEnemy);
         }
     }
 }

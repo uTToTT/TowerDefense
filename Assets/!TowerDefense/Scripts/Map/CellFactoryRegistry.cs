@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TD/Map/Cell Factory Registry")]
+[CreateAssetMenu(fileName = "CellFactoryRegistry",menuName = "TD/Map/Cell Factory Registry")]
 public class CellFactoryRegistry : ScriptableObject
 {
     [SerializeField] private CellFactory[] _factories;

@@ -163,7 +163,7 @@ public class AtackTower : Tower
     {
         List<Enemy> enemiesInRange = new List<Enemy>();
 
-        foreach (var enemy in EnemySpawner.Instance.Enemies)
+        foreach (var enemy in WaveController.Instance.Enemies)
         {
             if (Vector2.Distance(enemy.transform.position, transform.position) < _currMaxAtackRadius)
             {

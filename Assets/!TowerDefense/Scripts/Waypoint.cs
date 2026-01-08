@@ -6,7 +6,7 @@ public class Waypoint : MonoBehaviour
     [SerializeField] private bool _isCentralPoint;
 
     private Enemy _enemy;
-    private TypeEnemy _type;
+    private EnemyType _type;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -17,7 +17,7 @@ public class Waypoint : MonoBehaviour
 
             if (_isCentralPoint)
             {
-                if (_type == TypeEnemy.Heavy || _type == TypeEnemy.King)
+                if (_type == EnemyType.Heavy || _type == EnemyType.King)
                 {
                     if (Vector2.Distance(collision.transform.position, transform.position) < 0.2f)
                     {
@@ -31,7 +31,7 @@ public class Waypoint : MonoBehaviour
             }
             else
             {
-                if (_type != TypeEnemy.Heavy && _type != TypeEnemy.King)
+                if (_type != EnemyType.Heavy && _type != EnemyType.King)
                 {
                     if (Vector2.Distance(collision.transform.position, transform.position) < 0.2f)
                     {

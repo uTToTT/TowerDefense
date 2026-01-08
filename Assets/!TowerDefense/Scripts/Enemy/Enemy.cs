@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
 {
     [Header("Basic")]
     [SerializeField, Min(0)] private int _hp;
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     [Space]
     [SerializeField] private ParticleSystem _deathExmplosion;
     [SerializeField] private ParticleSystem _hitVFX;
-    [SerializeField] private TypeEnemy _enemyType;
+    [SerializeField] private EnemyType _enemyType;
     [Space]
     [Header("Freezing")]
     [SerializeField, Min(0)] private int _maxFreezeStack;
@@ -121,11 +121,14 @@ public class Enemy : MonoBehaviour
     private int _secondFreezeStep;
     private int _thirdFreezeStep;
 
+    public EnemyType EnemyType => _enemyType;
     public int HP => _hp;
     public float Speed => _currSpeed;
     public float Shield => _armor;
     public float CurrArmor => _currArmor;
     public bool MaxFreeze => _maxFreeze;
+
+    public bool IsActive { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void Start()
     {
@@ -224,7 +227,7 @@ public class Enemy : MonoBehaviour
             EventBus.AddMoney!.Invoke(dropMoney);
         }
 
-        EnemySpawner.Instance.UnregisterEnemy(this);
+        WaveController.Instance.UnregisterEnemy(this);
     }
 
     public void TakeDamageToArmor(float damageArmor)
@@ -290,11 +293,11 @@ public class Enemy : MonoBehaviour
         int totalMoney = 0;
         int pieceMoney = 0;
 
-        if (_enemyType == TypeEnemy.Heavy)
+        if (_enemyType == EnemyType.Heavy)
         {
             pieceMoney = _numDropMoney / 3;
         }
-        else if (_enemyType == TypeEnemy.King)
+        else if (_enemyType == EnemyType.King)
         {
             pieceMoney = _numDropMoney / 4;
         }
@@ -311,7 +314,7 @@ public class Enemy : MonoBehaviour
         {
             totalMoney += pieceMoney;
         }
-        if (!_thirdStepMoneyAdded && _enemyType != TypeEnemy.Heavy)
+        if (!_thirdStepMoneyAdded && _enemyType != EnemyType.Heavy)
         {
             totalMoney += pieceMoney;
         }
@@ -333,11 +336,11 @@ public class Enemy : MonoBehaviour
 
         int moneyDrop;
 
-        if (_enemyType == TypeEnemy.Heavy)
+        if (_enemyType == EnemyType.Heavy)
         {
             moneyDrop = _numDropMoney / 3;
         }
-        else if (_enemyType == TypeEnemy.King)
+        else if (_enemyType == EnemyType.King)
         {
             moneyDrop = _numDropMoney / 4;
         }
@@ -755,7 +758,7 @@ public class Enemy : MonoBehaviour
         Calculate—haracteristics();
     }
 
-    public TypeEnemy GetEnemyType()
+    public EnemyType GetEnemyType()
     {
         return _enemyType;
     }
@@ -802,6 +805,36 @@ public class Enemy : MonoBehaviour
         this.transform.position = Vector2.MoveTowards(this.transform.position, targetTransform.position, _currSpeed * Time.deltaTime);
     }
 
+    public void Dispose()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnPreload()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnActivated()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnDeactivated()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnReturned()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnDestroyed()
+    {
+        throw new System.NotImplementedException();
+    }
+
     //private void OnBecameInvisible()
     //{
     //    Death();
@@ -811,7 +844,7 @@ public class Enemy : MonoBehaviour
 
 
 
-public enum TypeEnemy
+public enum EnemyType
 {
     Classic,
     Fast,
