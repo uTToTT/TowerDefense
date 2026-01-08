@@ -13,4 +13,7 @@ public static class MapUtils
             0f
         );
     }
+
+    public static Vector3 GridToWorld(Vector2Int v, MapData mapData) =>
+        GridToWorld(v.x, v.y, mapData);
 }

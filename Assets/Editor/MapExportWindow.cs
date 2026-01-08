@@ -7,8 +7,6 @@ public class MapExportWindow : EditorWindow
     private int mapIndex = 0;
     private Vector2 scroll;
 
-    private static readonly string MapsFolder = "Assets/!TowerDefense/!Data/Maps";
-
     [MenuItem("TD/Map Exporter")]
     public static void Open()
     {
@@ -22,7 +20,7 @@ public class MapExportWindow : EditorWindow
 
         mapIndex = EditorGUILayout.IntField("Map ID", mapIndex);
 
-        string targetPath = $"{MapsFolder}/Map_{mapIndex}.asset";
+        string targetPath = TilemapToMapDataExporter.GetFullPath(mapIndex);
         bool exists = File.Exists(targetPath);
 
         if (exists)
@@ -57,13 +55,13 @@ public class MapExportWindow : EditorWindow
     {
         GUILayout.Label("Saved Maps", EditorStyles.boldLabel);
 
-        if (!Directory.Exists(MapsFolder))
+        if (!Directory.Exists(TilemapToMapDataExporter.MAP_FOLDER_PATH))
         {
             EditorGUILayout.HelpBox("Maps folder not found", MessageType.Info);
             return;
         }
 
-        var files = Directory.GetFiles(MapsFolder, "Map*.asset");
+        var files = Directory.GetFiles(TilemapToMapDataExporter.MAP_FOLDER_PATH, "Map*.asset");
 
         scroll = GUILayout.BeginScrollView(scroll, GUILayout.Height(150));
 

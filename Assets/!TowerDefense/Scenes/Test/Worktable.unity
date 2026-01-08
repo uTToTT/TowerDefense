@@ -2644,7 +2644,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1196139507
   m_SortingLayer: 2
-  m_SortingOrder: 100
+  m_SortingOrder: 200
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.5, y: 0.5, z: 0}
   m_MaxChunkCount: 16
@@ -3304,7 +3304,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1196139507
   m_SortingLayer: 2
-  m_SortingOrder: 300
+  m_SortingOrder: 400
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -3655,7 +3655,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1196139507
   m_SortingLayer: 2
-  m_SortingOrder: 200
+  m_SortingOrder: 300
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.5, y: 0.5, z: 0}
   m_MaxChunkCount: 16
@@ -4293,7 +4293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2072100568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4306,9 +4306,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3012b9e5d3f6e3945bd3079a76e5f840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestEnemyMove
-  mapData: {fileID: 0}
-  routeId: 0
-  speed: 2
+  _mapData: {fileID: 11400000, guid: 96bd79dd1b08aa94399642326af82613, type: 2}
+  _routeId: 1
+  _speed: 2
 --- !u!212 &2072100569
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -15,7 +15,10 @@ public class TilemapToMapDataExporter
     private const string ENTRANCE = "Entrance_TMap";
     private const string EXIT = "Exit_TMap";
 
-    private const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Maps/Map_{0}.asset";
+    public const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Resources/Maps/Map_{0}.asset";
+    public const string MAP_FOLDER_PATH = "Assets/!TowerDefense/!Data/Resources/Maps";
+
+    public static string GetFullPath(int index) => string.Format(MAP_DATA_PATH, index);
 
     public static void Export(int mapIndex = 0)
     {
@@ -80,6 +83,7 @@ public class TilemapToMapDataExporter
 
         mapData.width = width;
         mapData.height = height;
+        mapData.size = width * height;
 
         mapData.cells = new CellType[width * height];
         mapData.routes = new List<Route>();
@@ -125,12 +129,13 @@ public class TilemapToMapDataExporter
                 else
                 {
                     mapData.cells[index] = CellType.Buildable;
-                    mapData.blockedCount++;
+                    mapData.buildableCount++;
                 }
             }
         }
 
         int routeCount = Mathf.Max(mapData.entranceCount, mapData.exitCount);
+        int routeProcessed = 0;
 
         for (int y = 0; y < height; y++)
         {
@@ -142,87 +147,96 @@ public class TilemapToMapDataExporter
                 if (entrance == null || !entrance.HasTile(pos))
                     continue;
 
-                var usedRoutes = new HashSet<RouteId>();
+                var routesOnEntrance = new HashSet<RouteId>();
 
-                for (int i = 0; i < routeCount; i++)
+                foreach (var r in routeTmaps)
                 {
-                    Route route = new Route();
-                    route.points = new();
-                    route.entrance = (Vector2Int)pos;
-
-                    bool hasPath = false;
-                    RouteId routeId = RouteId.None;
-                    var tmpPos = new Vector3Int(pos.x, pos.y);
-
-                    foreach (var r in routeTmaps)
+                    if (r.Value != null && r.Value.HasTile(pos))
                     {
-                        if (r.Value != null && r.Value.HasTile(pos))
+                        if (routesOnEntrance.Add(r.Key) == false)
                         {
-                            if (usedRoutes.Add(r.Key) == false)
-                            {
-                                continue;
-                            }
-                            hasPath = true;
-                            routeId = r.Key;
+                            throw new System.Exception($"Already has this route [{r.Key}]");
+                        }
+                    }
+                }
+
+                foreach (var routeId in routesOnEntrance)
+                {
+                    var route = new Route();
+                    var tmpPos = pos;
+                    var mapCoord = ToMapCoord(tmpPos);
+
+                    route.routeId = routeId;
+                    route.entrance = mapCoord;
+                    route.points = new List<Vector2Int>();
+
+                    for (int i = 0; i < mapData.size; i++)
+                    {
+                        if (routeTmaps[routeId] != null && routeTmaps[routeId].HasTile(tmpPos))
+                        {
+                            route.points.Add(mapCoord);
+                        }
+
+                        var matrix = routeTmaps[routeId].GetTransformMatrix(tmpPos);
+                        float angle = Mathf.Round(matrix.rotation.eulerAngles.z / 90f) * 90f;
+
+                        Direction dir = angle switch
+                        {
+                            0f => Direction.Right,
+                            90f => Direction.Up,
+                            180f => Direction.Left,
+                            270f => Direction.Down,
+                            _ => Direction.None
+                        };
+
+                        tmpPos += dir switch
+                        {
+                            Direction.Right => Vector3Int.right,
+                            Direction.Up => Vector3Int.up,
+                            Direction.Left => Vector3Int.left,
+                            Direction.Down => Vector3Int.down,
+                            _ => Vector3Int.zero
+                        };
+                        mapCoord = ToMapCoord(tmpPos);
+
+                        if (mapData.IsInside(mapCoord) == false)
+                        {
+                            throw new System.ArgumentOutOfRangeException("Out of map");
+                        }
+
+                        if (exit != null && exit.HasTile(tmpPos))
+                        {
+                            route.exit = mapCoord;
+                            route.points.Add(mapCoord);
 
                             break;
                         }
                     }
 
-                    if (hasPath)
-                    {
-                        var r = routeTmaps[routeId];
+                    mapData.routes.Add(route);
+                    routeProcessed++;
+                }
 
-                        var size = width * height;
-
-                        for (int j = 0; j < size; j++)
-                        {
-                            route.points.Add((Vector2Int)tmpPos);
-
-                            var matrix = r.GetTransformMatrix(tmpPos);
-                            float angle = Mathf.Round(matrix.rotation.eulerAngles.z / 90f) * 90f;
-
-                            Direction dir = angle switch
-                            {
-                                0f => Direction.Right,
-                                90f => Direction.Up,
-                                180f => Direction.Left,
-                                270f => Direction.Down,
-                                _ => Direction.None
-                            };
-
-                            if (dir == Direction.Right)
-                                tmpPos.x++;
-                            else if (dir == Direction.Up)
-                                tmpPos.y++;
-                            else if (dir == Direction.Left)
-                                tmpPos.x--;
-                            else if (dir == Direction.Down)
-                                tmpPos.y--;
-
-                            if (mapData.IsInside(tmpPos.x, tmpPos.y) == false)
-                            {
-                                throw new System.ArgumentOutOfRangeException("Out of map");
-                            }
-
-                            if (exit != null && exit.HasTile(tmpPos))
-                            {
-                                route.exit = (Vector2Int)tmpPos;
-                                mapData.routes.Add(route);
-                                break;
-                            }
-                        }
-                    }
+                if (routeProcessed >= routeCount)
+                {
+                    SaveMap(mapIndex, mapData);
+                    return;
                 }
             }
         }
 
-        SaveMap(mapIndex, mapData);
+        Vector2Int ToMapCoord(Vector3Int tilePos)
+        {
+            return new Vector2Int(
+                tilePos.x - xMin,
+                tilePos.y - yMin
+            );
+        }
     }
 
     private static void SaveMap(int mapIndex, MapData mapData)
     {
-        string path = string.Format(MAP_DATA_PATH, mapIndex);
+        string path = GetFullPath(mapIndex);
         var existing = AssetDatabase.LoadAssetAtPath<MapData>(path);
         if (existing != null)
         {

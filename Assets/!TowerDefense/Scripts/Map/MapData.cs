@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Map/Map Data")]
 public class MapData : ScriptableObject
 {
     public int buildableCount;
@@ -13,11 +13,10 @@ public class MapData : ScriptableObject
     public float cellSize = 2;
     public int width;
     public int height;
-    public CellType[] cells;
+    public int size;
 
+    public CellType[] cells;
     public List<Route> routes;
-    //public List<Vector2Int> entrances;
-    //public List<Vector2Int> exits;
 
     public CellType Get(int x, int y) =>
         cells[y * width + x];
@@ -25,4 +24,7 @@ public class MapData : ScriptableObject
     public bool IsInside(int x, int y) =>
         x >= 0 && y >= 0 &&
         x < width && y < height;
+
+    public bool IsInside(Vector2Int v) => IsInside(v.x, v.y);
+    public Route GetRoute(RouteId id) => routes.FirstOrDefault(r => r.routeId == id);
 }
