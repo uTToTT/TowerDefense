@@ -20,17 +20,12 @@ public class WaveController : Loader<WaveController>
     [HorizontalLine]
     [SerializeField] private EnemyFactoryRegistry _factories;
 
-    private Enemy _tmpEnemy;
-    private bool _spawningNow;
-    private bool _firstTowerWasBuilt;
     private float _waveDelayTimer;
     private int _currWaveIndex = -1;
     private List<GroupRuntime> _activeGroups;
-    private bool _waveActive;
     private WaveSpawnerState _state;
     public IReadOnlyCollection<Enemy> Enemies => _enemyTracker.AliveEnemies;
 
-    private Coroutine _coroutine;
     private EnemyTracker _enemyTracker;
 
     private void Start() => Init();
@@ -47,6 +42,8 @@ public class WaveController : Loader<WaveController>
     private void Process()
     {
         float dt = Time.deltaTime;
+
+        if (!_enableSpawning) return;
 
         switch (_state)
         {

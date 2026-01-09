@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 {
     [SerializeField] protected TowerType _towerType;
     [SerializeField] protected int _uniqueTowerIndex;
@@ -30,7 +30,7 @@ public class Tower : MonoBehaviour
     protected int _currPrice;
     protected int _currSellCost;
     protected int _currLevel;
-    
+
     protected bool _hasFirstSpec;
     protected bool _hasSecondSpec;
 
@@ -61,6 +61,8 @@ public class Tower : MonoBehaviour
 
     public bool HasFirstSpec => _hasFirstSpec;
     public bool HasSecondSpec => _hasSecondSpec;
+
+    public bool IsActive { get; set; }
 
     void Start()
     {
@@ -146,6 +148,30 @@ public class Tower : MonoBehaviour
     public void SetUniqueTowerIndex(int index)
     {
         _uniqueTowerIndex = index;
+    }
+
+    public void Dispose()
+    {
+    }
+
+    public void OnPreload()
+    {
+    }
+
+    public void OnActivated()
+    {
+    }
+
+    public void OnDeactivated()
+    {
+    }
+
+    public void OnReturned()
+    {
+    }
+
+    public void OnDestroyed()
+    {
     }
 }
 

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39472d7f83423b4c833853a1de4c8c0, type: 3}
+  m_Name: TowerFactoryGravity
+  m_EditorClassIdentifier: Assembly-CSharp::TowerFactory
+  _prefab: {fileID: 4565903098710303644, guid: c6a67d9ff4beb3f4eaf657d0ce33ea4f, type: 3}
+  _capacity: 10
+  _maxCount: 100
+  _totalPreload: 0
+  _totalGet: 0
+  _activeCount: 0
+  _poolCount: 0
+  _totalCount: 0

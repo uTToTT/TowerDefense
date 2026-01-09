@@ -57,7 +57,7 @@ public class Cell : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void OnActivated()
     {
-        Debug.Log("Activated");
+        //Debug.Log("Activated");
     }
 
     public void OnDeactivated()
@@ -66,7 +66,7 @@ public class Cell : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void OnReturned()
     {
-        Debug.Log("OnReturned");
+        //Debug.Log("OnReturned");
     }
 
     public void OnDestroyed()

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a72205872c1794f926e34e3c7982d1, type: 3}
+  m_Name: TowerFactoryRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::TowerFactoryRegistry
+  _factories:
+  - {fileID: 11400000, guid: aa40cfdad57ab654a8d7b81aa8d7e0a0, type: 2}
+  - {fileID: 11400000, guid: c425c32304dc6134e98923b177720710, type: 2}
+  - {fileID: 11400000, guid: 91231f03384bd094297a6c693cb26e84, type: 2}
+  - {fileID: 11400000, guid: c99d2a98167aeb54d834fb85ef68f88a, type: 2}

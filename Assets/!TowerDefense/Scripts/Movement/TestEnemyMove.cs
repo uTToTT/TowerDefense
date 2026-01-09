@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TestEnemyMove : MonoBehaviour
 {
+    [SerializeField] private Grid _grid;
     [SerializeField] private MapData _mapData;
     [SerializeField] private RouteId _routeId = RouteId.A;
     [SerializeField] private float _speed = 2f;
@@ -29,7 +30,7 @@ public class TestEnemyMove : MonoBehaviour
 
         foreach (var p in route.points)
         {
-            var pos = MapUtils.GridToWorld(p, _mapData);
+            var pos = MapUtils.GridToWorld(p, _grid);
             _pathPoints.Add(pos);
         }
 
