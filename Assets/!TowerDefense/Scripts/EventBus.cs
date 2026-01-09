@@ -1,9 +1,7 @@
 using System;
-using UnityEngine;
-
 public static class EventBus
 {
-    public static Action<int> AddMoney;
+    public static Action<float> AddMoney;
     public static Action<int> TakeMoney;
     public static Action<int, int> GetStar;
     public static Action<int> HitBase;

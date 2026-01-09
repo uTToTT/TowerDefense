@@ -15,7 +15,7 @@ public class WaveController : Loader<WaveController>
     [HorizontalLine]
     [SerializeField] private MapData _mapData;
     [SerializeField] private TextMeshProUGUI _waveText;
-    [SerializeField] private WavesInfo _wavesInfo;
+    [SerializeField] private WavesData _wavesInfo;
 
     [HorizontalLine]
     [SerializeField] private EnemyFactoryRegistry _factories;

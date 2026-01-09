@@ -24,8 +24,8 @@ public class WaveUI : MonoBehaviour
     {
         if (_frameWaveInfo != null)
         {
-            _textHP.text = currEnemy.HP.ToString();
-            _textArmor.text = (currEnemy.Shield * 100).ToString() + "%";
+            _textHP.text = currEnemy.CurrHP.ToString();
+            _textArmor.text = (currEnemy.CurrArmor * 100).ToString() + "%";
             //Debug.Log("Speed: " + currEnemy.Shield);
 
             if (currEnemy.GetEnemyType() == EnemyType.Fast)

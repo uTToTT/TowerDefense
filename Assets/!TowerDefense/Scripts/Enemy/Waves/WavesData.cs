@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class WavesInfo : ScriptableObject
+public class WavesData : ScriptableObject
 {
     [SerializeField] private Wave[] _waves;
 

@@ -1,28 +1,23 @@
+using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
+public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable
 {
-    [Header("Basic")]
-    [SerializeField, Min(0)] private int _hp;
-    [SerializeField, Min(0)] private int _damage;
-    [SerializeField, Min(0)] private int _numDropMoney;
-    [SerializeField, Range(0, 1)] private float _armor;
-    [SerializeField, Range(0, 1)] private float _minSpeedPersents;
-    [Space]
-    //[SerializeField] private Color _color;
-    //private Color _colorInGravity = new Color(0, 255, 155);
-    //[SerializeField] private Color _colorFreezeL1 = new Color(170, 240, 255);
-    //[SerializeField] private Color _colorFreezeL2 = new Color(83, 225, 255);
-    //[SerializeField] private Color _colorFreezeL3 = new Color(0, 210, 255);
+    [HorizontalLine]
+    [SerializeField] private EnemyType _enemyType;
+
+    [HorizontalLine]
+    [SerializeField] private EnemyConfig _config;
+
+
     [Space]
     [SerializeField] private ParticleSystem _deathExmplosion;
     [SerializeField] private ParticleSystem _hitVFX;
-    [SerializeField] private EnemyType _enemyType;
-    [Space]
-    [Header("Freezing")]
-    [SerializeField, Min(0)] private int _maxFreezeStack;
-    [SerializeField, Min(0)] private int _freezingTime;
+
+    private float _currHP;
+    private float _currDropMoney;
+
     [Space]
     [Header("Test")]
     [SerializeField] private float TESTSPEED;
@@ -31,7 +26,7 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     [SerializeField] private float TESTFREEZEDEBUFF;
     [SerializeField] private float TESTGRAVITYDEBUFF;
     [SerializeField] private float TESTHP;
-    [SerializeField] private int TESTMONEY;
+    [SerializeField] private float TESTMONEY;
     [Space]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [Space]
@@ -72,18 +67,13 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     [SerializeField, Range(0, 0.2f)] private float _l4MoveSpeed;
     [SerializeField] private Sprite _l4HPSprite;
     [SerializeField] private Sprite _l4HPSpriteArmor;
-    //[Space]
-    //[SerializeField, Min(0)] private int _l5HPStep;
-    //[SerializeField, Range(0, 0.2f)] private float _l5MoveSpeed;
-    //[SerializeField] private Sprite _l5HPSprite;
-    //[SerializeField] private Sprite _l5HPSpriteArmor;
+    
 
     private Dictionary<int, float> _moneyBuffsByGravity = new Dictionary<int, float>();
     private Dictionary<int, float> _speedDebuffsByGravity = new Dictionary<int, float>();
     private Dictionary<int, float> _hpDebuffsByGravity = new Dictionary<int, float>();
+    private List<Vector3> _routePoints = new();
 
-    private Vector2 _moveDirection;
-    //private Color _baseColor;
     private int _currStep;
     private int _stepMoneyAdded;
     private bool _inArmor;
@@ -94,10 +84,9 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     private bool _thirdStepMoneyAdded;
 
     private float _currMoneyMultiplier;
-    private int _tmpMoneyDrop;
+    private float _tmpMoneyDrop;
 
     private float _currArmor;
-    private float _tmpArmor;
 
     private float _tmpSpeed;
     private float _currSpeed;
@@ -122,26 +111,25 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     private int _thirdFreezeStep;
 
     public EnemyType EnemyType => _enemyType;
-    public int HP => _hp;
-    public float Speed => _currSpeed;
-    public float Shield => _armor;
+    public float CurrHP => _currHP;
     public float CurrArmor => _currArmor;
     public bool MaxFreeze => _maxFreeze;
 
     public bool IsActive { get; set; }
 
-    private void Start()
+    private void Start() => Init();
+
+    private void Init()
     {
-        _secondFreezeStep = (_maxFreezeStack / 3);
-        _thirdFreezeStep = (_maxFreezeStack / 3) * 2;
+        _secondFreezeStep = (_config.MaxFreezeStack / 3);
+        _thirdFreezeStep = (_config.MaxFreezeStack / 3) * 2;
 
         //Debug.Log("second freeze step" + _secondFreezeStep);
         //Debug.Log("third freeze step" + _thirdFreezeStep);
 
         //_baseColor = _spriteRenderer.color;
-        _tmpMoneyDrop = _numDropMoney;
-        _currArmor = _armor;
-        ResetLevelStep();
+        _tmpMoneyDrop = _config.DropMoney;
+        _currArmor = _config.Armor;
         _hitVFX.gameObject.SetActive(false);
     }
 
@@ -177,40 +165,13 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
         TESTFREEZESTACK = _freezeStack;
         TESTFREEZEDEBUFF = _freezeDebuff;
         TESTGRAVITYDEBUFF = _gravityDebuff;
-        TESTHP = _hp;
-        TESTMONEY = _numDropMoney;
+        TESTHP = CurrHP;
+        TESTMONEY = _currDropMoney;
     }
 
-    private void Move()
+    public void Move()
     {
-        if (_moveDirection != Vector2.zero)
-        {
-            transform.Translate(_moveDirection * _currSpeed);
-        }
-    }
-
-    public void SetMoveDirection(Direction dir)
-    {
-        if (dir == Direction.Up)
-        {
-            _moveDirection = Vector2.up;
-        }
-        else if (dir == Direction.Down)
-        {
-            _moveDirection = Vector2.down;
-        }
-        else if (dir == Direction.Left)
-        {
-            _moveDirection = Vector2.left;
-        }
-        else if (dir == Direction.Right)
-        {
-            _moveDirection = Vector2.right;
-        }
-        else
-        {
-            Debug.Log("Error! Uncorrect move direction!" + dir);
-        }
+            transform.Translate(Vector2.left * _currSpeed);
     }
 
     public void Death()
@@ -220,7 +181,7 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
             Destroy(Instantiate(_deathExmplosion, transform.position, Quaternion.identity).gameObject, 3f);
         }
 
-        int dropMoney = _numDropMoney;
+        float dropMoney = _currDropMoney;
 
         if (!DeathStrongDrop())
         {
@@ -232,46 +193,26 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void TakeDamageToArmor(float damageArmor)
     {
-        if (_currArmor - damageArmor > 0)
-        {
-            _currArmor -= damageArmor;
-        }
-        else
-        {
-            _currArmor = 0;
-            _armorBreak = true;
-        }
-
-        ResetLevelStep();
+        _currArmor = Mathf.Max(0, _currArmor - damageArmor);
+        _armorBreak = _currArmor <= 0;
     }
 
-    public void TakeDamage(int damage, float armorPiercing)
+    public void TakeDamage(float damage, float armorPiercing)
     {
-        _tmpArmor = _currArmor;
+        var tmpArmor = _currArmor;
 
-        if (_currArmor - armorPiercing > 0)
-        {
-            _currArmor -= armorPiercing;
-        }
-        else
-        {
-            _currArmor = 0;
-        }
+        _currArmor = Mathf.Max(0, _currArmor - armorPiercing);
 
-        float tmp = damage;
-        tmp = tmp * (1 - _currArmor);
-        damage = (int)tmp;
+        damage = damage * (1 - CurrArmor);
 
         if (_isHPDisionByGravity)
         {
-            damage = (int)((float)damage * _currHPDivisor);
+            damage *= _currHPDivisor;
         }
 
-        if (_hp - damage > 0)
-        {
-            _hp -= damage;
-        }
-        else
+        _currHP = Mathf.Max(_currHP - damage, 0);
+
+        if (_currHP <= 0)
         {
             Death();
             return;
@@ -283,23 +224,21 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
             _hitVFX.Play();
         }
 
-        _currArmor = _tmpArmor;
-
-        ResetLevelStep();
+        _currArmor = tmpArmor;
     }
 
     private bool DeathStrongDrop()
     {
-        int totalMoney = 0;
-        int pieceMoney = 0;
+        float totalMoney = 0;
+        float pieceMoney = 0;
 
         if (_enemyType == EnemyType.Heavy)
         {
-            pieceMoney = _numDropMoney / 3;
+            pieceMoney = _currDropMoney / 3;
         }
         else if (_enemyType == EnemyType.King)
         {
-            pieceMoney = _numDropMoney / 4;
+            pieceMoney = _currDropMoney / 4;
         }
         else
         {
@@ -334,15 +273,15 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
 
         _stepMoneyAdded = _currStep;
 
-        int moneyDrop;
+        float moneyDrop;
 
         if (_enemyType == EnemyType.Heavy)
         {
-            moneyDrop = _numDropMoney / 3;
+            moneyDrop = _currDropMoney / 3;
         }
         else if (_enemyType == EnemyType.King)
         {
-            moneyDrop = _numDropMoney / 4;
+            moneyDrop = _currDropMoney / 4;
         }
         else
         {
@@ -350,108 +289,6 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
         }
 
         EventBus.AddMoney?.Invoke(moneyDrop);
-    }
-
-    private void ResetLevelStep()
-    {
-        if (_hp <= _l1HPStep && _hp >= _l2HPStep)
-        {
-            _currStep = 1;
-
-            if (_currArmor <= 0f)
-            {
-                if (_l1HPSprite != null && _spriteRenderer.sprite != _l1HPSprite)
-                {
-                    _spriteRenderer.sprite = _l1HPSprite;
-                    _inArmor = false;
-                }
-            }
-            else
-            {
-                if (_l1HPSpriteArmor != null && _spriteRenderer.sprite != _l1HPSpriteArmor)
-                {
-                    _spriteRenderer.sprite = _l1HPSpriteArmor;
-                    _inArmor = true;
-                }
-            }
-            ChangeFreezeSprite();
-            ResetSpeed(_l1MoveSpeed);
-        }
-        else if (_hp <= _l2HPStep && _hp >= _l3HPStep)
-        {
-            _currStep = 2;
-
-            if (_currArmor <= 0f)
-            {
-                if (_l2HPSprite != null && _spriteRenderer.sprite != _l2HPSprite)
-                {
-                    _spriteRenderer.sprite = _l2HPSprite;
-                    _inArmor = false;
-                }
-            }
-            else
-            {
-                if (_l2HPSpriteArmor != null && _spriteRenderer.sprite != _l2HPSpriteArmor)
-                {
-                    _spriteRenderer.sprite = _l2HPSpriteArmor;
-                    _inArmor = true;
-                }
-            }
-            ChangeFreezeSprite();
-            ResetSpeed(_l2MoveSpeed);
-            MoneyStrongDrop();
-            _firstStepMoneyAdded = true;
-        }
-        else if (_hp <= _l3HPStep && _hp >= _l4HPStep)
-        {
-            _currStep = 3;
-
-            if (_currArmor <= 0f)
-            {
-                if (_l3HPSprite != null && _spriteRenderer.sprite != _l3HPSprite)
-                {
-                    _spriteRenderer.sprite = _l3HPSprite;
-                    _inArmor = false;
-                }
-            }
-            else
-            {
-                if (_l3HPSpriteArmor != null && _spriteRenderer.sprite != _l3HPSpriteArmor)
-                {
-                    _spriteRenderer.sprite = _l3HPSpriteArmor;
-                    _inArmor = true;
-                }
-            }
-            ChangeFreezeSprite();
-            ResetSpeed(_l3MoveSpeed);
-            MoneyStrongDrop();
-            _secondStepMoneyAdded = true;
-        }
-        else if (_hp <= _l4HPStep /*&& _hp >= _l5HPStep*/)
-        {
-            _currStep = 4;
-
-            if (_currArmor <= 0f)
-            {
-                if (_l4HPSprite != null && _spriteRenderer.sprite != _l4HPSprite)
-                {
-                    _spriteRenderer.sprite = _l4HPSprite;
-                    _inArmor = false;
-                }
-            }
-            else
-            {
-                if (_l4HPSpriteArmor != null && _spriteRenderer.sprite != _l4HPSpriteArmor)
-                {
-                    _spriteRenderer.sprite = _l4HPSpriteArmor;
-                    _inArmor = true;
-                }
-            }
-            ChangeFreezeSprite();
-            ResetSpeed(_l4MoveSpeed);
-            MoneyStrongDrop();
-            _thirdStepMoneyAdded = true;
-        }
     }
 
     private void ResetSpeed(float newSpeed)
@@ -466,21 +303,21 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
     {
         _freezed = true;
 
-        if (_freezeStack + freezeIncrement < _maxFreezeStack)
+        if (_freezeStack + freezeIncrement < _config.MaxFreezeStack)
         {
             _freezeStack += freezeIncrement;
             _maxFreeze = false;
         }
         else
         {
-            _freezeStack = _maxFreezeStack;
+            _freezeStack = _config.MaxFreezeStack;
             _maxFreeze = true;
         }
 
         ChangeFreezeSprite();
 
         _calculateInUpdateCaleed = false;
-        _timeToDefreeze = _freezingTime;
+        _timeToDefreeze = _config.FreezingTime;
         CalculateÑharacteristics();
     }
 
@@ -642,9 +479,9 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
         {
             _totalDebuffSpeed = 1;
         }
-        else if (_totalDebuffSpeed < _minSpeedPersents)
+        else if (_totalDebuffSpeed < _config.MinSpeed)
         {
-            _totalDebuffSpeed = _minSpeedPersents;
+            _totalDebuffSpeed = _config.MinSpeed;
         }
 
         _currSpeed = _tmpSpeed * _totalDebuffSpeed;
@@ -673,7 +510,7 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
 
         _currMoneyMultiplier = _isMoneyMultipliedByGravity ? maxMoneyMultiplier : 1;
 
-        _numDropMoney = (int)((float)_tmpMoneyDrop * _currMoneyMultiplier);
+        _currDropMoney = (int)((float)_tmpMoneyDrop * _currMoneyMultiplier);
     }
 
     private void CalculateHP()
@@ -758,51 +595,19 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle
         CalculateÑharacteristics();
     }
 
-    public EnemyType GetEnemyType()
-    {
-        return _enemyType;
-    }
+    public EnemyType GetEnemyType() => _enemyType;
 
-    public int Getdamage()
-    {
-        return _damage;
-    }
+    public float GetDamage() => _config.Damage;
 
-    public void HPMultiply(float multiplier)
-    {
-        float tmp = _hp;
-        tmp *= multiplier;
-        _hp = (int)tmp;
+    public void HPMultiply(float multiplier) => 
+        _currHP *= multiplier;
 
-        tmp = _l1HPStep;
-        tmp *= multiplier;
-        _l1HPStep = (int)tmp;
-
-        tmp = _l2HPStep;
-        tmp *= multiplier;
-        _l2HPStep = (int)tmp;
-
-        tmp = _l3HPStep;
-        tmp *= multiplier;
-        _l3HPStep = (int)tmp;
-
-        tmp = _l4HPStep;
-        tmp *= multiplier;
-        _l4HPStep = (int)tmp;
-    }
-
-    public void MoneyDropMultiply(float multipier)
-    {
-        _tmpMoneyDrop = _numDropMoney;
-        float tmp = _numDropMoney;
-        tmp *= multipier;
-        _numDropMoney = (int)tmp;
-        _tmpMoneyDrop = _numDropMoney;
-    }
+    public void MoneyDropMultiply(float multipier) => 
+        _currDropMoney *= multipier;
 
     public void MoveTo(Transform targetTransform)
     {
-        this.transform.position = Vector2.MoveTowards(this.transform.position, targetTransform.position, _currSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetTransform.position, _currSpeed * Time.deltaTime);
     }
 
     public void Dispose()

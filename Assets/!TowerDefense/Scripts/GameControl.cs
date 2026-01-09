@@ -156,7 +156,7 @@ public class GameControl : Loader<GameControl>
 
     private int _price = 0;
     private int _towerSelected = -1;
-    private int _moneyCount;
+    private float _moneyCount;
 
     public bool FirstTowerWasBuilt => _firstTowerWasBuilt;
 
@@ -379,7 +379,7 @@ public class GameControl : Loader<GameControl>
         _moneyText.text = _moneyCount.ToString();
     }
 
-    private void AddMoney(int num)
+    private void AddMoney(float num)
     {
         _moneyCount += num;
         _moneyText.text = _moneyCount.ToString();
