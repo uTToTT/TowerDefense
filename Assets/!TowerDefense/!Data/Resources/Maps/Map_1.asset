@@ -17,7 +17,7 @@ MonoBehaviour:
   pathCount: 17
   entranceCount: 1
   exitCount: 2
-  cellSize: 2
+  cellSize: 1
   width: 32
   height: 21
   size: 672
