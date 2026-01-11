@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -11,6 +12,21 @@ public class MapManager : MonoBehaviour
         CenterGrid(_mapData);
         _mapComposer.Build(_mapData, _grid);
     }
+
+    public List<Vector3> GetRoutePoints(RouteId routeId)
+    {
+        var points = new List<Vector3>();
+        var route = GetRoute(routeId);
+
+        foreach (var point in route.points)
+        {
+            points.Add(MapUtils.GridToWorld(point, _grid));
+        }
+
+        return points;
+    }
+
+    public Route GetRoute(RouteId routeId) => _mapData.GetRoute(routeId);
 
     private void CenterGrid(MapData map)
     {

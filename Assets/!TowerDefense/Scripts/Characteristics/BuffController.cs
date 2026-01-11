@@ -88,5 +88,4 @@ public class BuffController
 
         return (baseValue + flatAdd) * (1f + percentAdd);
     }
-
 }

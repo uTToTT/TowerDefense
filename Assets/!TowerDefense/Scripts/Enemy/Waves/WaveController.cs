@@ -13,10 +13,12 @@ public class WaveController : Loader<WaveController>
     [SerializeField, Range(0, 10)] private float _delayBeforeWave = 3;
 
     [HorizontalLine]
+    [SerializeField] private Grid _grid;
     [SerializeField] private MapData _mapData;
     [SerializeField] private TextMeshProUGUI _waveText;
     [SerializeField] private WavesData _wavesInfo;
-
+    [SerializeField] private MapManager _mapManager;
+    [SerializeField] private MoveManager _moveManager;
     [HorizontalLine]
     [SerializeField] private EnemyFactoryRegistry _factories;
 
@@ -129,10 +131,15 @@ public class WaveController : Loader<WaveController>
     private void SpawnEnemy(Group group)
     {
         Enemy enemy = _factories.Create(group.EnemyType);
-
+        enemy.transform.position = 
+            MapUtils.GridToWorld(
+                _mapManager.GetRoute(group.Route).entrance,
+                _grid);
         enemy.HPMultiply(group.HpMultiplier);
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
-        
+        enemy.BuildRoute(_mapManager.GetRoutePoints(group.Route));
+        enemy.SetLane(group.Lane);
+        _moveManager.Register(enemy);
         RegisterEnemy(enemy);
 
         EventBus.onShowEnemyInfo?.Invoke(enemy);

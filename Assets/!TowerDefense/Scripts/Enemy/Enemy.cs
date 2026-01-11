@@ -1,11 +1,17 @@
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuffable
+public class Enemy : MonoBehaviour,
+    IPoolable, IEntityLifecycle, IMovable, IBuffable
 {
+    public event Action<Enemy> OnDeath;
+    public event Action<Enemy> PathEnd;
+
     [HorizontalLine]
     [SerializeField] private EnemyType _enemyType;
+    [SerializeField, Range(0, 1)] private float _laneOffset;
 
     [HorizontalLine]
     [SerializeField] private EnemyConfig _config;
@@ -30,150 +36,135 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuff
     [Space]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [Space]
-    [Header("Steps")]
-    [SerializeField] private GameObject _l1FirstFreeze;
-    [SerializeField] private GameObject _l1SecondFreeze;
-    [SerializeField] private GameObject _l1ThirdFreeze;
-    [Space]
-    [SerializeField] private GameObject _l2FirstFreeze;
-    [SerializeField] private GameObject _l2SecondFreeze;
-    [SerializeField] private GameObject _l2ThirdFreeze;
-    [Space]
-    [SerializeField] private GameObject _l3FirstFreeze;
-    [SerializeField] private GameObject _l3SecondFreeze;
-    [SerializeField] private GameObject _l3ThirdFreeze;
-    [Space]
-    [SerializeField] private GameObject _l4FirstFreeze;
-    [SerializeField] private GameObject _l4SecondFreeze;
-    [SerializeField] private GameObject _l4ThirdFreeze;
-    [Space]
-    [Space]
-    [SerializeField, Min(0)] private int _l1HPStep;
-    [SerializeField, Range(0, 0.2f)] private float _l1MoveSpeed;
-    [SerializeField] private Sprite _l1HPSprite;
-    [SerializeField] private Sprite _l1HPSpriteArmor;
-    [Space]
-    [SerializeField, Min(0)] private int _l2HPStep;
-    [SerializeField, Range(0, 0.2f)] private float _l2MoveSpeed;
-    [SerializeField] private Sprite _l2HPSprite;
-    [SerializeField] private Sprite _l2HPSpriteArmor;
-    [Space]
-    [SerializeField, Min(0)] private int _l3HPStep;
-    [SerializeField, Range(0, 0.2f)] private float _l3MoveSpeed;
-    [SerializeField] private Sprite _l3HPSprite;
-    [SerializeField] private Sprite _l3HPSpriteArmor;
-    [Space]
-    [SerializeField, Min(0)] private int _l4HPStep;
-    [SerializeField, Range(0, 0.2f)] private float _l4MoveSpeed;
-    [SerializeField] private Sprite _l4HPSprite;
-    [SerializeField] private Sprite _l4HPSpriteArmor;
-
-
-    private List<Vector3> _routePoints = new();
-
-    private int _currStep;
-    private int _stepMoneyAdded;
-    private bool _inArmor;
-    private bool _armorBreak;
 
     private bool _firstStepMoneyAdded;
     private bool _secondStepMoneyAdded;
     private bool _thirdStepMoneyAdded;
+    private Vector3 _segmentTarget;
+    private Vector3 _segmentFrom;
 
-    private float _currMoneyMultiplier;
-    private float _tmpMoneyDrop;
 
     private float _currArmor;
 
-    private float _tmpSpeed;
     private float _currSpeed;
 
-    private float _freezeDebuff;
     private float _gravityDebuff;
-    private float _totalDebuffSpeed;
-
-    private bool _isSlowedByGravity;
-    private bool _isMoneyMultipliedByGravity;
-    private bool _calculateInUpdateCaleed;
 
     private bool _isHPDisionByGravity;
     private float _currHPDivisor;
 
-    private bool _freezed;
-    private bool _isTotalFreezed;
-    private float _timeToDefreeze;
-    private int _freezeStack;
-
-    private int _secondFreezeStep;
-    private int _thirdFreezeStep;
+    private PathLane _lane;
 
     private BuffController _buffController;
-
+    private PathController _pathController;
     public EnemyType EnemyType => _enemyType;
     public float CurrHP => _currHP;
-    public float CurrSpeed => 
+    public float CurrSpeed =>
         BuffController.Calculate(Characteristics.SPEED, _config.Speed);
     public float CurrArmor => _currArmor;
-    public bool IsTotalFreezed => _isTotalFreezed;
     public bool IsActive { get; set; }
 
     public BuffController BuffController => _buffController;
 
-    private void Start() => Init();
+    private List<Vector3> _points;
 
-    private void Init()
+    public void Init()
     {
         _buffController = new BuffController();
-        _secondFreezeStep = (_config.MaxFreezeStack / 3);
-        _thirdFreezeStep = (_config.MaxFreezeStack / 3) * 2;
-
-        //Debug.Log("second freeze step" + _secondFreezeStep);
-        //Debug.Log("third freeze step" + _thirdFreezeStep);
-
-        //_baseColor = _spriteRenderer.color;
-        _tmpMoneyDrop = _config.DropMoney;
+        _pathController = new PathController();
         _currArmor = _config.Armor;
-        _hitVFX.gameObject.SetActive(false);
+        _currSpeed = _config.Speed;
     }
 
-    private void Update()
-    {
-        if (_timeToDefreeze > 0)
-        {
-            _timeToDefreeze -= Time.deltaTime;
-        }
-        else
-        {
-            _freezeStack = 0;
-            _freezed = false;
-            _isTotalFreezed = false;
-            //_spriteRenderer.color = _baseColor;
-            DisableAllFreezeSprite();
-
-            if (!_calculateInUpdateCaleed)
-            {
-                _calculateInUpdateCaleed = true;
-            }
-        }
-    }
-
-    private void FixedUpdate()
+    public void Tick()
     {
         Move();
+    }
 
+    private void OnValidate()
+    {
         TESTSPEED = _currSpeed;
         TESTARMOR = _currArmor;
-        TESTFREEZESTACK = _freezeStack;
-        TESTFREEZEDEBUFF = _freezeDebuff;
         TESTGRAVITYDEBUFF = _gravityDebuff;
         TESTHP = CurrHP;
         TESTMONEY = _currDropMoney;
     }
 
+    public void SetLane(PathLane lane) => _lane = lane;
+
+    public void BuildRoute(List<Vector3> points)
+    {
+        string ps = string.Empty;
+
+        _points = PathController.OffsetPath(points, _laneOffset, true);
+
+        foreach (var p in _points)
+        {
+            _pathController.Enqueue(p);
+            ps = ps + p.ToString() + "\n";
+        }
+
+        Debug.Log(ps);
+
+        MoveManager.Instance.Register(this);
+        RecalculateSegmentTarget();
+    }
+
     public void Move()
     {
-        transform.Translate(Vector2.left * _currSpeed);
+        if (!_pathController.HasPath)
+        {
+            PathEnd?.Invoke(this);
+            MoveManager.Instance.Unregister(this);
+            return;
+        }
+
+        Vector3 target = _pathController.Peek();
+
+        transform.MoveTowards(target, _config.Speed);
+
+        if (transform.IsReach(target))
+        {
+            _pathController.Dequeue();
+        }
     }
+
+    private void OnDrawGizmos()
+    {
+        if (_points == null || _points.Count == 0)
+            return;
+
+        Gizmos.color = Color.red;
+
+        for (int i = 0; i < _points.Count; i++)
+        {
+            Gizmos.DrawSphere(_points[i], 0.1f);
+
+            if (i < _points.Count - 1)
+            {
+                Gizmos.DrawLine(_points[i], _points[i + 1]);
+            }
+        }
+    }
+
+    private void RecalculateSegmentTarget()
+    {
+        _segmentFrom = transform.position;
+        Vector3 target = _pathController.Peek();
+
+        Vector3 dir = (target - _segmentFrom).normalized;
+        Vector3 perpendicular = new Vector3(-dir.y, dir.x, 0f);
+
+        Vector3 offset = _lane switch
+        {
+            PathLane.Left => perpendicular * _laneOffset,
+            PathLane.Right => -perpendicular * _laneOffset,
+            _ => Vector3.zero
+        };
+
+        _segmentTarget = target + offset;
+    }
+
 
     public void Death()
     {
@@ -192,11 +183,8 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuff
         WaveController.Instance.UnregisterEnemy(this);
     }
 
-    public void TakeDamageToArmor(float damageArmor)
-    {
+    public void TakeDamageToArmor(float damageArmor) =>
         _currArmor = Mathf.Max(0, _currArmor - damageArmor);
-        _armorBreak = _currArmor <= 0;
-    }
 
     public void TakeDamage(float damage, float armorPiercing)
     {
@@ -265,170 +253,15 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuff
         return true;
     }
 
-    public void Freeze(int freezeIncrement)
-    {
-        _freezed = true;
-
-        if (_freezeStack + freezeIncrement < _config.MaxFreezeStack)
-        {
-            _freezeStack += freezeIncrement;
-            _isTotalFreezed = false;
-        }
-        else
-        {
-            _freezeStack = _config.MaxFreezeStack;
-            _isTotalFreezed = true;
-        }
-
-        ChangeFreezeSprite();
-
-        _calculateInUpdateCaleed = false;
-        _timeToDefreeze = _config.FreezingTime;
-    }
-
-    private void ChangeFreezeSprite()
-    {
-        DisableAllFreezeSprite();
-
-        if (_freezeStack > 0 && _freezeStack < _secondFreezeStep)
-        {
-            if (_currStep == 1)
-            {
-                _l1FirstFreeze.SetActive(true);
-            }
-            else if (_currStep == 2)
-            {
-                _l2FirstFreeze.SetActive(true);
-            }
-            else if (_currStep == 3)
-            {
-                _l3FirstFreeze.SetActive(true);
-            }
-            else if (_currStep == 4)
-            {
-                _l4FirstFreeze.SetActive(true);
-            }
-
-            //Debug.Log("First freeze step " + _freezeStack);
-        }
-        else if (_freezeStack >= _secondFreezeStep && _freezeStack < _thirdFreezeStep)
-        {
-            if (_currStep == 1)
-            {
-                _l1SecondFreeze.SetActive(true);
-            }
-            else if (_currStep == 2)
-            {
-                _l2SecondFreeze.SetActive(true);
-            }
-            else if (_currStep == 3)
-            {
-                _l3SecondFreeze.SetActive(true);
-            }
-            else if (_currStep == 4)
-            {
-                _l4SecondFreeze.SetActive(true);
-            }
-
-            //Debug.Log("Second freeze step " + _freezeStack);
-        }
-        else if (_freezeStack >= _thirdFreezeStep)
-        {
-            if (_currStep == 1)
-            {
-                _l1ThirdFreeze.SetActive(true);
-            }
-            else if (_currStep == 2)
-            {
-                _l2ThirdFreeze.SetActive(true);
-            }
-            else if (_currStep == 3)
-            {
-                _l3ThirdFreeze.SetActive(true);
-            }
-            else if (_currStep == 4)
-            {
-                _l4ThirdFreeze.SetActive(true);
-            }
-
-            //Debug.Log("Third freeze step " + _freezeStack);
-        }
-    }
-
-    private void DisableAllFreezeSprite()
-    {
-        if (_l1FirstFreeze != null)
-        {
-            _l1FirstFreeze.SetActive(false);
-        }
-        if (_l1SecondFreeze != null)
-        {
-            _l1SecondFreeze.SetActive(false);
-        }
-        if (_l1ThirdFreeze != null)
-        {
-            _l1ThirdFreeze.SetActive(false);
-        }
-
-        if (_l2FirstFreeze != null)
-        {
-            _l2FirstFreeze.SetActive(false);
-        }
-        if (_l2SecondFreeze != null)
-        {
-            _l2SecondFreeze.SetActive(false);
-        }
-        if (_l2ThirdFreeze != null)
-        {
-            _l2ThirdFreeze.SetActive(false);
-        }
-
-        if (_l3FirstFreeze != null)
-        {
-            _l3FirstFreeze.SetActive(false);
-        }
-        if (_l3SecondFreeze != null)
-        {
-            _l3SecondFreeze.SetActive(false);
-        }
-        if (_l3ThirdFreeze != null)
-        {
-            _l3ThirdFreeze.SetActive(false);
-        }
-
-        if (_l4FirstFreeze != null)
-        {
-            _l4FirstFreeze.SetActive(false);
-        }
-        if (_l4SecondFreeze != null)
-        {
-            _l4SecondFreeze.SetActive(false);
-        }
-        if (_l4ThirdFreeze != null)
-        {
-            _l4ThirdFreeze.SetActive(false);
-        }
-    }
-
-    private void CalculateSpeed()
-    {
-       
-    }
-
-    private void CalculateDropMoney()
-    {
-        
-    }
-
 
     public void EnterGravity(int indexTower, Gravity gravity)
     {
-       
+
     }
 
     public void ExitGravity(int indexTower)
     {
-       
+
     }
 
     public EnemyType GetEnemyType() => _enemyType;
@@ -453,12 +286,12 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuff
 
     public void OnPreload()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void OnActivated()
     {
-        //throw new System.NotImplementedException();
+        Init();
+
     }
 
     public void OnDeactivated()
@@ -476,7 +309,7 @@ public class Enemy : MonoBehaviour, IPoolable, IEntityLifecycle, IMovable, IBuff
         //throw new System.NotImplementedException();
     }
 
-    
+
 }
 
 

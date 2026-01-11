@@ -22,7 +22,6 @@ public class MinigunProjectile : Projectile
 
         foreach (Collider2D collider in colliders)
         {
-            collider.GetComponent<Enemy>().Freeze(_freezeIncrement);
         }
 
         if (_freezeVFX != null)

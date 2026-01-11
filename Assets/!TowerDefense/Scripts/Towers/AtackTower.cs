@@ -202,10 +202,10 @@ public class AtackTower : Tower
 
         foreach (var item in enemiesInRange)
         {
-            if (!item.IsTotalFreezed)
-            {
-                unfreezedEnemies.Add(item);
-            }
+            //if (!item.IsTotalFreezed)
+            //{
+            //    unfreezedEnemies.Add(item);
+            //}
         }
 
         if (unfreezedEnemies.Count == 0)
