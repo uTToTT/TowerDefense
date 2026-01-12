@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TowerPlacer : MonoBehaviour
@@ -8,7 +10,7 @@ public class TowerPlacer : MonoBehaviour
     [SerializeField] private TowerBuildButton[] _buildButtons;
     [SerializeField] private MapManager _mapManager;
 
-    private GameObject _previewTower;
+    private Tower _previewTower;
     private TowerType _draggingType;
     private bool _isDragging;
 
@@ -38,7 +40,8 @@ public class TowerPlacer : MonoBehaviour
             return;
 
         _draggingType = towerType;
-        _previewTower = _factories.Create(towerType).gameObject;
+        _previewTower = _factories.Create(towerType);
+        _previewTower.Grid = _grid;
         _isDragging = true;
     }
 
@@ -72,24 +75,56 @@ public class TowerPlacer : MonoBehaviour
         }
 
         var tower = _factories.Create(_draggingType);
+        tower.Grid = _grid;
         var mapPos = MapUtils.WorldToMap(snapped, _grid);
 
-        _mapManager.SetBusyState(mapPos, true);
+
+        foreach (var cell in GetOccupiedCells(mapPos, tower.Shape))
+        {
+            _mapManager.SetBusyState(cell, true);
+        }
+
         tower.transform.position = _previewTower.transform.position;
 
-        Destroy(_previewTower);
+        Destroy(_previewTower.gameObject);
     }
 
     private void CancelPlacement()
     {
-        Destroy(_previewTower);
+        Destroy(_previewTower.gameObject);
     }
 
     private bool IsValidPlacement(Vector3 worldPos)
     {
         Vector2Int mapPos = MapUtils.WorldToMap(worldPos, _grid);
 
-        return _mapManager.IsInside(mapPos) &&
-            !_mapManager.IsCellBusy(mapPos);
+        foreach (var cell in GetOccupiedCells(mapPos, _previewTower.Shape))
+        {
+            if (!_mapManager.IsInside(cell))
+                return false;
+            if (_mapManager.IsCellBusy(cell))
+                return false;
+        }
+
+        return true;
     }
+
+    public static List<Vector2Int> GetOccupiedCells(
+    Vector2Int anchor,
+    TowerShapeSO shape
+)
+    {
+        var result = new List<Vector2Int>();
+
+        foreach (var offset in shape.OccupiedCells)
+        {
+            result.Add(new Vector2Int(
+                anchor.x + offset.X,
+                anchor.y + offset.Y
+            ));
+        }
+
+        return result;
+    }
+
 }

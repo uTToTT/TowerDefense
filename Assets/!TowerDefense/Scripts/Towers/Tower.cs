@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 {
+    [SerializeField] private TowerShapeSO _shape;
     [SerializeField] protected TowerType _towerType;
     [SerializeField] protected int _uniqueTowerIndex;
     [SerializeField] protected int _currlevelTEST;
@@ -33,10 +34,10 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 
     protected bool _hasFirstSpec;
     protected bool _hasSecondSpec;
-
+    public TowerShapeSO Shape => _shape;
     public TowerType TowerType => _towerType;
     public int UniqueTowerIndex => _uniqueTowerIndex;
-
+    public Grid Grid {  get; set; }
     public int L1Price => _l1Price;
     public int L1SellCost => _l1SellCost;
 
@@ -63,6 +64,32 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
     public bool HasSecondSpec => _hasSecondSpec;
 
     public bool IsActive { get; set; }
+
+    private void OnDrawGizmos()
+    {
+        if (_shape == null || Grid == null)
+            return;
+
+        Gizmos.color = Color.cyan;
+
+        Vector3 anchorWorldPos = transform.position;
+        Vector2 cellSize = Grid.cellSize;
+
+        foreach (var offset in _shape.OccupiedCells)
+        {
+            Vector3 cellCenter = anchorWorldPos +
+                new Vector3(
+                    offset.X * cellSize.x,
+                    offset.Y * cellSize.y,
+                    0f
+                );
+
+            Gizmos.DrawWireCube(
+                cellCenter,
+                new Vector3(cellSize.x, cellSize.y, 0.05f)
+            );
+        }
+    }
 
     void Start()
     {

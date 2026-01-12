@@ -101,10 +101,7 @@ public class Enemy : MonoBehaviour,
         foreach (var p in _points)
         {
             _pathController.Enqueue(p);
-            ps = ps + p.ToString() + "\n";
         }
-
-        Debug.Log(ps);
 
         MoveManager.Instance.Register(this);
         RecalculateSegmentTarget();
