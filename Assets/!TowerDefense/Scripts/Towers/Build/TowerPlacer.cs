@@ -6,6 +6,7 @@ public class TowerPlacer : MonoBehaviour
     [SerializeField] private TowerFactoryRegistry _factories;
     [SerializeField] private LayerMask _placementMask;
     [SerializeField] private TowerBuildButton[] _buildButtons;
+    [SerializeField] private MapManager _mapManager;
 
     private GameObject _previewTower;
     private TowerType _draggingType;
@@ -44,28 +45,38 @@ public class TowerPlacer : MonoBehaviour
     private void UpdatePreviewPosition()
     {
         Vector3 screenPos = Input.mousePosition;
-        screenPos.z = -Camera.main.transform.position.z; 
+        screenPos.z = -Camera.main.transform.position.z;
 
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
         worldPos.z = 0f;
 
-        Vector3 snapped = SnapToGrid(worldPos);
-        _previewTower.transform.position = snapped;
-    }
+        if (!IsValidPlacement(worldPos))
+        {
+            return;
+        }
 
+        _previewTower.transform.position =
+            MapUtils.SnapToGrid(worldPos, _grid);
+    }
 
     private void TryPlaceTower()
     {
         _isDragging = false;
 
-        if (!IsValidPlacement(_previewTower.transform.position))
+        var snapped = MapUtils.SnapToGrid(_previewTower.transform.position, _grid);
+
+        if (!IsValidPlacement(snapped))
         {
             CancelPlacement();
             return;
         }
 
         var tower = _factories.Create(_draggingType);
+        var mapPos = MapUtils.WorldToMap(snapped, _grid);
+
+        _mapManager.SetBusyState(mapPos, true);
         tower.transform.position = _previewTower.transform.position;
+
         Destroy(_previewTower);
     }
 
@@ -74,14 +85,11 @@ public class TowerPlacer : MonoBehaviour
         Destroy(_previewTower);
     }
 
-    private Vector3 SnapToGrid(Vector3 worldPos)
+    private bool IsValidPlacement(Vector3 worldPos)
     {
-        Vector3Int cell = _grid.WorldToCell(worldPos);
-        return _grid.GetCellCenterWorld(cell);
-    }
+        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, _grid);
 
-    private bool IsValidPlacement(Vector3 position)
-    {
-        return true;
+        return _mapManager.IsInside(mapPos) &&
+            !_mapManager.IsCellBusy(mapPos);
     }
 }

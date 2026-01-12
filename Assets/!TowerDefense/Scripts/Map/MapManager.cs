@@ -1,17 +1,63 @@
+using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class MapManager : MonoBehaviour
 {
+    [SerializeField] private bool _debug;
+    [HorizontalLine]
+
     [SerializeField] private Grid _grid;
     [SerializeField] private MapComposer _mapComposer;
     [SerializeField] private MapData _mapData;
 
+    private CellData[,] _cellData;
+
     private void Start()
     {
         CenterGrid(_mapData);
-        _mapComposer.Build(_mapData, _grid);
+        _cellData = new CellData[_mapData.width, _mapData.height];
+        _mapComposer.Build(_mapData, _cellData, _grid);
     }
+
+    public Route GetRoute(RouteId routeId) =>
+     _mapData.GetRoute(routeId);
+
+    public bool IsInside(Vector2Int pos)
+    {
+        return pos.x >= 0 && pos.y >= 0 &&
+               pos.x < _mapData.width &&
+               pos.y < _mapData.height;
+    }
+
+    public bool IsInside(Vector3 worldPos)
+    {
+        var mapPos = MapUtils.WorldToMap(worldPos, _grid);
+        var isInside = IsInside(mapPos);
+
+        if (_debug)
+        {
+            Debug.Log($"{mapPos} is inside: [{isInside}]");
+        }
+
+        return isInside;
+    }
+
+    public bool IsCellBusy(Vector2Int pos)
+    {
+        var isBusy = _cellData[pos.x, pos.y].IsBusy;
+
+        if (_debug)
+        {
+            Debug.Log($"{pos} is busy: [{isBusy}]");
+        }
+
+        return isBusy;
+    }
+
+    public void SetBusyState(Vector2Int pos, bool state) =>
+        _cellData[pos.x, pos.y].IsBusy = state;
 
     public List<Vector3> GetRoutePoints(RouteId routeId)
     {
@@ -25,8 +71,6 @@ public class MapManager : MonoBehaviour
 
         return points;
     }
-
-    public Route GetRoute(RouteId routeId) => _mapData.GetRoute(routeId);
 
     private void CenterGrid(MapData map)
     {
@@ -44,5 +88,4 @@ public class MapManager : MonoBehaviour
                 0f
             );
     }
-
 }

@@ -10292,6 +10292,7 @@ MonoBehaviour:
   _mapData: {fileID: 11400000, guid: 96bd79dd1b08aa94399642326af82613, type: 2}
   _routeId: 1
   _speed: 2
+  _pathPoints: []
 --- !u!212 &2072100569
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10430,6 +10431,7 @@ MonoBehaviour:
   - {fileID: 2084757992}
   - {fileID: 700593447}
   - {fileID: 2009410498}
+  _mapManager: {fileID: 1982400813}
 --- !u!1001 &2859241622423266760
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,9 +1,5 @@
-using System;
-using UnityEngine;
-
-[Serializable]
-public struct CellData 
+public class CellData
 {
-    public Vector2Int gridPos;
-    public Vector2 worldPos;
+    public CellType CellType ;
+    public bool IsBusy ;
 }

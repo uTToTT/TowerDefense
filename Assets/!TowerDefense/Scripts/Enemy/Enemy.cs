@@ -177,7 +177,7 @@ public class Enemy : MonoBehaviour,
 
         if (!DeathStrongDrop())
         {
-            EventBus.AddMoney!.Invoke(dropMoney);
+            EventBus.AddMoney?.Invoke(dropMoney);
         }
 
         WaveController.Instance.UnregisterEnemy(this);
