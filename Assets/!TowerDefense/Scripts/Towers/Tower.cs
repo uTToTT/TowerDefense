@@ -67,7 +67,8 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 
     private void OnDrawGizmos()
     {
-        if (_shape == null || Grid == null)
+        if (_shape == null ||
+            Grid == null)
             return;
 
         Gizmos.color = Color.cyan;

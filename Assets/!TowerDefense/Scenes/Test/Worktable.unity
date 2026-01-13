@@ -10193,6 +10193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7204be51dfdd83340b3551ce34d7c2da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
+  _debug: 0
   _grid: {fileID: 1116896032}
   _mapComposer: {fileID: 460040218}
   _mapData: {fileID: 11400000, guid: 96bd79dd1b08aa94399642326af82613, type: 2}
