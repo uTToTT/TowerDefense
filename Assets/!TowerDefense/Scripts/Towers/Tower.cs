@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
@@ -24,6 +25,21 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
         {
             var module = TowerModuleFactory.Create(moduleConfig, this);
             AddModule(module);
+        }
+    }
+
+    private void BindOnHitEffects()
+    {
+        var attack = _modules.OfType<AttackModule>().FirstOrDefault();
+        if (attack == null)
+            return;
+
+        foreach (var module in _modules)
+        {
+            if (module is IOnHitEffect effect)
+            {
+                attack.RegisterOnHitEffect(effect);
+            }
         }
     }
 

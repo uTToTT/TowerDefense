@@ -1,32 +1,138 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathController
+public sealed class PathController
 {
     private readonly Queue<Vector3> _waypoints = new();
+    private readonly List<float> _segmentLengths = new();
+
+    private Vector3 _currentStart;
+    private float _remainingDistance;
+
+    private const float ReachEpsilon = 0.01f;
 
     #region ==== Properties ====
-    public Vector3 Current => _waypoints.Peek();
-    public Vector3 Previous { get; private set; }
 
     public bool HasPath => _waypoints.Count > 0;
+    public Vector3 Current => _waypoints.Peek();
+    public float RemainingDistance => _remainingDistance;
 
     #endregion =================
 
-    public void Enqueue(Vector3 point) => _waypoints.Enqueue(point);
+    #region ==== Initialization ====
+
+    public void SetPath(IReadOnlyList<Vector3> path, Vector3 startPosition)
+    {
+        Clear();
+
+        if (path == null || path.Count == 0)
+            return;
+
+        _currentStart = startPosition;
+
+        Vector3 prev = startPosition;
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector3 point = path[i];
+            _waypoints.Enqueue(point);
+
+            float len = Vector3.Distance(prev, point);
+            _segmentLengths.Add(len);
+            _remainingDistance += len;
+
+            prev = point;
+        }
+    }
+
+    #endregion =====================
+
+    #region ==== Runtime Update ====
+
+    public void Advance(Vector3 currentPosition)
+    {
+        if (!HasPath)
+            return;
+
+        float distToCurrent =
+            Vector3.Distance(currentPosition, _waypoints.Peek());
+
+        // точка достигнута
+        if (distToCurrent <= ReachEpsilon)
+        {
+            _remainingDistance -= _segmentLengths[0];
+            _segmentLengths.RemoveAt(0);
+
+            _currentStart = _waypoints.Dequeue();
+            return;
+        }
+
+        _remainingDistance =
+            distToCurrent +
+            SumRemainingSegments();
+    }
+
+    private float SumRemainingSegments()
+    {
+        float sum = 0f;
+        for (int i = 1; i < _segmentLengths.Count; i++)
+            sum += _segmentLengths[i];
+
+        return sum;
+    }
+
+    #endregion =====================
+
+    #region ==== Queue API ====
+
+    public void Enqueue(Vector3 point)
+    {
+        Vector3 prev =
+            _waypoints.Count == 0 ? _currentStart : GetLastWaypoint();
+
+        _waypoints.Enqueue(point);
+
+        float len = Vector3.Distance(prev, point);
+        _segmentLengths.Add(len);
+        _remainingDistance += len;
+    }
+
     public Vector3 Peek() => _waypoints.Peek();
 
     public void Dequeue()
     {
-        if (_waypoints.Count > 0)
-            _waypoints.Dequeue();
+        if (!HasPath)
+            return;
+
+        _remainingDistance -= _segmentLengths[0];
+        _segmentLengths.RemoveAt(0);
+
+        _currentStart = _waypoints.Dequeue();
     }
 
-    public void Clear() => _waypoints.Clear();
+    public void Clear()
+    {
+        _waypoints.Clear();
+        _segmentLengths.Clear();
+
+        _remainingDistance = 0f;
+        _currentStart = Vector3.zero;
+    }
+
+    private Vector3 GetLastWaypoint()
+    {
+        Vector3 last = Vector3.zero;
+        foreach (var p in _waypoints)
+            last = p;
+        return last;
+    }
+
+    #endregion =====================
+
+    #region ==== Geometry Helpers ====
 
     public static Vector2 PerpendicularLeft(Vector2 v)
-       => new Vector2(-v.y, v.x);
+        => new(-v.y, v.x);
 
     public static bool LineIntersection(
         Vector2 p1, Vector2 p2,
@@ -48,9 +154,9 @@ public class PathController
     }
 
     public static List<Vector3> OffsetPath(
-    List<Vector3> path,
-    float offset,
-    bool leftSide = true)
+        List<Vector3> path,
+        float offset,
+        bool leftSide = true)
     {
         int count = path.Count;
         if (count < 2)
@@ -62,8 +168,9 @@ public class PathController
         {
             if (i == 0 || i == count - 1)
             {
-                Vector3 dir = (path[Mathf.Clamp(i + 1, 0, count - 1)] -
-                               path[Mathf.Clamp(i - 1, 0, count - 1)]).normalized;
+                Vector3 dir =
+                    (path[Mathf.Clamp(i + 1, 0, count - 1)] -
+                     path[Mathf.Clamp(i - 1, 0, count - 1)]).normalized;
 
                 Vector3 normal = PerpendicularLeft(dir);
                 if (!leftSide) normal = -normal;
@@ -103,4 +210,5 @@ public class PathController
         return result;
     }
 
+    #endregion =====================
 }

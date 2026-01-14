@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class AttackModule : ITowerModule
 {
-    private readonly AttackModuleConfig _config;
+    private  AttackModuleConfig _config;
     private readonly Tower _tower;
     private float _cooldown;
     private Enemy _target;
+
+    private readonly HashSet<IOnHitEffect> _onHitEffects = new();
 
     public AttackModule(AttackModuleConfig config, Tower tower)
     {
@@ -15,10 +18,17 @@ public sealed class AttackModule : ITowerModule
 
     public bool TryApplyConfig(TowerModuleConfig config)
     {
-        if (config is not AttackModuleConfig)
+        if (config is not AttackModuleConfig attackConfig)
             return false;
+        
+        _config = attackConfig;
 
         return true;
+    }
+
+    public void RegisterOnHitEffect(IOnHitEffect effect)
+    {
+        _onHitEffects.Add(effect);
     }
 
     public void Tick(float dt)
@@ -39,10 +49,21 @@ public sealed class AttackModule : ITowerModule
         if (_target == null) return;
 
         _target.TakeDamage(_config.Damage, _config.Piercing);
+
+        var hit = new HitContext
+        {
+            Enemy = _target,
+            Damage = _config.Damage,
+            HitPoint = _target.transform.position
+        };
+
+        foreach (var effect in _onHitEffects)
+            effect.OnHit(hit);
+
         _cooldown = 1f / _config.FireRate;
     }
 
-    protected void RotateTower(float dt)
+    private void RotateTower(float dt)
     {
         if (_target != null)
         {

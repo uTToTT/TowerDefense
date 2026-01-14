@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 4384922128529553093}
   m_Layer: 7
   m_Name: Enemy_classic
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,9 +154,9 @@ MonoBehaviour:
   TESTARMOR: 0
   TESTFREEZESTACK: 0
   TESTFREEZEDEBUFF: 0
-  TESTGRAVITYDEBUFF: 0
   TESTHP: 0
   TESTMONEY: 0
+  TESTDISTANCE: 0
   _spriteRenderer: {fileID: 3701170077811642629}
 --- !u!61 &-3439675605196291716
 BoxCollider2D:
