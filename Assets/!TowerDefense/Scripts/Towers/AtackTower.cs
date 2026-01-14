@@ -247,43 +247,43 @@ public class AtackTower : Tower
 
     protected bool UpgradeAtackTower()
     {
-        if (UpgradeTower())
-        {
-            if (_currLevel == 1)
-            {
-                _currDamage = _l1Damage;
-                _currArmorPiercing = _l1ArmorPiercing;
-                _currDelayBtwAtack = _l1DelayBtwAtack;
-                _currMinAtackRadius = _l1MinAtackRadius;
-                _currMaxAtackRadius = _l1MaxAtackRadius;
-            }
-            else if (_currLevel == 2)
-            {
-                _currDamage = _l2Damage;
-                _currArmorPiercing = _l2ArmorPiercing;
-                _currDelayBtwAtack = _l2DelayBtwAtack;
-                _currMinAtackRadius = _l2MinAtackRadius;
-                _currMaxAtackRadius = _l2MaxAtackRadius;
-            }
-            else if (_currLevel == 3)
-            {
-                _currDamage = _l3Damage;
-                _currArmorPiercing = _l3ArmorPiercing;
-                _currDelayBtwAtack = _l3DelayBtwAtack;
-                _currMinAtackRadius = _l3MinAtackRadius;
-                _currMaxAtackRadius = _l3MaxAtackRadius;
-            }
-            else if (_currLevel == 4)
-            {
-                _currDamage = _l4Damage;
-                _currArmorPiercing = _l4ArmorPiercing;
-                _currDelayBtwAtack = _l4DelayBtwAtack;
-                _currMinAtackRadius = _l4MinAtackRadius;
-                _currMaxAtackRadius = _l4MaxAtackRadius;
-            }
+        //if (UpgradeTower())
+        //{
+        //    if (_currLevel == 1)
+        //    {
+        //        _currDamage = _l1Damage;
+        //        _currArmorPiercing = _l1ArmorPiercing;
+        //        _currDelayBtwAtack = _l1DelayBtwAtack;
+        //        _currMinAtackRadius = _l1MinAtackRadius;
+        //        _currMaxAtackRadius = _l1MaxAtackRadius;
+        //    }
+        //    else if (_currLevel == 2)
+        //    {
+        //        _currDamage = _l2Damage;
+        //        _currArmorPiercing = _l2ArmorPiercing;
+        //        _currDelayBtwAtack = _l2DelayBtwAtack;
+        //        _currMinAtackRadius = _l2MinAtackRadius;
+        //        _currMaxAtackRadius = _l2MaxAtackRadius;
+        //    }
+        //    else if (_currLevel == 3)
+        //    {
+        //        _currDamage = _l3Damage;
+        //        _currArmorPiercing = _l3ArmorPiercing;
+        //        _currDelayBtwAtack = _l3DelayBtwAtack;
+        //        _currMinAtackRadius = _l3MinAtackRadius;
+        //        _currMaxAtackRadius = _l3MaxAtackRadius;
+        //    }
+        //    else if (_currLevel == 4)
+        //    {
+        //        _currDamage = _l4Damage;
+        //        _currArmorPiercing = _l4ArmorPiercing;
+        //        _currDelayBtwAtack = _l4DelayBtwAtack;
+        //        _currMinAtackRadius = _l4MinAtackRadius;
+        //        _currMaxAtackRadius = _l4MaxAtackRadius;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         return false;
     }

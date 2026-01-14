@@ -41,7 +41,7 @@ public class Cell : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void UnRegisterTower()
     {
-        EventBus.AddMoney?.Invoke(_tower.GetComponent<Tower>().CurrSellCost);
+        //EventBus.AddMoney?.Invoke(_tower.GetComponent<Tower>().CurrSellCost);
         Destroy(_tower.gameObject);
         gameObject.tag = "Ground";
     }

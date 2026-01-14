@@ -49,10 +49,10 @@ public class Twiin : AtackTower
     {
         _currProjectile = _defaultProjectile;
 
-        if (_currLevel == 0)
-        {
-            Upgrade();
-        }
+        //if (_currLevel == 0)
+        //{
+        //    Upgrade();
+        //}
     }
 
     void Update()
@@ -173,43 +173,43 @@ public class Twiin : AtackTower
 
     public bool Upgrade()
     {
-        if (UpgradeAtackTower())
-        {
-            if (_hasFirstSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currDamageTwoOne = _l3DamageTwoOne;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currDamageTwoOne = _l4DamageTwoOne;
-                }
-            }
-            else if (_hasSecondSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currDistanceShardExplode = _l3DistanceShardExplode;
-                    _currShardDamage = _l3ShardDamage;
-                    _currNumShard = _l3MaxNumShard;
-                    _currShardSpeed = _l3ShardSpeed;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currDistanceShardExplode = _l4DistanceShardExplode;
-                    _currShardDamage = _l4ShardDamage;
-                    _currNumShard = _l4NumShard;
-                    _currShardSpeed = _l4ShardSpeed;
-                }
-            }
+        //if (UpgradeAtackTower())
+        //{
+        //    if (_hasFirstSpec)
+        //    {
+        //        if (_currLevel == 3)
+        //        {
+        //            _currDamageTwoOne = _l3DamageTwoOne;
+        //        }
+        //        else if (_currLevel == 4)
+        //        {
+        //            _currDamageTwoOne = _l4DamageTwoOne;
+        //        }
+        //    }
+        //    else if (_hasSecondSpec)
+        //    {
+        //        if (_currLevel == 3)
+        //        {
+        //            _currDistanceShardExplode = _l3DistanceShardExplode;
+        //            _currShardDamage = _l3ShardDamage;
+        //            _currNumShard = _l3MaxNumShard;
+        //            _currShardSpeed = _l3ShardSpeed;
+        //        }
+        //        else if (_currLevel == 4)
+        //        {
+        //            _currDistanceShardExplode = _l4DistanceShardExplode;
+        //            _currShardDamage = _l4ShardDamage;
+        //            _currNumShard = _l4NumShard;
+        //            _currShardSpeed = _l4ShardSpeed;
+        //        }
+        //    }
 
-            _animator.SetInteger("_currTowerLevel", _currLevel);
-            _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
-            _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
+        //    _animator.SetInteger("_currTowerLevel", _currLevel);
+        //    _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
+        //    _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
             
-            return true;
-        }
+        //    return true;
+        //}
 
         return false;
     }
@@ -218,15 +218,15 @@ public class Twiin : AtackTower
     {
         _specType = (SpecTypeTwiin)index;
 
-        if (index == 1 && !_hasSecondSpec)
-        {
-            _hasFirstSpec = true;
-            Upgrade();
-        }
-        else if (index == 2 && !_hasFirstSpec)
-        {
-            _hasSecondSpec = true;
-            Upgrade();
-        }
+        //if (index == 1 && !_hasSecondSpec)
+        //{
+        //    _hasFirstSpec = true;
+        //    Upgrade();
+        //}
+        //else if (index == 2 && !_hasFirstSpec)
+        //{
+        //    _hasSecondSpec = true;
+        //    Upgrade();
+        //}
     }
 }

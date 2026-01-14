@@ -193,10 +193,10 @@ public class GameControl : Loader<GameControl>
         _thirdTower = _thirdTowerObj.GetComponent<Tower>();
         _fourthTower = _fourthTowerObj.GetComponent<Tower>();
 
-        _firstPrice.text = _firstTower.L1Price.ToString();
-        _secondPrice.text = _secondTower.L1Price.ToString();
-        _thirdPrice.text = _thirdTower.L1Price.ToString();
-        _fourthPrice.text = _fourthTower.L1Price.ToString();
+        //_firstPrice.text = _firstTower.L1Price.ToString();
+        //_secondPrice.text = _secondTower.L1Price.ToString();
+        //_thirdPrice.text = _thirdTower.L1Price.ToString();
+        //_fourthPrice.text = _fourthTower.L1Price.ToString();
 
         if (_stage == TowerStage.classic)
         {
@@ -268,14 +268,14 @@ public class GameControl : Loader<GameControl>
                         _tmpTower = _cell.GetTower();
                         _tmpTowerGameObject = _cell.GetTowerGameObject();
 
-                        if (_tmpTower.CurrLevel == 2 && !_tmpTower.HasFirstSpec && !_tmpTower.HasSecondSpec)
-                        {
-                            OpenSpecUpgrade();
-                        }
-                        else
-                        {
-                            OpenUpgrade();
-                        }
+                        //if (_tmpTower.CurrLevel == 2 && !_tmpTower.HasFirstSpec && !_tmpTower.HasSecondSpec)
+                        //{
+                        //    OpenSpecUpgrade();
+                        //}
+                        //else
+                        //{
+                        //    OpenUpgrade();
+                        //}
 
                         ShowTowerInfo();
 
@@ -301,76 +301,76 @@ public class GameControl : Loader<GameControl>
         {
             if (_frameUpgradeButton.activeSelf)
             {
-                if (_tmpTower.CurrPrice > _moneyCount || _tmpTower.CurrLevel == 4)
-                {
-                    _upgradeButton.interactable = false;
-                }
-                else
-                {
-                    _upgradeButton.interactable = true;
-                }
+                //if (_tmpTower.CurrPrice > _moneyCount || _tmpTower.CurrLevel == 4)
+                //{
+                //    _upgradeButton.interactable = false;
+                //}
+                //else
+                //{
+                //    _upgradeButton.interactable = true;
+                //}
             }
 
-            if (_frameUpgradeSpecButton)
-            {
-                if (_tmpTower.CurrLevel == 2 && _tmpTower.L3FirstSpecPrice > _moneyCount || _blockFirstSpecBuyButton)
-                {
-                    _firstSpecUpgradeButton.interactable = false;
-                }
-                else
-                {
-                    _firstSpecUpgradeButton.interactable = true;
-                }
+            //if (_frameUpgradeSpecButton)
+            //{
+            //    if (_tmpTower.CurrLevel == 2 && _tmpTower.L3FirstSpecPrice > _moneyCount || _blockFirstSpecBuyButton)
+            //    {
+            //        _firstSpecUpgradeButton.interactable = false;
+            //    }
+            //    else
+            //    {
+            //        _firstSpecUpgradeButton.interactable = true;
+            //    }
 
-                if (_tmpTower.CurrLevel == 2 && _tmpTower.L3SecondSpecPrice > _moneyCount || _blockSecondSpecBuyButton)
-                {
-                    _secondSpecUpgradeButton.interactable = false;
-                }
-                else
-                {
-                    _secondSpecUpgradeButton.interactable = true;
-                }
-            }
+            //    if (_tmpTower.CurrLevel == 2 && _tmpTower.L3SecondSpecPrice > _moneyCount || _blockSecondSpecBuyButton)
+            //    {
+            //        _secondSpecUpgradeButton.interactable = false;
+            //    }
+            //    else
+            //    {
+            //        _secondSpecUpgradeButton.interactable = true;
+            //    }
+            //}
         }
 
-        if (_frameShopButton.activeSelf)
-        {
-            if (_firstTower.L1Price > _moneyCount)
-            {
-                _firstBuyButton.interactable = false;
-            }
-            else
-            {
-                _firstBuyButton.interactable = true;
-            }
+        //if (_frameShopButton.activeSelf)
+        //{
+        //    if (_firstTower.L1Price > _moneyCount)
+        //    {
+        //        _firstBuyButton.interactable = false;
+        //    }
+        //    else
+        //    {
+        //        _firstBuyButton.interactable = true;
+        //    }
 
-            if (_secondTower.L1Price > _moneyCount)
-            {
-                _secondBuyButton.interactable = false;
-            }
-            else
-            {
-                _secondBuyButton.interactable = true;
-            }
+        //    if (_secondTower.L1Price > _moneyCount)
+        //    {
+        //        _secondBuyButton.interactable = false;
+        //    }
+        //    else
+        //    {
+        //        _secondBuyButton.interactable = true;
+        //    }
 
-            if (_thirdTower.L1Price > _moneyCount)
-            {
-                _thirdBuyButton.interactable = false;
-            }
-            else
-            {
-                _thirdBuyButton.interactable = true;
-            }
+        //    if (_thirdTower.L1Price > _moneyCount)
+        //    {
+        //        _thirdBuyButton.interactable = false;
+        //    }
+        //    else
+        //    {
+        //        _thirdBuyButton.interactable = true;
+        //    }
 
-            if (_fourthTower.L1Price > _moneyCount)
-            {
-                _fourthBuyButton.interactable = false;
-            }
-            else
-            {
-                _fourthBuyButton.interactable = true;
-            }
-        }
+        //    if (_fourthTower.L1Price > _moneyCount)
+        //    {
+        //        _fourthBuyButton.interactable = false;
+        //    }
+        //    else
+        //    {
+        //        _fourthBuyButton.interactable = true;
+        //    }
+        //}
     }
 
     private void TakeMoney(int num)
@@ -429,36 +429,36 @@ public class GameControl : Loader<GameControl>
 
     public void OpenUpgrade()
     {
-        if (_tmpTower.CurrLevel == 4)
-        {
-            _textUpgradeCost.text = "max";
-            _lockImage.SetActive(true);
-            _upgradeImage.SetActive(false);
-        }
-        else
-        {
-            _textUpgradeCost.text = _tmpTower.CurrPrice.ToString();
-            _lockImage.SetActive(false);
-            _upgradeImage.SetActive(true);
-        }
+        //if (_tmpTower.CurrLevel == 4)
+        //{
+        //    _textUpgradeCost.text = "max";
+        //    _lockImage.SetActive(true);
+        //    _upgradeImage.SetActive(false);
+        //}
+        //else
+        //{
+        //    _textUpgradeCost.text = _tmpTower.CurrPrice.ToString();
+        //    _lockImage.SetActive(false);
+        //    _upgradeImage.SetActive(true);
+        //}
 
-        int sellcost = _tmpTower.CurrSellCost;
+        //int sellcost = _tmpTower.CurrSellCost;
 
-        if (PlayerPrefs.GetInt("StarBuff1") == 1)
-        {
-            sellcost *= 2;
-        }
+        //if (PlayerPrefs.GetInt("StarBuff1") == 1)
+        //{
+        //    sellcost *= 2;
+        //}
 
-        _textSellCost.text = sellcost.ToString();
+        //_textSellCost.text = sellcost.ToString();
 
-        _allocation.SetActive(true);
-        _frameUpgradeButton.SetActive(true);
-        _frameUpgradeSpecButton.SetActive(false);
-        //_largeButton.SetActive(true);
+        //_allocation.SetActive(true);
+        //_frameUpgradeButton.SetActive(true);
+        //_frameUpgradeSpecButton.SetActive(false);
+        ////_largeButton.SetActive(true);
 
-        ShowTowerInfo();
+        //ShowTowerInfo();
 
-        EventSystem.current.SetSelectedGameObject(_frameUpgradeButton);
+        //EventSystem.current.SetSelectedGameObject(_frameUpgradeButton);
     }
 
     public void CloseSpecUpgrade()
@@ -477,10 +477,10 @@ public class GameControl : Loader<GameControl>
 
     public void OpenSpecUpgrade()
     {
-        _firstSpecPriceText.text = _tmpTower.L3FirstSpecPrice.ToString();
-        _secondSpecPriceText.text = _tmpTower.L3SecondSpecPrice.ToString();
+        //_firstSpecPriceText.text = _tmpTower.L3FirstSpecPrice.ToString();
+        //_secondSpecPriceText.text = _tmpTower.L3SecondSpecPrice.ToString();
 
-        int sellcost = _tmpTower.L2SellCost;
+        int sellcost = 0; /*_tmpTower.L2SellCost;*/
 
         if (PlayerPrefs.GetInt("StarBuff1") == 1)
         {
@@ -704,12 +704,12 @@ public class GameControl : Loader<GameControl>
         _frameCharacteristics.transform.position = tmpPos;
         _frameCharacteristics.SetActive(true);
 
-        if (_tmpTower.HasFirstSpec || _tmpTower.HasSecondSpec)
-        {
-            tmpPos.y -= 1.5f;
-            _frameSpecCharacteristics.transform.position = tmpPos;
-            _frameSpecCharacteristics.SetActive(true);
-        }
+        //if (_tmpTower.HasFirstSpec || _tmpTower.HasSecondSpec)
+        //{
+        //    tmpPos.y -= 1.5f;
+        //    _frameSpecCharacteristics.transform.position = tmpPos;
+        //    _frameSpecCharacteristics.SetActive(true);
+        //}
 
         if (towerType == TowerType.Minigun)
         {
@@ -725,14 +725,14 @@ public class GameControl : Loader<GameControl>
 
             _textDeafaultCharacteristics.text = str1 + "\n" + str2;
 
-            if (tmpMinigun.HasFirstSpec)
-            {
-                str = "Explosion damage: " + tmpMinigun.CurrExplosionDamage.ToString();
-            }
-            else if (tmpMinigun.HasSecondSpec)
-            {
-                str = "Freeze stack: " + tmpMinigun.CurrFrezzeIncrement.ToString();
-            }
+            //if (tmpMinigun.HasFirstSpec)
+            //{
+            //    str = "Explosion damage: " + tmpMinigun.CurrExplosionDamage.ToString();
+            //}
+            //else if (tmpMinigun.HasSecondSpec)
+            //{
+            //    str = "Freeze stack: " + tmpMinigun.CurrFrezzeIncrement.ToString();
+            //}
 
             _textSpecCharacteristics.text = str;
         }
@@ -764,14 +764,14 @@ public class GameControl : Loader<GameControl>
 
             _textDeafaultCharacteristics.text = str1 + "\n" + str2;
 
-            if (tmpTwiin.HasFirstSpec)
-            {
-                _frameSpecCharacteristics.SetActive(false);
-            }
-            else if (tmpTwiin.HasSecondSpec)
-            {
-                str = "Num shard: " + tmpTwiin.CurrNumShard.ToString();
-            }
+            //if (tmpTwiin.HasFirstSpec)
+            //{
+            //    _frameSpecCharacteristics.SetActive(false);
+            //}
+            //else if (tmpTwiin.HasSecondSpec)
+            //{
+            //    str = "Num shard: " + tmpTwiin.CurrNumShard.ToString();
+            //}
 
             _textSpecCharacteristics.text = str;
         }
@@ -786,21 +786,21 @@ public class GameControl : Loader<GameControl>
 
             _textDeafaultCharacteristics.text = "Speed: -" + (tmpGravity.CurrSpeedDivisor * 100).ToString() + " %";
 
-            if (tmpGravity.HasFirstSpec)
-            {
-                str = "Money: " + tmpGravity.CurrMoneyDropMultiplier.ToString() + "x";
-            }
-            else if (tmpGravity.HasSecondSpec)
-            {
-                if (tmpGravity.CurrLevel == 3)
-                {
-                    str = "HP: -25%";
-                }
-                else if (tmpGravity.CurrLevel == 4)
-                {
-                    str = "HP: -50%";
-                }
-            }
+            //if (tmpGravity.HasFirstSpec)
+            //{
+            //    str = "Money: " + tmpGravity.CurrMoneyDropMultiplier.ToString() + "x";
+            //}
+            //else if (tmpGravity.HasSecondSpec)
+            //{
+            //    if (tmpGravity.CurrLevel == 3)
+            //    {
+            //        str = "HP: -25%";
+            //    }
+            //    else if (tmpGravity.CurrLevel == 4)
+            //    {
+            //        str = "HP: -50%";
+            //    }
+            //}
 
             _textSpecCharacteristics.text = str;
         }
@@ -819,14 +819,14 @@ public class GameControl : Loader<GameControl>
 
             _textDeafaultCharacteristics.text = str1 + "\n" + str2;
 
-            if (tmpRail.HasFirstSpec)
-            {
-                str = "Crit ñhance: " + (tmpRail.CurrCriticalChance * 100).ToString() + " %";
-            }
-            else if (tmpRail.HasSecondSpec)
-            {
-                str = "Armor break: " + (tmpRail.CurrDecreaseArmor * 100).ToString() + " %";
-            }
+            //if (tmpRail.HasFirstSpec)
+            //{
+            //    str = "Crit ñhance: " + (tmpRail.CurrCriticalChance * 100).ToString() + " %";
+            //}
+            //else if (tmpRail.HasSecondSpec)
+            //{
+            //    str = "Armor break: " + (tmpRail.CurrDecreaseArmor * 100).ToString() + " %";
+            //}
 
             _textSpecCharacteristics.text = str;
         }
@@ -834,38 +834,38 @@ public class GameControl : Loader<GameControl>
 
     private void SetPreviewTower(int towerType)
     {
-        if (towerType == ((int)TowerType.Minigun))
-        {
-            _tmp = _firstTowerObj;
-            _price = _firstTower.L1Price;
-            _firstTowerPreview.SetActive(true);
-            _firstAccept.SetActive(true);
-            _firstTowerPreview.transform.position = _allocation.transform.position;
-        }
-        else if (towerType == ((int)TowerType.Twiin))
-        {
-            _tmp = _secondTowerObj;
-            _price = _secondTower.L1Price;
-            _secondTowerPreview.SetActive(true);
-            _secondAccept.SetActive(true);
-            _secondTowerPreview.transform.position = _allocation.transform.position;
-        }
-        else if (towerType == ((int)TowerType.Gravity))
-        {
-            _tmp = _thirdTowerObj;
-            _price = _thirdTower.L1Price;
-            _thirdTowerPreview.SetActive(true);
-            _thirdAccept.SetActive(true);
-            _thirdTowerPreview.transform.position = _allocation.transform.position;
-        }
-        else if (towerType == ((int)TowerType.Rail))
-        {
-            _tmp = _fourthTowerObj;
-            _price = _fourthTower.L1Price;
-            _fourthTowerPreview.SetActive(true);
-            _fourthAccept.SetActive(true);
-            _fourthTowerPreview.transform.position = _allocation.transform.position;
-        }
+        //if (towerType == ((int)TowerType.Minigun))
+        //{
+        //    _tmp = _firstTowerObj;
+        //    _price = _firstTower.L1Price;
+        //    _firstTowerPreview.SetActive(true);
+        //    _firstAccept.SetActive(true);
+        //    _firstTowerPreview.transform.position = _allocation.transform.position;
+        //}
+        //else if (towerType == ((int)TowerType.Twiin))
+        //{
+        //    _tmp = _secondTowerObj;
+        //    _price = _secondTower.L1Price;
+        //    _secondTowerPreview.SetActive(true);
+        //    _secondAccept.SetActive(true);
+        //    _secondTowerPreview.transform.position = _allocation.transform.position;
+        //}
+        //else if (towerType == ((int)TowerType.Gravity))
+        //{
+        //    _tmp = _thirdTowerObj;
+        //    _price = _thirdTower.L1Price;
+        //    _thirdTowerPreview.SetActive(true);
+        //    _thirdAccept.SetActive(true);
+        //    _thirdTowerPreview.transform.position = _allocation.transform.position;
+        //}
+        //else if (towerType == ((int)TowerType.Rail))
+        //{
+        //    _tmp = _fourthTowerObj;
+        //    _price = _fourthTower.L1Price;
+        //    _fourthTowerPreview.SetActive(true);
+        //    _fourthAccept.SetActive(true);
+        //    _fourthTowerPreview.transform.position = _allocation.transform.position;
+        //}
 
         _towerSelected = towerType;
     }
@@ -916,7 +916,7 @@ public class GameControl : Loader<GameControl>
         }
         else
         {
-            int sellcost = _tmpTower.CurrSellCost;
+            int sellcost = 0; /*_tmpTower.CurrSellCost;*/
 
             if (PlayerPrefs.GetInt("StarBuff1") == 1)
             {
@@ -939,7 +939,7 @@ public class GameControl : Loader<GameControl>
     public void UpgradeTower()
     {
         _sellAcceptImage.SetActive(false);
-        int tmp = _tmpTower.CurrPrice;
+        int tmp = 0;  /*_tmpTower.CurrPrice;*/
         bool succes = false;
 
         if (_tmpTower.TowerType == TowerType.Minigun)
@@ -964,7 +964,7 @@ public class GameControl : Loader<GameControl>
             TakeMoney(tmp);
             ShowTowerInfo();
 
-            if (_tmpTower.CurrLevel == 2 && !_tmpTower.HasFirstSpec && !_tmpTower.HasSecondSpec)
+            if (true/*_tmpTower.CurrLevel == 2 && !_tmpTower.HasFirstSpec && !_tmpTower.HasSecondSpec*/)
             {
                 CloseSpecUpgrade();
                 OpenSpecUpgrade();

@@ -56,10 +56,10 @@ public class Minigun : AtackTower
             _currProjectile = _freezeProjectile;
         }
 
-        if (_currLevel == 0)
-        {
-            Upgrade();
-        }
+        //if (_currLevel == 0)
+        //{
+        //    Upgrade();
+        //}
     }
 
     void ChangeAnimation(string nameAnimation)
@@ -174,36 +174,36 @@ public class Minigun : AtackTower
     {
         if (UpgradeAtackTower())
         {
-            if (_hasFirstSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currExplosionDamage = _l3ExplosionDamage;
-                    _currExplosionRadius = _l3ExplosionRadius;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currExplosionDamage = _l4ExplosionDamage;
-                    _currExplosionRadius = _l4ExplosionRadius;
-                }
-            }
-            else if (_hasSecondSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currFreezeRadius = _l3FreezeRadius;
-                    _currFrezzeIncrement = _l3FreezeIncrement;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currFreezeRadius = _l4FreezeRadius;
-                    _currFrezzeIncrement = _l4FreezeIncrement;
-                }
-            }
+            //if (_hasFirstSpec)
+            //{
+            //    if (_currLevel == 3)
+            //    {
+            //        _currExplosionDamage = _l3ExplosionDamage;
+            //        _currExplosionRadius = _l3ExplosionRadius;
+            //    }
+            //    else if (_currLevel == 4)
+            //    {
+            //        _currExplosionDamage = _l4ExplosionDamage;
+            //        _currExplosionRadius = _l4ExplosionRadius;
+            //    }
+            //}
+            //else if (_hasSecondSpec)
+            //{
+            //    if (_currLevel == 3)
+            //    {
+            //        _currFreezeRadius = _l3FreezeRadius;
+            //        _currFrezzeIncrement = _l3FreezeIncrement;
+            //    }
+            //    else if (_currLevel == 4)
+            //    {
+            //        _currFreezeRadius = _l4FreezeRadius;
+            //        _currFrezzeIncrement = _l4FreezeIncrement;
+            //    }
+            //}
 
-            _animator.SetInteger("_currTowerLevel", _currLevel);
-            _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
-            _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
+            //_animator.SetInteger("_currTowerLevel", _currLevel);
+            //_animator.SetBool("_hasFirstSpec", _hasFirstSpec);
+            //_animator.SetBool("_hasSecondSpec", _hasSecondSpec);
 
             return true;
         }
@@ -215,22 +215,22 @@ public class Minigun : AtackTower
     {
         _specType = (SpecTypeMinigun)index;
 
-        if (index == 1 && !_hasSecondSpec)
-        {
-            _hasFirstSpec = true;
+        //if (index == 1 && !_hasSecondSpec)
+        //{
+        //    _hasFirstSpec = true;
 
-            _currProjectile = _explosionProjectile;
+        //    _currProjectile = _explosionProjectile;
 
-            Upgrade();
-        }
-        else if (index == 2 && !_hasFirstSpec)
-        {
-            _hasSecondSpec = true;
+        //    Upgrade();
+        //}
+        //else if (index == 2 && !_hasFirstSpec)
+        //{
+        //    _hasSecondSpec = true;
 
-            _currProjectile = _freezeProjectile;
+        //    _currProjectile = _freezeProjectile;
 
-            Upgrade();
-        }
+        //    Upgrade();
+        //}
     }
 }
 

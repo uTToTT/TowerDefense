@@ -50,10 +50,10 @@ public class Gravity : Tower
     {
         _currRange = _range;
 
-        if (_currLevel == 0)
-        {
-            Upgrade();
-        }
+        //if (_currLevel == 0)
+        //{
+        //    Upgrade();
+        //}
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -62,7 +62,7 @@ public class Gravity : Tower
         {
             Enemy enemy = collision.GetComponent<Enemy>();
 
-            enemy.EnterGravity(_uniqueTowerIndex, this);
+            //enemy.EnterGravity(_uniqueTowerIndex, this);
         }
     }
 
@@ -70,60 +70,60 @@ public class Gravity : Tower
     {
         if (collision.GetComponent<Enemy>())
         {
-            collision.GetComponent<Enemy>().ExitGravity(_uniqueTowerIndex);
+            //collision.GetComponent<Enemy>().ExitGravity(_uniqueTowerIndex);
         }
     }
 
     public bool Upgrade()
     {
-        if (UpgradeTower())
-        {
-            if (_currLevel == 1)
-            {
-                _currSpeedDivisor = _l1SpeedDivisor;
-            }
-            else if (_currLevel == 2)
-            {
-                _currSpeedDivisor = _l2SpeedDivisor;
-            }
-            else if (_currLevel == 3)
-            {
-                _currSpeedDivisor = _l3SpeedDivisor;
-            }
-            else if (_currLevel == 4)
-            {
-                _currSpeedDivisor = _l4SpeedDivisor;
-            }
+        //if (UpgradeTower())
+        //{
+        //    if (_currLevel == 1)
+        //    {
+        //        _currSpeedDivisor = _l1SpeedDivisor;
+        //    }
+        //    else if (_currLevel == 2)
+        //    {
+        //        _currSpeedDivisor = _l2SpeedDivisor;
+        //    }
+        //    else if (_currLevel == 3)
+        //    {
+        //        _currSpeedDivisor = _l3SpeedDivisor;
+        //    }
+        //    else if (_currLevel == 4)
+        //    {
+        //        _currSpeedDivisor = _l4SpeedDivisor;
+        //    }
 
-            if (_hasFirstSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currMoneyDropMiltiplier = _l3MoneyDropMultuplier;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currMoneyDropMiltiplier = _l4MoneyDropMultuplier;
-                }
-            }
-            else if (_hasSecondSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currHealPointDivisor = _l3HealPointDivisor;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currHealPointDivisor = _l4HealPointDivisor;
-                }
-            }
+        //    if (_hasFirstSpec)
+        //    {
+        //        if (_currLevel == 3)
+        //        {
+        //            _currMoneyDropMiltiplier = _l3MoneyDropMultuplier;
+        //        }
+        //        else if (_currLevel == 4)
+        //        {
+        //            _currMoneyDropMiltiplier = _l4MoneyDropMultuplier;
+        //        }
+        //    }
+        //    else if (_hasSecondSpec)
+        //    {
+        //        if (_currLevel == 3)
+        //        {
+        //            _currHealPointDivisor = _l3HealPointDivisor;
+        //        }
+        //        else if (_currLevel == 4)
+        //        {
+        //            _currHealPointDivisor = _l4HealPointDivisor;
+        //        }
+        //    }
 
-            _animator.SetInteger("_currTowerLevel", _currLevel);
-            _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
-            _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
+        //    _animator.SetInteger("_currTowerLevel", _currLevel);
+        //    _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
+        //    _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
 
-            return true;
-        }
+        //    return true;
+        //}
 
         return false;
     }
@@ -132,15 +132,15 @@ public class Gravity : Tower
     {
         _specType = (SpecTypeGravity)index;
 
-        if (index == 1 && !_hasSecondSpec)
-        {
-            _hasFirstSpec = true;
-            Upgrade();
-        }
-        else if (index == 2 && !_hasFirstSpec)
-        {
-            _hasSecondSpec = true;
-            Upgrade();
-        }
+        //if (index == 1 && !_hasSecondSpec)
+        //{
+        //    _hasFirstSpec = true;
+        //    Upgrade();
+        //}
+        //else if (index == 2 && !_hasFirstSpec)
+        //{
+        //    _hasSecondSpec = true;
+        //    Upgrade();
+        //}
     }
 }

@@ -39,10 +39,10 @@ public class Rail : AtackTower
     {
         _currProjectile = _defaultProjectile;
 
-        if (_currLevel == 0)
-        {
-            Upgrade();
-        }
+        //if (_currLevel == 0)
+        //{
+        //    Upgrade();
+        //}
     }
 
     void Update()
@@ -169,14 +169,14 @@ public class Rail : AtackTower
         projectile.SetDamage(_currDamage);
         projectile.SetArmorPiercing(_currArmorPiercing);
 
-        if (_hasFirstSpec)
-        {
-            projectile.SetRailProjectileType(RailProjetileType.Crit);
-        }
-        else if (_hasSecondSpec)
-        {
-            projectile.SetRailProjectileType(RailProjetileType.ArmorBreak);
-        }
+        //if (_hasFirstSpec)
+        //{
+        //    projectile.SetRailProjectileType(RailProjetileType.Crit);
+        //}
+        //else if (_hasSecondSpec)
+        //{
+        //    projectile.SetRailProjectileType(RailProjetileType.ArmorBreak);
+        //}
 
         if (_specType == SpecTypeRail.Critical)
         {
@@ -203,34 +203,34 @@ public class Rail : AtackTower
     {
         if (UpgradeAtackTower())
         {
-            if (_hasFirstSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currCriticalChance = _l3CriticalChance;
-                    _currCriticalDamageMultiplier = _l3CriticalDamageMultiplier;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currCriticalChance = _l4CriticalChance;
-                    _currCriticalDamageMultiplier = _l4CriticalDamageMultiplier;
-                }
-            }
-            else if (_hasSecondSpec)
-            {
-                if (_currLevel == 3)
-                {
-                    _currDecreaseArmor = _l3DecreaseArmor;
-                }
-                else if (_currLevel == 4)
-                {
-                    _currDecreaseArmor = _l4DecreaseArmor;
-                }
-            }
+            //if (_hasFirstSpec)
+            //{
+            //    if (_currLevel == 3)
+            //    {
+            //        _currCriticalChance = _l3CriticalChance;
+            //        _currCriticalDamageMultiplier = _l3CriticalDamageMultiplier;
+            //    }
+            //    else if (_currLevel == 4)
+            //    {
+            //        _currCriticalChance = _l4CriticalChance;
+            //        _currCriticalDamageMultiplier = _l4CriticalDamageMultiplier;
+            //    }
+            //}
+            //else if (_hasSecondSpec)
+            //{
+            //    if (_currLevel == 3)
+            //    {
+            //        _currDecreaseArmor = _l3DecreaseArmor;
+            //    }
+            //    else if (_currLevel == 4)
+            //    {
+            //        _currDecreaseArmor = _l4DecreaseArmor;
+            //    }
+            //}
 
-            _animator.SetInteger("_currTowerLevel", _currLevel);
-            _animator.SetBool("_hasFirstSpec", _hasFirstSpec);
-            _animator.SetBool("_hasSecondSpec", _hasSecondSpec);
+            //_animator.SetInteger("_currTowerLevel", _currLevel);
+            //_animator.SetBool("_hasFirstSpec", _hasFirstSpec);
+            //_animator.SetBool("_hasSecondSpec", _hasSecondSpec);
 
             return true;
         }
@@ -242,15 +242,15 @@ public class Rail : AtackTower
     {
         _specType = (SpecTypeRail)index;
 
-        if (index == 1 && !_hasSecondSpec)
-        {
-            _hasFirstSpec = true;
-            Upgrade();
-        }
-        else if (index == 2 && !_hasFirstSpec)
-        {
-            _hasSecondSpec = true;
-            Upgrade();
-        }
+        //if (index == 1 && !_hasSecondSpec)
+        //{
+        //    _hasFirstSpec = true;
+        //    Upgrade();
+        //}
+        //else if (index == 2 && !_hasFirstSpec)
+        //{
+        //    _hasSecondSpec = true;
+        //    Upgrade();
+        //}
     }
 }
