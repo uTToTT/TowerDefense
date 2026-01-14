@@ -1,16 +1,41 @@
-using UnityEngine;
-
-public class TowerUpgradeController : MonoBehaviour
+public class TowerUpgradeController
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private readonly Tower _tower;
+    private readonly TowerUpgradeState _state;
+
+    public TowerUpgradeState State => _state;
+
+    public TowerUpgradeController(Tower tower)
     {
-        
+        _tower = tower;
+        _state = new TowerUpgradeState();
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool CanPurchase(UpgradeNodeConfig node)
     {
-        
+        if (_state.IsPurchased(node))
+            return false;
+
+        foreach (var condition in node.Conditions)
+            if (!condition.IsSatisfied(_tower))
+                return false;
+
+        return false; /*EconomyService.HasGold(node.Cost);*/
+    }
+
+    public void Purchase(UpgradeNodeConfig node)
+    {
+        if (!CanPurchase(node))
+            return;
+
+        //EconomyService.Spend(node.Cost);
+
+        foreach (var module in node.Modules)
+            _tower.AddModule(module);
+
+        foreach (var config in node.ModuleConfigs)
+            _tower.ApplyConfig(config);
+
+        _state.MarkPurchased(node);
     }
 }

@@ -10,19 +10,38 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 
     [HorizontalLine] private UpgradeNodeConfig _upgradeTree;
 
+    private TowerUpgradeController _upgradeController;
+
     private readonly HashSet<ITowerModule> _modules = new();
     public UpgradeNodeConfig UpgradeTree => _upgradeTree;
+    public TowerUpgradeController UpgradeController => _upgradeController;
 
     public void Initialize(UpgradeNodeConfig config)
     {
+        _upgradeController = new TowerUpgradeController(this);
+
         foreach (var moduleConfig in config.Modules)
         {
             var module = TowerModuleFactory.Create(moduleConfig, this);
-            _modules.Add(module);
+            AddModule(module);
         }
     }
 
-    private void Update()
+    public void AddModule(ITowerModule module)
+    {
+        if (!_modules.Add(module))
+        {
+            Debug.Log($"Module already exists [{module.GetType()}]");
+        }
+    }
+
+    public void ApplyConfig(TowerModuleConfig config)
+    {
+        foreach (var module in _modules)
+            module.TryApplyConfig(config);
+    }
+
+    public void Tick()
     {
         foreach (var module in _modules)
             module.Tick(Time.deltaTime);
@@ -33,10 +52,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
     public Grid Grid { get; set; }
     public bool IsActive { get; set; }
 
-    public int GetSpecPrice(int index)
-    {
-        return 0;
-    }
+    public int GetSpecPrice(int index) => 0;
 
     public void SetUniqueTowerIndex(int index)
     {

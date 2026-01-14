@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AttackModule : ITowerModule
+public sealed class AttackModule : ITowerModule
 {
     private readonly AttackModuleConfig _config;
     private readonly Tower _tower;
@@ -11,6 +11,14 @@ public class AttackModule : ITowerModule
     {
         _config = config;
         _tower = tower;
+    }
+
+    public bool TryApplyConfig(TowerModuleConfig config)
+    {
+        if (config is not AttackModuleConfig)
+            return false;
+
+        return true;
     }
 
     public void Tick(float dt)
