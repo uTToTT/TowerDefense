@@ -10289,11 +10289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3012b9e5d3f6e3945bd3079a76e5f840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestEnemyMove
-  _grid: {fileID: 1116896032}
-  _mapData: {fileID: 11400000, guid: 96bd79dd1b08aa94399642326af82613, type: 2}
-  _routeId: 1
-  _speed: 2
-  _pathPoints: []
 --- !u!212 &2072100569
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10422,17 +10417,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd2d6cfb85a728c4980fee1b147a14e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerPlacer
-  _grid: {fileID: 1116896032}
-  _factories: {fileID: 11400000, guid: 328024393d94f824788111113f140c4d, type: 2}
-  _placementMask:
-    serializedVersion: 2
-    m_Bits: 1
   _buildButtons:
   - {fileID: 1424259270}
   - {fileID: 2084757992}
   - {fileID: 700593447}
   - {fileID: 2009410498}
+  _grid: {fileID: 1116896032}
   _mapManager: {fileID: 1982400813}
+  _towerFactory: {fileID: 11400000, guid: 328024393d94f824788111113f140c4d, type: 2}
+  _towerPreviewFactory: {fileID: 11400000, guid: 845fa9710b7cd31419e020773f4cc8af, type: 2}
 --- !u!1001 &2859241622423266760
 PrefabInstance:
   m_ObjectHideFlags: 0

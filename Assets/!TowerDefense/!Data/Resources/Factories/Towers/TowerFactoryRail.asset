@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f39472d7f83423b4c833853a1de4c8c0, type: 3}
-  m_Name: TowerFactoryTwiin
+  m_Name: TowerFactoryRail
   m_EditorClassIdentifier: Assembly-CSharp::TowerFactory
-  _prefab: {fileID: -7566214551570803973, guid: 3bc339271f37c7e44993de37cc666e33, type: 3}
+  _prefab: {fileID: -1959643415032227143, guid: 013cb6ccb4a9a32409859d61db033117, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

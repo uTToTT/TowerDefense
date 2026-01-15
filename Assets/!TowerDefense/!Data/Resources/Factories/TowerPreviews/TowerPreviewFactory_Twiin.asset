@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39472d7f83423b4c833853a1de4c8c0, type: 3}
-  m_Name: TowerFactoryMinigun
-  m_EditorClassIdentifier: Assembly-CSharp::TowerFactory
-  _prefab: {fileID: -4403520661958198067, guid: f1c3075bae8a6bf47a2368c7f66cb997, type: 3}
+  m_Script: {fileID: 11500000, guid: 659c6f86679159340b5c719501d13978, type: 3}
+  m_Name: TowerPreviewFactory_Twiin
+  m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactory
+  _prefab: {fileID: 2620142187718937548, guid: c27077fb5abbab04c8bc43dcb414b574, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

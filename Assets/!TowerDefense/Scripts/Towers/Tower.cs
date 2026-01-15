@@ -1,8 +1,10 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
+[RequireComponent(typeof(TargetingModule))]
 public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 {
     [SerializeField] protected TowerType _towerType;
@@ -12,15 +14,22 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
     [HorizontalLine] private UpgradeNodeConfig _upgradeTree;
 
     private TowerUpgradeController _upgradeController;
-
+    private TargetingModule _targetingModule;
     private readonly HashSet<ITowerModule> _modules = new();
+
     public UpgradeNodeConfig UpgradeTree => _upgradeTree;
     public TowerUpgradeController UpgradeController => _upgradeController;
+    public TargetingModule TargetingModule => _targetingModule;
 
-    public void Initialize(UpgradeNodeConfig config)
+    public void Initialize()
     {
+        _targetingModule = GetComponent<TargetingModule>();
+        AddModule(_targetingModule);
         _upgradeController = new TowerUpgradeController(this);
+    }
 
+    public void ApplyUpgrade(UpgradeNodeConfig config)
+    {
         foreach (var moduleConfig in config.Modules)
         {
             var module = TowerModuleFactory.Create(moduleConfig, this);

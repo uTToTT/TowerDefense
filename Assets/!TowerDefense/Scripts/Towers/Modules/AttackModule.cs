@@ -3,7 +3,7 @@ using UnityEngine;
 
 public sealed class AttackModule : ITowerModule
 {
-    private  AttackModuleConfig _config;
+    private AttackModuleConfig _config;
     private readonly Tower _tower;
     private float _cooldown;
     private Enemy _target;
@@ -20,7 +20,7 @@ public sealed class AttackModule : ITowerModule
     {
         if (config is not AttackModuleConfig attackConfig)
             return false;
-        
+
         _config = attackConfig;
 
         return true;
@@ -41,10 +41,7 @@ public sealed class AttackModule : ITowerModule
             return;
         }
 
-        //TargetingService.FindTarget(
-        //    _tower.transform.position,
-        //    _config.MinRange
-        //);
+        _target = _tower.TargetingModule.GetTarget();
 
         if (_target == null) return;
 

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39472d7f83423b4c833853a1de4c8c0, type: 3}
-  m_Name: TowerFactoryGravity
-  m_EditorClassIdentifier: Assembly-CSharp::TowerFactory
-  _prefab: {fileID: 4565903098710303644, guid: c6a67d9ff4beb3f4eaf657d0ce33ea4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 659c6f86679159340b5c719501d13978, type: 3}
+  m_Name: TowerPreviewFactory_Rail
+  m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactory
+  _prefab: {fileID: 2620142187718937548, guid: b82efe1d603ddce4995f386348f905e6, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

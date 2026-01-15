@@ -282,11 +282,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 68993924830721766}
-  - component: {fileID: -1959643415032227143}
-  - component: {fileID: 5448730927788856528}
-  - component: {fileID: 2722389125569691842}
+  - component: {fileID: 7672582662319509488}
   m_Layer: 0
-  m_Name: Rail
+  m_Name: Rail_Legacy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +308,7 @@ Transform:
   - {fileID: 1727409613550289799}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1959643415032227143
+--- !u!114 &7672582662319509488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,59 +317,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 8510593794244594586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84934873f0d7dea438cd23e90f1b3f00, type: 3}
+  m_Script: {fileID: 11500000, guid: 97a9df57b0188e241bb7c34ef7faf220, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tower
-  _towerType: 3
+  m_EditorClassIdentifier: 
   _shape: {fileID: 11400000, guid: 692f2b90c2b18444ab27c7a26106e093, type: 2}
---- !u!114 &5448730927788856528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8510593794244594586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3a1dcebe224fd4ab38620be30d0776, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingModule
-  _debug: 0
-  _targetCharacteristic: 0
-  _targetDistance: 0
---- !u!58 &2722389125569691842
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8510593794244594586}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  _towerType: 3
+  _uniqueTowerIndex: 0
+  _currlevelTEST: 0
+  _l1Price: 120
+  _l1SellCost: 60
+  _l2Price: 150
+  _l2SellCost: 90
+  _l3FirstSpecPrice: 200
+  _l3FirstSpecSellCost: 120
+  _l3SecondSpecPrice: 200
+  _l3SecondSpecSellCost: 120
+  _l4FirstSpecPrice: 240
+  _l4FirstSpecSellCost: 200
+  _l4SecondSpecPrice: 240
+  _l4SecondSpecSellCost: 200
+  _speedProjectile: 30
+  _l1Damage: 150
+  _l1ArmorPiercing: 0.3
+  _l1DelayBtwAtack: 2
+  _l1MinAtackRadius: 3
+  _l1MaxAtackRadius: 9
+  l1TESTAtackPerSecond: 0.5
+  l1TESTDamagePerSeconds: 75
+  _l2Damage: 250
+  _l2ArmorPiercing: 0.5
+  _l2DelayBtwAtack: 1.5
+  _l2MinAtackRadius: 3
+  _l2MaxAtackRadius: 11
+  l2TESTAtackPerSecond: 0.6666667
+  l2TESTDamagePerSeconds: 166.66667
+  _l3Damage: 300
+  _l3ArmorPiercing: 0.7
+  _l3DelayBtwAtack: 1
+  _l3MinAtackRadius: 3
+  _l3MaxAtackRadius: 13
+  l3TESTAtackPerSecond: 1
+  l3TESTDamagePerSeconds: 300
+  _l4Damage: 350
+  _l4ArmorPiercing: 0.8
+  _l4DelayBtwAtack: 1
+  _l4MinAtackRadius: 3
+  _l4MaxAtackRadius: 15
+  l4TESTAtackPerSecond: 1
+  l4TESTDamagePerSeconds: 350
+  _speedRotationTower: 720
+  _soundShoot: {fileID: 3302751695191813172}
+  _defaultProjectile: {fileID: 5228037335412352114, guid: c74feb9270fd3634ab1583f9ebefe8be, type: 3}
+  _spawnpoint: {fileID: 8597084253842478069}
+  _animator: {fileID: 1821202952696107447}
+  _l3CriticalChance: 0.3
+  _l3CriticalDamageMultiplier: 1.5
+  _l4CriticalChance: 0.5
+  _l4CriticalDamageMultiplier: 1.5
+  _l3DecreaseArmor: 0.03
+  _l4DecreaseArmor: 0.07

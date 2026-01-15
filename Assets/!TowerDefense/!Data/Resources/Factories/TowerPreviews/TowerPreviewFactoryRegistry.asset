@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3c4b8877a99394997b915a6e519ed9, type: 3}
+  m_Name: TowerPreviewFactoryRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactoryRegistry
+  _factories:
+  - {fileID: 11400000, guid: 0e7ab772be2f23a4a81717f4099b6631, type: 2}
+  - {fileID: 11400000, guid: fa469eced94b88b41810cd5b3acd54db, type: 2}
+  - {fileID: 11400000, guid: 67f4ee0d6baeb184a8f3d61ee54f33c5, type: 2}
+  - {fileID: 11400000, guid: 65f6cd0406784dc4d89cf966a4736b45, type: 2}

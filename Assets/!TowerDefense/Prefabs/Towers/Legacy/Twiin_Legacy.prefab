@@ -313,11 +313,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9112609783730870117}
-  - component: {fileID: -8512383437046038696}
-  - component: {fileID: 8200067439836425777}
-  - component: {fileID: 7167402566828935403}
+  - component: {fileID: -7566214551570803973}
   m_Layer: 0
-  m_Name: Twiin
+  m_Name: Twiin_Legacy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,7 +340,7 @@ Transform:
   - {fileID: 8638879724813452198}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8512383437046038696
+--- !u!114 &-7566214551570803973
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -351,59 +349,68 @@ MonoBehaviour:
   m_GameObject: {fileID: 7462556974000900283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84934873f0d7dea438cd23e90f1b3f00, type: 3}
+  m_Script: {fileID: 11500000, guid: 226fc54957ff2164b91161cd1880539d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tower
-  _towerType: 1
+  m_EditorClassIdentifier: 
   _shape: {fileID: 11400000, guid: 4ecad989caf5d9844a698062c526a5e6, type: 2}
---- !u!114 &8200067439836425777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7462556974000900283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3a1dcebe224fd4ab38620be30d0776, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingModule
-  _debug: 0
-  _targetCharacteristic: 0
-  _targetDistance: 0
---- !u!58 &7167402566828935403
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7462556974000900283}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  _towerType: 1
+  _uniqueTowerIndex: 0
+  _currlevelTEST: 0
+  _l1Price: 60
+  _l1SellCost: 30
+  _l2Price: 90
+  _l2SellCost: 45
+  _l3FirstSpecPrice: 80
+  _l3FirstSpecSellCost: 60
+  _l3SecondSpecPrice: 120
+  _l3SecondSpecSellCost: 60
+  _l4FirstSpecPrice: 110
+  _l4FirstSpecSellCost: 75
+  _l4SecondSpecPrice: 150
+  _l4SecondSpecSellCost: 75
+  _speedProjectile: 40
+  _l1Damage: 50
+  _l1ArmorPiercing: 0.05
+  _l1DelayBtwAtack: 1
+  _l1MinAtackRadius: 0
+  _l1MaxAtackRadius: 5
+  l1TESTAtackPerSecond: 1
+  l1TESTDamagePerSeconds: 50
+  _l2Damage: 70
+  _l2ArmorPiercing: 0.07
+  _l2DelayBtwAtack: 1
+  _l2MinAtackRadius: 0
+  _l2MaxAtackRadius: 5.5
+  l2TESTAtackPerSecond: 1
+  l2TESTDamagePerSeconds: 70
+  _l3Damage: 100
+  _l3ArmorPiercing: 0.1
+  _l3DelayBtwAtack: 1
+  _l3MinAtackRadius: 0
+  _l3MaxAtackRadius: 6
+  l3TESTAtackPerSecond: 1
+  l3TESTDamagePerSeconds: 100
+  _l4Damage: 140
+  _l4ArmorPiercing: 0.1
+  _l4DelayBtwAtack: 1
+  _l4MinAtackRadius: 0
+  _l4MaxAtackRadius: 6
+  l4TESTAtackPerSecond: 1
+  l4TESTDamagePerSeconds: 140
+  _speedRotationTower: 720
+  _soundShoot: {fileID: 3520151391136929734}
+  _defaultProjectile: {fileID: 2802893506211272104, guid: 4c8f527fc381fc84cb6bfe6a9f9f65f9, type: 3}
+  _l3DamageTwoOne: 80
+  _l4DamageTwoOne: 160
+  _l3DistanceShardExplode: 5
+  _l3ShardDamage: 50
+  _l3MaxNumShard: 1
+  _l3ShardSpeed: 30
+  _l4DistanceShardExplode: 6
+  _l4ShardDamage: 70
+  _l4NumShard: 2
+  _l4ShardSpeed: 30
+  _spawnpoints:
+  - {fileID: 5742061312322136745}
+  - {fileID: 4879194679009480340}
+  _animator: {fileID: 767863315761855439}

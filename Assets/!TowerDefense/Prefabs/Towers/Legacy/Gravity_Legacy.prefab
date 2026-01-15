@@ -921,11 +921,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3630541230430519966}
-  - component: {fileID: 1864593286240954612}
-  - component: {fileID: 8045895636042459259}
+  - component: {fileID: 4565903098710303644}
   - component: {fileID: 1719990076771990253}
   m_Layer: 0
-  m_Name: Gravity
+  m_Name: Gravity_Legacy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -948,7 +947,7 @@ Transform:
   - {fileID: 425533742800778348}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1864593286240954612
+--- !u!114 &4565903098710303644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -957,26 +956,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 8177961599039584283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84934873f0d7dea438cd23e90f1b3f00, type: 3}
+  m_Script: {fileID: 11500000, guid: d541785467be0d948a6da9bd7958bfa9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tower
-  _towerType: 2
+  m_EditorClassIdentifier: 
   _shape: {fileID: 11400000, guid: 5fc51880fb22a5b4b89fd3aa7cc3d73e, type: 2}
---- !u!114 &8045895636042459259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177961599039584283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3a1dcebe224fd4ab38620be30d0776, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingModule
-  _debug: 0
-  _targetCharacteristic: 0
-  _targetDistance: 0
+  _towerType: 2
+  _uniqueTowerIndex: 0
+  _currlevelTEST: 0
+  _l1Price: 80
+  _l1SellCost: 40
+  _l2Price: 120
+  _l2SellCost: 60
+  _l3FirstSpecPrice: 170
+  _l3FirstSpecSellCost: 100
+  _l3SecondSpecPrice: 170
+  _l3SecondSpecSellCost: 100
+  _l4FirstSpecPrice: 200
+  _l4FirstSpecSellCost: 150
+  _l4SecondSpecPrice: 200
+  _l4SecondSpecSellCost: 150
+  _l1SpeedDivisor: 0.3
+  _l2SpeedDivisor: 0.4
+  _l3SpeedDivisor: 0.45
+  _l4SpeedDivisor: 0.5
+  _l3MoneyDropMultuplier: 1.5
+  _l4MoneyDropMultuplier: 2
+  _l3HealPointDivisor: 1.25
+  _l4HealPointDivisor: 1.5
+  _animator: {fileID: 5805324584914538433}
+  _range: 3
 --- !u!58 &1719990076771990253
 CircleCollider2D:
   m_ObjectHideFlags: 0

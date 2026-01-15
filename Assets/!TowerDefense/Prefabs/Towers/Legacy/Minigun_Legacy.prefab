@@ -122,11 +122,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 349562127604243041}
-  - component: {fileID: 6562941802772377198}
-  - component: {fileID: 7199462408650553823}
-  - component: {fileID: 4113960499226019255}
+  - component: {fileID: -4403520661958198067}
   m_Layer: 0
-  m_Name: Minigun
+  m_Name: Minigun_Legacy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +148,7 @@ Transform:
   - {fileID: 3818048293770372771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6562941802772377198
+--- !u!114 &-4403520661958198067
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,62 +157,69 @@ MonoBehaviour:
   m_GameObject: {fileID: 2037713828189925891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84934873f0d7dea438cd23e90f1b3f00, type: 3}
+  m_Script: {fileID: 11500000, guid: 5839c2979b60dbb4d8eb6b52e9f63d45, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tower
-  _towerType: 0
+  m_EditorClassIdentifier: 
   _shape: {fileID: 11400000, guid: fe916982a3111ca4a8a5eec91300aebd, type: 2}
---- !u!114 &7199462408650553823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2037713828189925891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3a1dcebe224fd4ab38620be30d0776, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingModule
-  _debug: 0
-  _targetCharacteristic: 0
-  _targetDistance: 0
---- !u!58 &4113960499226019255
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2037713828189925891}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  _towerType: 0
+  _uniqueTowerIndex: 0
+  _currlevelTEST: 0
+  _l1Price: 40
+  _l1SellCost: 20
+  _l2Price: 60
+  _l2SellCost: 30
+  _l3FirstSpecPrice: 80
+  _l3FirstSpecSellCost: 40
+  _l3SecondSpecPrice: 80
+  _l3SecondSpecSellCost: 40
+  _l4FirstSpecPrice: 100
+  _l4FirstSpecSellCost: 50
+  _l4SecondSpecPrice: 100
+  _l4SecondSpecSellCost: 50
+  _speedProjectile: 30
+  _l1Damage: 4
+  _l1ArmorPiercing: 0.01
+  _l1DelayBtwAtack: 0.3
+  _l1MinAtackRadius: 0
+  _l1MaxAtackRadius: 3
+  l1TESTAtackPerSecond: 3.3333333
+  l1TESTDamagePerSeconds: 13.333333
+  _l2Damage: 6
+  _l2ArmorPiercing: 0.025
+  _l2DelayBtwAtack: 0.2
+  _l2MinAtackRadius: 0
+  _l2MaxAtackRadius: 3.5
+  l2TESTAtackPerSecond: 5
+  l2TESTDamagePerSeconds: 30
+  _l3Damage: 7
+  _l3ArmorPiercing: 0.05
+  _l3DelayBtwAtack: 0.1
+  _l3MinAtackRadius: 0
+  _l3MaxAtackRadius: 4
+  l3TESTAtackPerSecond: 10
+  l3TESTDamagePerSeconds: 70
+  _l4Damage: 8
+  _l4ArmorPiercing: 0.05
+  _l4DelayBtwAtack: 0.1
+  _l4MinAtackRadius: 0
+  _l4MaxAtackRadius: 4
+  l4TESTAtackPerSecond: 10
+  l4TESTDamagePerSeconds: 80
+  _speedRotationTower: 1480
+  _soundShoot: {fileID: 5363867425105362698}
+  _defaultProjectile: {fileID: -5199538527612711012, guid: fc61e2f37aa84e14f944f51aeecbbd74, type: 3}
+  _explosionProjectile: {fileID: -930761585318897691, guid: 27328369aed5f09468138a8b1385fe80, type: 3}
+  _freezeProjectile: {fileID: -7205767584592753041, guid: f944fac825ac6424d837d9edde2a63ce, type: 3}
+  _l3ExplosionDamage: 2
+  _l3ExplosionRadius: 1
+  _l4ExplosionDamage: 3
+  _l4ExplosionRadius: 2
+  _l3FreezeRadius: 1
+  _l3FreezeIncrement: 1
+  _l4FreezeRadius: 2
+  _l4FreezeIncrement: 2
+  _spawnpoint: {fileID: 6797629722340350858}
+  _animator: {fileID: 23082674840088170}
 --- !u!1 &3503390307675811525
 GameObject:
   m_ObjectHideFlags: 0
