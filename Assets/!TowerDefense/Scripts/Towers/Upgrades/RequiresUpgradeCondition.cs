@@ -3,10 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "TD/Upgrade/Condition/Requires Node")]
 public class RequiresUpgradeCondition : UpgradeCondition
 {
-    public UpgradeNodeConfig RequiredNode;
+    [SerializeField] private UpgradeNodeConfig _requiredNode;
 
-    public override bool IsSatisfied(Tower tower)
-    {
-        return tower.UpgradeController.State.IsPurchased(RequiredNode);
-    }
+    public override bool IsSatisfied(Tower tower) =>
+        tower.UpgradeController.State.IsPurchased(_requiredNode);
 }

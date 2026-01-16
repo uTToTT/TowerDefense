@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659c6f86679159340b5c719501d13978, type: 3}
   m_Name: TowerPreviewFactory_Rail
   m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactory
-  _prefab: {fileID: 2620142187718937548, guid: b82efe1d603ddce4995f386348f905e6, type: 3}
+  _prefab: {fileID: 2299532020390197140, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

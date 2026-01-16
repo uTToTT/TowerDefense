@@ -13,7 +13,7 @@ public class Menu : MonoBehaviour
     [Space]
     [SerializeField] private Image[] _stars;
     [Space]
-    [SerializeField] private Health _healthControl;
+    [SerializeField] private Player _healthControl;
     [Space]
 
     private float _currGameSpeed;
@@ -58,24 +58,24 @@ public class Menu : MonoBehaviour
         yield return new WaitForSeconds(_delayWinPanel);
         _panelWin.SetActive(true);
 
-        int countStart = 0;
+        int countStar = 0;
 
-        if (_healthControl.GetHP() == 20)
+        if (_healthControl.CurrHP == 20)
         {
-            countStart = 3;
+            countStar = 3;
         }
-        if (_healthControl.GetHP() <= 19)
+        if (_healthControl.CurrHP <= 19)
         {
-            countStart = 2;
+            countStar = 2;
         }
-        if (_healthControl.GetHP() <= 9)
+        if (_healthControl.CurrHP <= 9)
         {
-            countStart = 1;
+            countStar = 1;
         }
 
-        EventBus.GetStar?.Invoke(countStart, SceneManager.GetActiveScene().buildIndex);
+        EventBus.GetStar?.Invoke(countStar, SceneManager.GetActiveScene().buildIndex);
 
-        for (int i = 0; i < countStart; i++)
+        for (int i = 0; i < countStar; i++)
         {
             _stars[i].gameObject.SetActive(true);
 

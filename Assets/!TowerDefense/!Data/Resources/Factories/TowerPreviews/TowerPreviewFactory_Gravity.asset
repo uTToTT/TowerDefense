@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659c6f86679159340b5c719501d13978, type: 3}
   m_Name: TowerPreviewFactory_Gravity
   m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactory
-  _prefab: {fileID: 2620142187718937548, guid: c0dab3bca71b20047ab8283540a92844, type: 3}
+  _prefab: {fileID: 2299532020390197140, guid: 2804391df5e79ba4598e709bc3ba39f0, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

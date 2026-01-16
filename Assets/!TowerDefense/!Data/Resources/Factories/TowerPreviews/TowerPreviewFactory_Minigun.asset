@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659c6f86679159340b5c719501d13978, type: 3}
   m_Name: TowerPreviewFactory_Minigun
   m_EditorClassIdentifier: Assembly-CSharp::TowerPreviewFactory
-  _prefab: {fileID: 2620142187718937548, guid: afebd4a819c15eb429e632aafcb0b3f6, type: 3}
+  _prefab: {fileID: 2299532020390197140, guid: ebb796576fab2c347b7742aacaa99945, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0
