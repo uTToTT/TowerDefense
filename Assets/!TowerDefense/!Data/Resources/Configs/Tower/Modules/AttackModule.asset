@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
   m_Name: AttackModule
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
-  _minRange: 0
-  _maxRange: 0
-  _damage: 1
-  _fireRate: 1
-  _piercing: 1
-  _rotationSpeed: 1
+  _damage: 5
+  _fireRate: 15
+  _piercing: 0
+  _rotationSpeed: 720

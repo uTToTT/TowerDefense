@@ -8,16 +8,21 @@ public class TargetingModule : MonoBehaviour, ITowerModule
     [SerializeField] private bool _debug;
     [HorizontalLine]
 
+    [SerializeField] private CircleCollider2D _collider;
+    [HorizontalLine]
+
     [SerializeField] private TypeTargetByCharacteristic _targetCharacteristic;
     [SerializeField] private TypeTargetByDistance _targetDistance;
-    
+
     private TargetingModuleConfig _config;
     private List<Enemy> _targets = new();
 
+    public ModuleType ModuleType => ModuleType.Targeting;
+
     private void Reset()
     {
-        var collider = GetComponent<CircleCollider2D>();
-        collider.isTrigger = true;
+        _collider = GetComponent<CircleCollider2D>();
+        _collider.isTrigger = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) => Register(collision);
@@ -26,7 +31,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
     private void OnDrawGizmos()
     {
         if (!_debug || _config == null) return;
-        
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _config.MinRange);
         Gizmos.DrawSphere(transform.position, _config.MaxRange);
@@ -40,6 +45,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
             return false;
 
         _config = targetingConfig;
+        _collider.radius = _config.MaxRange;
 
         return true;
     }

@@ -20,7 +20,7 @@ public class TowerUpgradeController
             if (!condition.IsSatisfied(_tower))
                 return false;
 
-        return false; /*EconomyService.HasGold(node.Cost);*/
+        return true; /*EconomyService.HasGold(node.Cost);*/
     }
 
     public void Purchase(UpgradeNodeConfig node)
@@ -30,12 +30,7 @@ public class TowerUpgradeController
 
         //EconomyService.Spend(node.Cost);
 
-        foreach (var module in node.Modules)
-            _tower.AddModule(module);
-
-        foreach (var config in node.ModuleConfigs)
-            _tower.ApplyConfig(config);
-
+        _tower.ApplyUpgrade(node);
         _state.MarkPurchased(node);
     }
 }

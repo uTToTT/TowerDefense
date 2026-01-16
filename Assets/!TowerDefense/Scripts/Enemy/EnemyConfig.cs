@@ -7,7 +7,7 @@ public class EnemyConfig : ScriptableObject
     [HorizontalLine]
     [SerializeField, Min(1)] private float _hp;
     [SerializeField, Range(0, 1)] private float _armor;
-    [SerializeField, Min(0)] private float _damage;
+    [SerializeField, Range(0, 20)] private int _damage;
     [Space]
     [SerializeField, Range(0, 25)] private float _speed = 0.01f;
     [SerializeField, Range(0, 1)] private float _minSpeed = 0.01f;
@@ -21,7 +21,7 @@ public class EnemyConfig : ScriptableObject
 
     public float HP => _hp;
     public float Armor => _armor;
-    public float Damage => _damage;
+    public int Damage => _damage;
     public float Speed => _speed;
     public float MinSpeed => _minSpeed;
     public float DropMoney => _dropMoney;

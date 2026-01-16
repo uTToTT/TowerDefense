@@ -962,6 +962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   _towerType: 2
   _shape: {fileID: 11400000, guid: 5fc51880fb22a5b4b89fd3aa7cc3d73e, type: 2}
+  _upgradeTree: {fileID: 0}
 --- !u!114 &8045895636042459259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,6 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetingModule
   _debug: 0
+  _collider: {fileID: 1719990076771990253}
   _targetCharacteristic: 0
   _targetDistance: 0
 --- !u!58 &1719990076771990253

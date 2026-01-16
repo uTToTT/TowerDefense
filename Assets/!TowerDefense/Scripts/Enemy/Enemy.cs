@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour,
     [SerializeField, Range(0, 1)] private float _laneOffset;
 
     [HorizontalLine]
+    [Expandable]
     [SerializeField] private EnemyConfig _config;
 
 
@@ -62,10 +63,12 @@ public class Enemy : MonoBehaviour,
         _pathController = new PathController();
         _currArmor = _config.Armor;
         _currSpeed = _config.Speed;
+        _currHP = _config.HP;
     }
 
     public void Tick()
     {
+        if (!IsActive || !IsAlive) return;
         Move();
     }
 
@@ -87,12 +90,17 @@ public class Enemy : MonoBehaviour,
         MoveManager.Instance.Register(this);
     }
 
+
+    private void HitPlayer() => Player.Instance.TakeDamage(_config.Damage);
+
     public void Move()
     {
+        if (!IsActive || !IsAlive) return;
         if (!_pathController.HasPath)
         {
             PathEnd?.Invoke(this);
             MoveManager.Instance.Unregister(this);
+            HitPlayer();
             return;
         }
 
@@ -127,13 +135,14 @@ public class Enemy : MonoBehaviour,
 
     public void Death()
     {
-        if (_deathExmplosion != null)
-        {
-            Destroy(Instantiate(_deathExmplosion, transform.position, Quaternion.identity).gameObject, 3f);
-        }
-
+        //if (_deathExmplosion != null)
+        //{
+        //    Destroy(Instantiate(_deathExmplosion, transform.position, Quaternion.identity).gameObject, 3f);
+        //}
         EventBus.AddMoney?.Invoke(_currDropMoney);
         WaveController.Instance.UnregisterEnemy(this);
+
+        OnDeath?.Invoke(this);
     }
 
     public void TakeDamageToArmor(float damageArmor) =>
@@ -186,7 +195,7 @@ public class Enemy : MonoBehaviour,
     public void OnActivated()
     {
         Init();
-
+        IsAlive = true;
     }
 
     public void OnDeactivated()
@@ -196,6 +205,7 @@ public class Enemy : MonoBehaviour,
 
     public void OnReturned()
     {
+        IsAlive = false;
         //throw new System.NotImplementedException();
     }
 

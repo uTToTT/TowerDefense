@@ -10,6 +10,8 @@ public sealed class AttackModule : ITowerModule
 
     private readonly HashSet<IOnHitEffect> _onHitEffects = new();
 
+    public ModuleType ModuleType => ModuleType.Attack;
+
     public AttackModule(AttackModuleConfig config, Tower tower)
     {
         _config = config;
@@ -43,7 +45,10 @@ public sealed class AttackModule : ITowerModule
 
         _target = _tower.TargetingModule.GetTarget();
 
-        if (_target == null) return;
+        if (_target == null)
+        {
+            return;
+        }
 
         _target.TakeDamage(_config.Damage, _config.Piercing);
 

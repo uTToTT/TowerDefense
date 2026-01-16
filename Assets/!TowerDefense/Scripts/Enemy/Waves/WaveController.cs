@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -139,15 +138,24 @@ public class WaveController : Loader<WaveController>
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
         enemy.BuildRoute(_mapManager.GetRoutePoints(group.Route));
         enemy.SetLane(group.Lane);
+        enemy.OnDeath += OnEnemyDeath;
+
         _moveManager.Register(enemy);
         RegisterEnemy(enemy);
 
         EventBus.onShowEnemyInfo?.Invoke(enemy);
 
-        Debug.Log(
-           $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
-       );
+       // Debug.Log(
+       //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
+       //);
     }
+
+    private void OnEnemyDeath(Enemy enemy)
+    {
+        enemy.OnDeath -= OnEnemyDeath; 
+        _factories.Return(enemy);
+    }
+
 
     private void SetTextWave(int waveCount)
     {
@@ -171,11 +179,11 @@ public class WaveController : Loader<WaveController>
 
     private void OnEnable()
     {
-        EventBus.onAid += KillEnemies;
+        //EventBus.onAid += KillEnemies;
     }
 
     private void OnDisable()
     {
-        EventBus.onAid -= KillEnemies;
+        //EventBus.onAid -= KillEnemies;
     }
 }

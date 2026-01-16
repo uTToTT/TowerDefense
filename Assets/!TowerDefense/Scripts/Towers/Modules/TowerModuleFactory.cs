@@ -3,15 +3,15 @@ using System;
 public static class TowerModuleFactory
 {
     public static ITowerModule Create(
-        ITowerModule module,
+        TowerModuleConfig config,
         Tower tower)
     {
-        return module switch
+        return config switch
         {
             AttackModuleConfig attack => new AttackModule(attack, tower),
 
             _ => throw new ArgumentOutOfRangeException
-            ($"Unknown module [{module.GetType()}]")
+            ($"Unknown module [{config.GetType()}]")
         };
     }
 }

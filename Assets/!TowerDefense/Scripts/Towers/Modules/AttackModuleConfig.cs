@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackModuleConfig : TowerModuleConfig
 {
     [SerializeField, Range(0, 500)] private float _damage = 1;
-    [SerializeField, Min(0.01f)] private float _fireRate = 1;
+    [SerializeField, Range(0.01f, 30)] private float _fireRate = 1;
     [SerializeField, Range(0f, 1f)] private float _piercing = 0;
     [HorizontalLine]
 
@@ -16,4 +16,6 @@ public class AttackModuleConfig : TowerModuleConfig
     public float Damage => _damage;
     public float Piercing => _piercing;
     public float RotationSpeed => _rotationSpeed;
+
+    public override ModuleType ModuleType => ModuleType.Attack;
 }

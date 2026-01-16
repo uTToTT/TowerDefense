@@ -12,8 +12,8 @@ public class UpgradeNodeConfig : ScriptableObject
 
     [SerializeField] private UpgradeNodeConfig[] _next;
     [SerializeField] private UpgradeCondition[] _conditions;
-    [SerializeField] private TowerModuleConfig[] _moduleConfigs;
-    [SerializeField] private ITowerModule[] _modules;
+    [SerializeField] private TowerModuleConfig[] _addModuleConfigs;
+    [SerializeField] private TowerModuleConfig[] _modifyModuleConfigs;
 
     public string Id => _id;
     public Sprite Icon => _icon;
@@ -21,6 +21,6 @@ public class UpgradeNodeConfig : ScriptableObject
 
     public IReadOnlyCollection<UpgradeNodeConfig> Next => _next;
     public IReadOnlyCollection<UpgradeCondition> Conditions => _conditions;
-    public IReadOnlyCollection<TowerModuleConfig> ModuleConfigs => _moduleConfigs;
-    public IReadOnlyCollection<ITowerModule> Modules => _modules;
+    public IReadOnlyCollection<TowerModuleConfig> AddModuleConfigs => _addModuleConfigs;
+    public IReadOnlyCollection<TowerModuleConfig> ModifyModuleConfigs => _modifyModuleConfigs;
 }

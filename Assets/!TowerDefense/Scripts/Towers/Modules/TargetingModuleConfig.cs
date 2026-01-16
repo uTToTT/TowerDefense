@@ -8,4 +8,6 @@ public class TargetingModuleConfig : TowerModuleConfig
     
     public float MinRange => _minRange;
     public float MaxRange => _maxRange;
+
+    public override ModuleType ModuleType => ModuleType.Targeting;
 }

@@ -1,8 +1,8 @@
-using UnityEngine;
-
 public sealed class FreezeModule : ITowerModule, IOnHitEffect
 {
     private readonly FreezeModuleConfig _config;
+
+    public ModuleType ModuleType => ModuleType.Freeze;
 
     public FreezeModule(FreezeModuleConfig config)
     {

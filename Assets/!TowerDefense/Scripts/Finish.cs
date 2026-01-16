@@ -23,7 +23,7 @@ public class Finish : MonoBehaviour
         {
             _tmpEnemy = collision.GetComponent<Enemy>();
 
-            EventBus.HitBase?.Invoke((int)_tmpEnemy.GetDamage());
+            //EventBus.HitBase?.Invoke((int)_tmpEnemy.GetDamage());
             WaveController.Instance.UnregisterEnemy(_tmpEnemy);
         }
     }

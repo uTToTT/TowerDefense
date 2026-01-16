@@ -80,7 +80,9 @@ public class TowerPlacer : MonoBehaviour
         }
 
         var tower = _towerFactory.Create(_draggingType);
-        tower.Grid = _grid;
+        tower.Initialize(_grid);
+        tower.UpgradeController.Purchase(tower.UpgradeTree);
+
         var mapPos = MapUtils.WorldToMap(snapped, _grid);
 
 

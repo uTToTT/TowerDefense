@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetingModule))]
@@ -11,7 +10,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
     [SerializeField] private TowerShapeSO _shape;
     [HorizontalLine]
 
-    [HorizontalLine] private UpgradeNodeConfig _upgradeTree;
+    [SerializeField] private UpgradeNodeConfig _upgradeTree;
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
@@ -21,21 +20,57 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
     public TowerUpgradeController UpgradeController => _upgradeController;
     public TargetingModule TargetingModule => _targetingModule;
 
-    public void Initialize()
+    private bool _isInit;
+
+    public void Initialize(Grid grid)
     {
+        Grid = grid;
         _targetingModule = GetComponent<TargetingModule>();
+        _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
         AddModule(_targetingModule);
         _upgradeController = new TowerUpgradeController(this);
+        _isInit = true;
     }
-
+    private void Update()
+    {
+        if (_isInit) Tick(Time.deltaTime);
+    }
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
-        foreach (var moduleConfig in config.Modules)
+        bool modulesChanged = false;
+
+        foreach (var moduleConfig in config.AddModuleConfigs)
         {
+            if (HasModule(moduleConfig.ModuleType))
+                continue;
+
             var module = TowerModuleFactory.Create(moduleConfig, this);
             AddModule(module);
+            modulesChanged = true;
         }
+
+        foreach (var moduleConfig in config.ModifyModuleConfigs)
+        {
+            ApplyConfig(moduleConfig);
+            Debug.Log($"Apply {moduleConfig.GetType()}");
+        }
+
+        if (modulesChanged)
+        {
+            BindOnHitEffects();
+        }
+
     }
+
+    private bool HasModule(ModuleType moduleType)
+    {
+        foreach (var module in _modules)
+            if (module.ModuleType == moduleType)
+                return true;
+
+        return false;
+    }
+
 
     private void BindOnHitEffects()
     {
@@ -52,7 +87,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
         }
     }
 
-    public void AddModule(ITowerModule module)
+    private void AddModule(ITowerModule module)
     {
         if (!_modules.Add(module))
         {
@@ -60,52 +95,31 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
         }
     }
 
-    public void ApplyConfig(TowerModuleConfig config)
+    private void ApplyConfig(TowerModuleConfig config)
     {
         foreach (var module in _modules)
             module.TryApplyConfig(config);
     }
 
-    public void Tick()
+    public void Tick(float dt)
     {
         foreach (var module in _modules)
-            module.Tick(Time.deltaTime);
+            module.Tick(dt);
     }
 
     public TowerShapeSO Shape => _shape;
     public TowerType TowerType => _towerType;
-    public Grid Grid { get; set; }
+    public Grid Grid { get; private set; }
     public bool IsActive { get; set; }
 
     public int GetSpecPrice(int index) => 0;
-
-    public void SetUniqueTowerIndex(int index)
-    {
-    }
-
-    public void Dispose()
-    {
-    }
-
-    public void OnPreload()
-    {
-    }
-
-    public void OnActivated()
-    {
-    }
-
-    public void OnDeactivated()
-    {
-    }
-
-    public void OnReturned()
-    {
-    }
-
-    public void OnDestroyed()
-    {
-    }
+    public void SetUniqueTowerIndex(int index) { }
+    public void Dispose() { }
+    public void OnPreload() { }
+    public void OnActivated() { }
+    public void OnDeactivated() { }
+    public void OnReturned() { }
+    public void OnDestroyed() { }
 }
 
 public enum SpecTypeMinigun
