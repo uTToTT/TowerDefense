@@ -30,11 +30,6 @@ public class Rail : AtackTower
 
     private float _currDecreaseArmor;
 
-    public float CurrCriticalChance => _currCriticalChance;
-    public float CurrCriticalDamageMultiplier => _currCriticalDamageMultiplier;
-
-    public float CurrDecreaseArmor => _currDecreaseArmor;
-
     void Start()
     {
         _currProjectile = _defaultProjectile;
@@ -43,118 +38,6 @@ public class Rail : AtackTower
         //{
         //    Upgrade();
         //}
-    }
-
-    void Update()
-    {
-        if (_atackTimer > 0)
-        {
-            _atackTimer -= Time.deltaTime;
-        }
-
-        if (_specType == SpecTypeRail.BreakArmor)
-        {
-            if (_targetEnemy)
-            {
-                if (_targetEnemy.CurrArmor <= 0)
-                {
-                    if (GetArmoredEnemies().Count != 0)
-                    {
-                        _targetEnemy = null;
-                    }
-                }
-            }
-        }
-
-        if (_targetEnemy == null)
-        {
-            Enemy nearestEnemy = GetNearestArmorEnemy(); 
-
-            if (nearestEnemy != null && Vector2.Distance(transform.position, nearestEnemy.transform.position) <= _currMaxAtackRadius)
-            {
-                if (Vector2.Distance(transform.position, nearestEnemy.transform.position) >= _currMinAtackRadius)
-                {
-                    _targetEnemy = nearestEnemy;
-                }
-            }
-        }
-        else
-        {
-            RotateTower();
-
-            if (_atackTimer <= 0)
-            {
-                _canAtack = true;
-
-                _atackTimer = _currDelayBtwAtack;
-            }
-            else
-            {
-                _canAtack = false;
-            }
-
-            if (Vector2.Distance(transform.position, _targetEnemy.transform.position) > _currMaxAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-            else if (Vector2.Distance(transform.position, _targetEnemy.transform.position) < _currMinAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-        }
-
-        if (_canAtack)
-        {
-            Atack();
-        }
-    }
-
-    private Enemy GetNearestArmorEnemy()
-    {
-        List<Enemy> nearestArmors = GetArmoredEnemies();
-
-
-        //Debug.Log("Count: " + nearestArmors.Count);
-        if (nearestArmors.Count == 0)
-        {
-            //Debug.Log("+");
-            return GetNearestEnemy();
-        }
-
-        Enemy nearestEnemy = null;
-        float smallestDistance = float.PositiveInfinity;
-
-        foreach (var enemy in nearestArmors)
-        {
-            if (Vector2.Distance(enemy.transform.position, transform.position) < smallestDistance)
-            {
-                smallestDistance = Vector2.Distance(transform.position, enemy.transform.position);
-                nearestEnemy = enemy;
-            }
-        }
-
-        return nearestEnemy;
-    }
-
-    private List<Enemy> GetArmoredEnemies()
-    {
-        List<Enemy> armorEnemiesInRange = new List<Enemy>();
-
-        foreach (var enemy in WaveController.Instance.Enemies)
-        {
-            if (Vector2.Distance(enemy.transform.position, transform.position) < _currMaxAtackRadius)
-            {
-                if (Vector2.Distance(enemy.transform.position, transform.position) > _currMinAtackRadius)
-                {
-                    if (enemy.CurrArmor > 0)
-                    {
-                        armorEnemiesInRange.Add(enemy);
-                    }
-                }
-            }
-        }
-
-        return armorEnemiesInRange;
     }
 
     private void Atack()
@@ -195,7 +78,7 @@ public class Rail : AtackTower
         else
         {
             projectile._target = _targetEnemy;
-            StartCoroutine(MoveProjectile(projectile));
+            //StartCoroutine(MoveProjectile(projectile));
         }
     }
 

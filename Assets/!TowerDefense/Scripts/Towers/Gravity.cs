@@ -34,27 +34,14 @@ public class Gravity : Tower
 
     private SpecTypeGravity _specType;
     private float _currSpeedDivisor;
-    private float _currRange;
 
     private float _currMoneyDropMiltiplier;
 
     private float _currHealPointDivisor;
 
     public float CurrRange => _range;
-    public SpecTypeGravity SpecTypeGravity => _specType;
     public float CurrSpeedDivisor => _currSpeedDivisor;
-    public float CurrMoneyDropMultiplier => _currMoneyDropMiltiplier;
-    public float CurrHealPointDivisor => _currHealPointDivisor;
-
-    private void Start()
-    {
-        _currRange = _range;
-
-        //if (_currLevel == 0)
-        //{
-        //    Upgrade();
-        //}
-    }
+    
 
     private void OnTriggerStay2D(Collider2D collision)
     {

@@ -45,63 +45,6 @@ public class Twiin : AtackTower
     public float CurrShardDamage => _currShardDamage;
     public SpecTypeTwiin SpecTypeTwiin => _specType;
 
-    void Start()
-    {
-        _currProjectile = _defaultProjectile;
-
-        //if (_currLevel == 0)
-        //{
-        //    Upgrade();
-        //}
-    }
-
-    void Update()
-    {
-        if (_atackTimer > 0)
-        {
-            _atackTimer -= Time.deltaTime;
-        }
-
-        if (_targetEnemy == null)
-        {
-            Enemy nearestEnemy = GetNearestEnemy();
-
-            if (nearestEnemy != null && Vector2.Distance(transform.position, nearestEnemy.transform.position) <= _currMaxAtackRadius)
-            {
-                _targetEnemy = nearestEnemy;
-            }
-        }
-        else
-        {
-            RotateTower();
-
-            if (_atackTimer <= 0)
-            {
-                _canAtack = true;
-
-                _atackTimer = _currDelayBtwAtack;
-            }
-            else
-            {
-                _canAtack = false;
-            }
-
-            if (Vector2.Distance(transform.position, _targetEnemy.transform.position) > _currMaxAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-            else if (Vector2.Distance(transform.position, _targetEnemy.transform.position) < _currMinAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-        }
-
-        if (_canAtack)
-        {
-            Atack();
-        }
-    }
-
     private void Atack()
     {
         Shoot();
@@ -147,7 +90,7 @@ public class Twiin : AtackTower
         else
         {
             projectile_0._target = _targetEnemy;
-            StartCoroutine(MoveProjectile(projectile_0));
+            //StartCoroutine(MoveProjectile(projectile_0));
         }
 
         if (_specType == SpecTypeTwiin.TwoToOneAtack)
@@ -162,7 +105,7 @@ public class Twiin : AtackTower
             else
             {
                 projectile_1._target = _targetEnemy;
-                StartCoroutine(MoveProjectile(projectile_1));
+                //StartCoroutine(MoveProjectile(projectile_1));
             }
 
             projectile_0.SetDamage(_currDamageTwoOne);

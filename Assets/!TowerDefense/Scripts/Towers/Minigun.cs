@@ -31,9 +31,7 @@ public class Minigun : AtackTower
     private float _currExplosionRadius;
 
     private float _currFreezeRadius;
-    private int _currFrezzeIncrement;   
-
-    private string _currAnimation;
+    private int _currFrezzeIncrement;
 
     public int CurrExplosionDamage => _currExplosionDamage;
     public float CurrExplosionRadius => _currExplosionRadius;
@@ -41,100 +39,11 @@ public class Minigun : AtackTower
     public float CurrFreezeRadius => _currFreezeRadius;
     public int CurrFrezzeIncrement => _currFrezzeIncrement;
 
-    void Start()
-    {
-        if (_specType == SpecTypeMinigun.None)
-        {
-            _currProjectile = _defaultProjectile;
-        }
-        else if (_specType == SpecTypeMinigun.Explosion)
-        {
-            _currProjectile = _explosionProjectile;
-        }
-        else if (_specType == SpecTypeMinigun.Freeze)
-        {
-            _currProjectile = _freezeProjectile;
-        }
-
-        //if (_currLevel == 0)
-        //{
-        //    Upgrade();
-        //}
-    }
-
-    void ChangeAnimation(string nameAnimation)
-    {
-        if (_currAnimation == nameAnimation)
-        {
-            return;
-        }
-
-        _animator.Play(nameAnimation);
-        _currAnimation = nameAnimation;
-    }
-
     void Update()
     {
-        if (_atackTimer > 0)
-        {
-            _atackTimer -= Time.deltaTime;
-        }
-
-        if (_targetEnemy == null)
-        {
-            Enemy enemy = null;
-
-            if (_specType == SpecTypeMinigun.Freeze)
-            {
-                enemy = GetNearestUnfreezedEnemy();
-            }
-            else
-            {
-                enemy = GetNearestEnemy();
-            }
-
-            if (enemy != null && Vector2.Distance(transform.position, enemy.transform.position) <= _currMaxAtackRadius)
-            {
-                _targetEnemy = enemy;
-            }
-
-            _animator.SetBool("_isAtack", false);
-        }
-        else
-        {
-            _animator.SetBool("_isAtack", true);
-            RotateTower();
-
-            if (_atackTimer <= 0)
-            {
-                _canAtack = true;
-
-                _atackTimer = _currDelayBtwAtack;
-            }
-            else
-            {
-                _canAtack = false;
-            }
-
-            if (Vector2.Distance(transform.position, _targetEnemy.transform.position) > _currMaxAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-            else if (Vector2.Distance(transform.position, _targetEnemy.transform.position) < _currMinAtackRadius)
-            {
-                _targetEnemy = null;
-            }
-        }
-
-        if (_canAtack)
-        {
-            Atack();
-
-            if (_specType == SpecTypeMinigun.Freeze)
-            {
-                _targetEnemy = null;
-            }
-        }
+        return;
+        _animator.SetBool("_isAtack", false);
+        _animator.SetBool("_isAtack", true);
     }
 
     private void Atack()
@@ -166,7 +75,7 @@ public class Minigun : AtackTower
         else
         {
             projectile._target = _targetEnemy;
-            StartCoroutine(MoveProjectile(projectile));
+            //StartCoroutine(MoveProjectile(projectile));
         }
     }
 
