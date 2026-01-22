@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TEST : MonoBehaviour
 {
@@ -23,10 +22,5 @@ public class TEST : MonoBehaviour
         //Debug.Log(PlayerPrefs.GetInt("StarsForLevel" + 50));
 
         //PlayerPrefs.SetInt("RemoveAds", 0);
-    }
-
-    public void DeleteAllPlayerPrefs()
-    {
-        PlayerPrefs.DeleteAll();
     }
 }
