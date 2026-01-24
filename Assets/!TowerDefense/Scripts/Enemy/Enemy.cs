@@ -1,13 +1,13 @@
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour,
     IPoolable, IEntityLifecycle, IMovable, IBuffable
 {
     public event Action<Enemy> OnDeath;
-    public event Action<Enemy> PathEnd;
 
     [HorizontalLine]
     [SerializeField] private EnemyType _enemyType;
@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour,
 
     [Space]
     [Header("Test")]
+    [SerializeField] private float _remainingDistance;
     [SerializeField] private float TESTSPEED;
     [SerializeField] private float TESTARMOR;
     [SerializeField] private float TESTFREEZESTACK;
@@ -86,6 +87,7 @@ public class Enemy : MonoBehaviour,
     {
         _points = PathController.OffsetPath(points, _laneOffset, true);
         _pathController.SetPath(_points, transform.position);
+        _pathController.OnFinishReached += () => HitPlayer();
 
         MoveManager.Instance.Register(this);
     }
@@ -96,23 +98,19 @@ public class Enemy : MonoBehaviour,
     public void Move()
     {
         if (!IsActive || !IsAlive) return;
+
+        _remainingDistance = _pathController.RemainingDistance;
+        _pathController.Advance(transform.position);
+
         if (!_pathController.HasPath)
         {
-            PathEnd?.Invoke(this);
             MoveManager.Instance.Unregister(this);
-            HitPlayer();
             return;
         }
 
         Vector3 target = _pathController.Peek();
 
         transform.MoveTowards(target, _config.Speed);
-        _pathController.Advance(transform.position);
-
-        if (transform.IsReach(target))
-        {
-            _pathController.Dequeue();
-        }
     }
 
     private void OnDrawGizmos()
@@ -135,10 +133,6 @@ public class Enemy : MonoBehaviour,
 
     public void Death()
     {
-        //if (_deathExmplosion != null)
-        //{
-        //    Destroy(Instantiate(_deathExmplosion, transform.position, Quaternion.identity).gameObject, 3f);
-        //}
         EventBus.AddMoney?.Invoke(_currDropMoney);
         WaveController.Instance.UnregisterEnemy(this);
 
@@ -206,6 +200,7 @@ public class Enemy : MonoBehaviour,
     public void OnReturned()
     {
         IsAlive = false;
+        _pathController.Clear();
         //throw new System.NotImplementedException();
     }
 

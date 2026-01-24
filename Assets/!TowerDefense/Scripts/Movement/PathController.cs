@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class PathController
 {
+    public event Action OnFinishReached;
+
     private readonly Queue<Vector3> _waypoints = new();
     private readonly List<float> _segmentLengths = new();
 
@@ -57,19 +60,23 @@ public sealed class PathController
         float distToCurrent =
             Vector3.Distance(currentPosition, _waypoints.Peek());
 
-        // точка достигнута
-        if (distToCurrent <= ReachEpsilon)
+        if (distToCurrent > ReachEpsilon)
         {
-            _remainingDistance -= _segmentLengths[0];
-            _segmentLengths.RemoveAt(0);
-
-            _currentStart = _waypoints.Dequeue();
+            _remainingDistance = distToCurrent + SumRemainingSegments();
             return;
         }
 
-        _remainingDistance =
-            distToCurrent +
-            SumRemainingSegments();
+        _remainingDistance -= _segmentLengths[0];
+        _segmentLengths.RemoveAt(0);
+
+        _currentStart = _waypoints.Dequeue();
+
+        if (!HasPath)
+        {
+            _remainingDistance = 0f;
+            OnFinishReached?.Invoke();
+            Debug.Log("Finish reached!");
+        }
     }
 
     private float SumRemainingSegments()

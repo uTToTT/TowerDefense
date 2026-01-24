@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
         set
         {
             _currHp = Mathf.Max(value, 0);
-            _hpText.text = _currHp.ToString();
+            _hpText.text = "HP: " + _currHp.ToString();
         }
     }
 
@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
     {
         Instance = this;
         CurrHP = _maxHP;
-        _hpText.text = CurrHP.ToString();
     }
 
     public void Heal(int amount) => CurrHP += amount;
