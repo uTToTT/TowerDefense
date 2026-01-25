@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour,
@@ -67,10 +66,10 @@ public class Enemy : MonoBehaviour,
         _currHP = _config.HP;
     }
 
-    public void Tick()
+    public void Tick(float dt)
     {
         if (!IsActive || !IsAlive) return;
-        Move();
+        Move(dt);
     }
 
     private void OnValidate()
@@ -95,7 +94,7 @@ public class Enemy : MonoBehaviour,
 
     private void HitPlayer() => Player.Instance.TakeDamage(_config.Damage);
 
-    public void Move()
+    public void Move(float dt)
     {
         if (!IsActive || !IsAlive) return;
 
@@ -105,12 +104,13 @@ public class Enemy : MonoBehaviour,
         if (!_pathController.HasPath)
         {
             MoveManager.Instance.Unregister(this);
+            Death();
             return;
         }
 
         Vector3 target = _pathController.Peek();
 
-        transform.MoveTowards(target, _config.Speed);
+        transform.MoveTowards(target, _config.Speed, dt);
     }
 
     private void OnDrawGizmos()
@@ -131,11 +131,14 @@ public class Enemy : MonoBehaviour,
         }
     }
 
-    public void Death()
+    private void DropMoney()
     {
         EventBus.AddMoney?.Invoke(_currDropMoney);
-        WaveController.Instance.UnregisterEnemy(this);
+    }
 
+    public void Death()
+    {
+        WaveController.Instance.UnregisterEnemy(this);
         OnDeath?.Invoke(this);
     }
 
@@ -154,6 +157,7 @@ public class Enemy : MonoBehaviour,
 
         if (_currHP <= 0)
         {
+            DropMoney();
             Death();
             return;
         }

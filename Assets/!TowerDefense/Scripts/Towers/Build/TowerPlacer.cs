@@ -1,6 +1,5 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TowerPlacer : MonoBehaviour
@@ -14,12 +13,11 @@ public class TowerPlacer : MonoBehaviour
     [SerializeField] private TowerPreviewFactoryRegistry _towerPreviewFactory;
 
     private TowerPreview _towerPreview;
-    private Tower _tower;
 
     private TowerType _draggingType;
     private bool _isDragging;
 
-    private void Start()
+    public void Init()
     {
         foreach (var button in _buildButtons)
         {
@@ -86,9 +84,9 @@ public class TowerPlacer : MonoBehaviour
         var mapPos = MapUtils.WorldToMap(snapped, _grid);
 
 
-        foreach (var cell in GetOccupiedCells(mapPos, tower.Shape))
+        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
         {
-            _mapManager.SetBusyState(cell, true);
+            _mapManager.SetTowerInCell(cell, tower);
         }
 
         tower.transform.position = _towerPreview.transform.position;
@@ -105,7 +103,7 @@ public class TowerPlacer : MonoBehaviour
     {
         Vector2Int mapPos = MapUtils.WorldToMap(worldPos, _grid);
 
-        foreach (var cell in GetOccupiedCells(mapPos, _towerPreview.Shape))
+        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, _towerPreview.Shape))
         {
             if (!_mapManager.IsInside(cell))
                 return false;
@@ -116,22 +114,5 @@ public class TowerPlacer : MonoBehaviour
         return true;
     }
 
-    public static List<Vector2Int> GetOccupiedCells(
-    Vector2Int anchor,
-    TowerShapeSO shape
-)
-    {
-        var result = new List<Vector2Int>();
-
-        foreach (var offset in shape.OccupiedCells)
-        {
-            result.Add(new Vector2Int(
-                anchor.x + offset.X,
-                anchor.y + offset.Y
-            ));
-        }
-
-        return result;
-    }
 
 }

@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "GamePlay",
+            "id": "203de10c-e740-4be4-9aad-ec883d00cbbd",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "0e3acfec-5789-4c35-90df-45f29f1826a2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PointerPos",
+                    "type": "Value",
+                    "id": "54d88a6b-6219-4289-8a25-e3ece560cb7b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "01b34c2d-d677-4c72-a378-52ae14cc88b1",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd3492fc-4ccd-4bfb-9b50-9e30c53de9f0",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

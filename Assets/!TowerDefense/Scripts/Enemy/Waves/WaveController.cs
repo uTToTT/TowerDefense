@@ -29,10 +29,7 @@ public class WaveController : Loader<WaveController>
 
     private EnemyTracker _enemyTracker;
 
-    private void Start() => Init();
-    private void Update() => Process();
-
-    private void Init()
+    public void Init()
     {
         _factories.Init();
         _enemyTracker = new EnemyTracker();
@@ -40,10 +37,8 @@ public class WaveController : Loader<WaveController>
         PrepareNextWave();
     }
 
-    private void Process()
+    public void Tick(float dt)
     {
-        float dt = Time.deltaTime;
-
         if (!_enableSpawning) return;
 
         switch (_state)
@@ -164,26 +159,4 @@ public class WaveController : Loader<WaveController>
 
     public void RegisterEnemy(Enemy enemy) => _enemyTracker.Register(enemy);
     public void UnregisterEnemy(Enemy enemy) => _enemyTracker.Unregister(enemy);
-
-    private void KillEnemies()
-    {
-        List<Enemy> enemiesCopy = new List<Enemy>(Enemies);
-
-        foreach (Enemy item in enemiesCopy)
-        {
-            item.Death();
-        }
-
-        //Enemies.Clear();
-    }
-
-    private void OnEnable()
-    {
-        //EventBus.onAid += KillEnemies;
-    }
-
-    private void OnDisable()
-    {
-        //EventBus.onAid -= KillEnemies;
-    }
 }

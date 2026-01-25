@@ -59,6 +59,15 @@ public class MapManager : MonoBehaviour
     public void SetBusyState(Vector2Int pos, bool state) =>
         _cellData[pos.x, pos.y].IsBusy = state;
 
+    public void SetTowerInCell(Vector2Int pos, Tower tower)
+    {
+        if (tower != null)
+        {
+            _cellData[pos.x, pos.y].Tower = tower;
+            _cellData[pos.x, pos.y].IsBusy = true;
+        }
+    }
+
     public List<Vector3> GetRoutePoints(RouteId routeId)
     {
         var points = new List<Vector3>();

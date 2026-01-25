@@ -8369,7 +8369,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -9242,6 +9242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _moveManager: {fileID: 509675767}
+  _waveController: {fileID: 343438958}
 --- !u!224 &1424259266 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3099978867416192086, guid: 800c22b42ee37524eb9a63b2ddaf4031, type: 3}

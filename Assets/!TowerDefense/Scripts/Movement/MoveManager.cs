@@ -22,22 +22,22 @@ public class MoveManager : MonoBehaviour
     public void Register(IMovable movable) => _toAdd.Add(movable);
     public void Unregister(IMovable movable) => _toRemove.Add(movable);
 
-    public void Tick()
+    public void Tick(float dt)
     {
         if (_isMoveActive == false) return;
 
         UpdateColleciton();
-        Move();
+        Move(dt);
     }
 
-    private void Move()
+    private void Move(float dt)
     {
         int total = _movables.Count;
         if (total <= 0) return;
 
         foreach (var item in _movables)
         {
-            item.Move();
+            item.Move(dt);
         }
     }
 

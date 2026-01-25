@@ -4,7 +4,7 @@ public static class TransformExtensions
 {
     private const float DISTANCE_TO_REACH = 0.01f;
 
-    public static void SetIntPosition(this Transform transform, Vector2Int pos) => 
+    public static void SetIntPosition(this Transform transform, Vector2Int pos) =>
         transform.position = new Vector3(pos.x, pos.y);
 
     #region ==== Distance Checks ====
@@ -24,22 +24,22 @@ public static class TransformExtensions
 
     #region ==== Move ====
 
-    public static void MoveTowards(this Transform movable, Transform target, float speed) =>
-        MoveTowards(movable, target.position, speed);
+    public static void MoveTowards(this Transform movable, Transform target, float speed, float dt) =>
+        MoveTowards(movable, target.position, speed, dt);
 
-    public static void MoveTowards(this Transform movable, Vector3 target, float speed) =>
-        Move(movable, target, speed);
+    public static void MoveTowards(this Transform movable, Vector3 target, float speed, float dt) =>
+        Move(movable, target, speed, dt);
 
-    private static void Move(Transform movable, Vector3 target, float speed)
+    private static void Move(Transform movable, Vector3 target, float speed, float dt)
     {
-        movable.position = Vector3.MoveTowards(movable.position, target, speed * Time.deltaTime);
+        movable.position = Vector3.MoveTowards(movable.position, target, speed * dt);
     }
 
     #endregion
 
     #region ==== Look / Follow ====
 
-    public static void LookAt2D(this Transform movable, Transform target) => 
+    public static void LookAt2D(this Transform movable, Transform target) =>
         LookAt2D(movable, target.position);
 
     public static void LookAt2D(this Transform movable, Vector3 targetPosition)
@@ -52,7 +52,7 @@ public static class TransformExtensions
     }
     public static void RotateAt2D(this Transform movable, Transform target, float rotationSpeed = 720f) =>
         RotateAt2D(movable, target.position, rotationSpeed);
-    
+
     public static void RotateAt2D(this Transform movable, Vector3 target, float rotationSpeed = 720f)
     {
         Vector3 dir = target - movable.position;
@@ -69,14 +69,14 @@ public static class TransformExtensions
     /// <summary>
     /// Move and look to target
     /// </summary>
-    public static void FollowTarget(this Transform movable, Vector3 target, float moveSpeed, float rotationSpeed = 720f)
+    public static void FollowTarget(this Transform movable, Vector3 target, float moveSpeed, float dt, float rotationSpeed = 720f)
     {
         if (rotationSpeed <= 0)
             LookAt2D(movable, target);
         else
             RotateAt2D(movable, target, rotationSpeed);
 
-        MoveTowards(movable, target, moveSpeed);
+        MoveTowards(movable, target, moveSpeed, dt);
     }
 
     #endregion
