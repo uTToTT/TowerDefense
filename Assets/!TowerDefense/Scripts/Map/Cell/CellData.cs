@@ -2,5 +2,5 @@ public class CellData
 {
     public CellType CellType;
     public bool IsBusy;
-    public Tower Tower;
+    public IMapObject MapObject;
 }

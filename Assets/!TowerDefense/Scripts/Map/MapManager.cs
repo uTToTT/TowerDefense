@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class MapManager : MonoBehaviour
 {
@@ -14,8 +13,14 @@ public class MapManager : MonoBehaviour
 
     private CellData[,] _cellData;
 
-    private void Start()
+    public Grid Grid => _grid;
+
+    public static MapManager Instance { get; private set; }
+
+    public void Init()
     {
+        Instance = this;
+
         CenterGrid(_mapData);
         _cellData = new CellData[_mapData.width, _mapData.height];
         _mapComposer.Build(_mapData, _cellData, _grid);
@@ -23,6 +28,9 @@ public class MapManager : MonoBehaviour
 
     public Route GetRoute(RouteId routeId) =>
      _mapData.GetRoute(routeId);
+
+    public CellData GetCellData(Vector2Int v2Int) =>
+        _cellData[v2Int.x, v2Int.y];
 
     public bool IsInside(Vector2Int pos)
     {
@@ -63,7 +71,7 @@ public class MapManager : MonoBehaviour
     {
         if (tower != null)
         {
-            _cellData[pos.x, pos.y].Tower = tower;
+            _cellData[pos.x, pos.y].MapObject = tower;
             _cellData[pos.x, pos.y].IsBusy = true;
         }
     }

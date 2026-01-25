@@ -19,7 +19,7 @@
                     "name": "PointerPos",
                     "type": "Value",
                     "id": "54d88a6b-6219-4289-8a25-e3ece560cb7b",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -45,6 +45,54 @@
                     "processors": "",
                     "groups": "",
                     "action": "PointerPos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "b7818c13-31ed-4969-8718-e69960d534ce",
+            "actions": [
+                {
+                    "name": "Point",
+                    "type": "Value",
+                    "id": "a33a957d-6fea-4fa3-b925-e2577adacc1c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "1e421a42-5126-494e-9d6f-a0843eac2055",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1f22664e-ffee-44de-8bad-5acaf94fb95f",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5db5946c-40c1-4d04-b415-8d4e2a8927b7",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -34,7 +34,7 @@ public class TowerPlacer : MonoBehaviour
 
         UpdatePreviewPosition();
 
-        if (Input.GetMouseButtonUp(0))
+        if (/*GameManager.Instance.PlayerInputController.IsPointerDown == false*/)
             TryPlaceTower();
     }
 
@@ -50,7 +50,7 @@ public class TowerPlacer : MonoBehaviour
 
     private void UpdatePreviewPosition()
     {
-        Vector3 screenPos = Input.mousePosition;
+        Vector3 screenPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
         screenPos.z = -Camera.main.transform.position.z;
 
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
@@ -78,7 +78,7 @@ public class TowerPlacer : MonoBehaviour
         }
 
         var tower = _towerFactory.Create(_draggingType);
-        tower.Initialize(_grid);
+        tower.Initialize();
         tower.UpgradeController.Purchase(tower.UpgradeTree);
 
         var mapPos = MapUtils.WorldToMap(snapped, _grid);

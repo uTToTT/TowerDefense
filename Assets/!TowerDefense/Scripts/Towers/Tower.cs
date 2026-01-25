@@ -4,10 +4,10 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetingModule))]
-public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
+public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 {
     [SerializeField] protected TowerType _towerType;
-    [SerializeField] private TowerShapeSO _shape;
+    [SerializeField] private MapObjectShape _shape;
     [HorizontalLine]
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
@@ -22,9 +22,8 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
 
     private bool _isInit;
 
-    public void Initialize(Grid grid)
+    public void Initialize()
     {
-        Grid = grid;
         _targetingModule = GetComponent<TargetingModule>();
         _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
         AddModule(_targetingModule);
@@ -107,9 +106,9 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle
             module.Tick(dt);
     }
 
-    public TowerShapeSO Shape => _shape;
+    public Vector2Int Anchor => MapUtils.WorldToMap(transform.position, MapManager.Instance.Grid);
+    public MapObjectShape Shape => _shape;
     public TowerType TowerType => _towerType;
-    public Grid Grid { get; private set; }
     public bool IsActive { get; set; }
 
     public int GetSpecPrice(int index) => 0;

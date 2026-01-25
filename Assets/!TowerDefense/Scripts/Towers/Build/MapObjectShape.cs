@@ -1,6 +1,6 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "Shape", menuName = "TD/Tower/Shape")]
-public class TowerShapeSO : ScriptableObject
+[CreateAssetMenu(fileName = "Shape", menuName = "TD/Map/Shape")]
+public class MapObjectShape : ScriptableObject
 {
     [SerializeField] private CellOffset[] _occupiedCells;
 

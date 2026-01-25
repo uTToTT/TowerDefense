@@ -5,26 +5,36 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputController
 {
-    public event Action<Vector2> OnTap;
+    public event Action OnTapPerformed;
+    public event Action OnTapCanceled;
 
     private InputActions _input;
+
+    public bool IsPointerDown { get; private set; }
 
     public void Init()
     {
         _input = new InputActions();
         _input.Enable();
 
-        _input.GamePlay.Tap.performed += OnTapPerformed;
+        _input.GamePlay.Tap.performed += TapPerformed;
+        _input.GamePlay.Tap.canceled += TapCanceled;
     }
 
-    private void OnTapPerformed(InputAction.CallbackContext context)
+    private void TapPerformed(InputAction.CallbackContext context)
     {
-        if (IsPointerOverUI()) return;
-
-        var v2 = _input.GamePlay.PointerPos.ReadValue<Vector2>();
-        OnTap?.Invoke(v2);
-        Debug.Log($"Tap | {v2}");
+        OnTapPerformed?.Invoke();
+        IsPointerDown = true;
     }
+
+    private void TapCanceled(InputAction.CallbackContext context)
+    {
+        OnTapCanceled?.Invoke();
+        IsPointerDown = false;
+    }
+
+    public Vector2 GetPointerPosition() => 
+        _input.GamePlay.PointerPos.ReadValue<Vector2>();
 
     public void EnableInput()
     {
@@ -36,7 +46,7 @@ public class PlayerInputController
         _input.GamePlay.Disable();
     }
 
-    private bool IsPointerOverUI()
+    public bool IsPointerOverUI()
     {
         if (EventSystem.current == null)
             return false;

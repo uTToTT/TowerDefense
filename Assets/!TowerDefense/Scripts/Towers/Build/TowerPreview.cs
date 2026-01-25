@@ -4,7 +4,7 @@ using UnityEngine;
 public class TowerPreview : MonoBehaviour, IPoolable, IEntityLifecycle
 {
     [SerializeField] private TowerType _towerType;
-    [SerializeField] private TowerShapeSO _towerShape;
+    [SerializeField] private MapObjectShape _towerShape;
     [Expandable]
     [SerializeField] private TargetingModuleConfig _config;
     [HorizontalLine]
@@ -13,7 +13,7 @@ public class TowerPreview : MonoBehaviour, IPoolable, IEntityLifecycle
     [SerializeField] private GameObject _maxRange;
 
     public TowerType TowerType => _towerType;
-    public TowerShapeSO Shape => _towerShape;
+    public MapObjectShape Shape => _towerShape;
     public bool IsActive { get; set; }
 
     [Button]
