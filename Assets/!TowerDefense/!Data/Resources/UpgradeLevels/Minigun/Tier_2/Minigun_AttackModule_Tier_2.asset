@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a5fc996e66d9a4d80d1d7adf31a093, type: 3}
-  m_Name: TargetingModuleConfig_Minigun_T1
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingModuleConfig
-  _minRange: 0
-  _maxRange: 1.5
+  m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
+  m_Name: Minigun_AttackModule_Tier_2
+  m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
+  _damage: 20
+  _fireRate: 1
+  _piercing: 0
+  _rotationSpeed: 60

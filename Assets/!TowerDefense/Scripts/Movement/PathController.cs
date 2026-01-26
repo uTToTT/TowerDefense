@@ -75,7 +75,6 @@ public sealed class PathController
         {
             _remainingDistance = 0f;
             OnFinishReached?.Invoke();
-            Debug.Log("Finish reached!");
         }
     }
 

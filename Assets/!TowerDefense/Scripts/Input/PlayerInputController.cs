@@ -23,8 +23,8 @@ public class PlayerInputController
 
     private void TapPerformed(InputAction.CallbackContext context)
     {
-        OnTapPerformed?.Invoke();
         IsPointerDown = true;
+        OnTapPerformed?.Invoke();
     }
 
     private void TapCanceled(InputAction.CallbackContext context)
@@ -33,8 +33,14 @@ public class PlayerInputController
         IsPointerDown = false;
     }
 
-    public Vector2 GetPointerPosition() => 
-        _input.GamePlay.PointerPos.ReadValue<Vector2>();
+    public Vector2 GetPointerPosition()
+    {
+        Vector3 screenPos = _input.GamePlay.PointerPos.ReadValue<Vector2>();
+        screenPos.z = -Camera.main.transform.position.z;
+
+        Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        return worldPos;
+    }
 
     public void EnableInput()
     {

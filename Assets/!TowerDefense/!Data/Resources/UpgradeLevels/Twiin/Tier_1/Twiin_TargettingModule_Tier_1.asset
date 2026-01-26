@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
-  m_Name: AttackModule
-  m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
-  _damage: 5
-  _fireRate: 15
-  _piercing: 0
-  _rotationSpeed: 720
+  m_Script: {fileID: 11500000, guid: 20a5fc996e66d9a4d80d1d7adf31a093, type: 3}
+  m_Name: Twiin_TargettingModule_Tier_1
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingModuleConfig
+  _minRange: 0.6
+  _maxRange: 3

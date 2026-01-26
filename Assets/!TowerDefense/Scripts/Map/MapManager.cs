@@ -76,6 +76,12 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void DestroyTowerInCell(Vector2Int pos)
+    {
+        _cellData[pos.x, pos.y].MapObject = null;
+        _cellData[pos.x, pos.y].IsBusy = false;
+    }
+
     public List<Vector3> GetRoutePoints(RouteId routeId)
     {
         var points = new List<Vector3>();

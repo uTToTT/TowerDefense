@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private WaveController _waveController;
     [SerializeField] private TowerPlacer _towerPlacer;
     [SerializeField] private CellSelector _cellSelector;
+    [SerializeField] private EconomyService _economyService;
 
     private PlayerInputController _playerInputController;
 
@@ -28,6 +29,9 @@ public class GameManager : MonoBehaviour
         _waveController.Init();
         _towerPlacer.Init();
         _mapManager.Init();
+        _economyService.Init();
+
+        _waveController.OnMoneyDropped += _economyService.AddMoney;
     }
 
     private void Update()

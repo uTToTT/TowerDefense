@@ -1,10 +1,13 @@
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class WaveController : Loader<WaveController>
 {
+    public event Action<float> OnMoneyDropped;
+
     [HorizontalLine]
     [SerializeField] private bool _enableSpawning = true;
 
@@ -147,7 +150,7 @@ public class WaveController : Loader<WaveController>
 
     private void OnEnemyDeath(Enemy enemy)
     {
-        enemy.OnDeath -= OnEnemyDeath; 
+        enemy.OnDeath -= OnEnemyDeath;
         _factories.Return(enemy);
     }
 

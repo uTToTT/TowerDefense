@@ -53,6 +53,7 @@ public class Enemy : MonoBehaviour,
     public float CurrArmor => _currArmor;
     public bool IsActive { get; set; }
     public bool IsAlive { get; private set; }
+    public float CurrMoneyDrop => _config.DropMoney;
     public BuffController BuffController => _buffController;
 
     private List<Vector3> _points;
@@ -133,7 +134,7 @@ public class Enemy : MonoBehaviour,
 
     private void DropMoney()
     {
-        EventBus.AddMoney?.Invoke(_currDropMoney);
+        EconomyService.Instance.AddMoney(CurrMoneyDrop);
     }
 
     public void Death()

@@ -25,9 +25,9 @@ public class TowerFactoryRegistry : ScriptableObject
         return _map[type].Create();
     }
 
-    public void Return(Tower enemy)
+    public void Return(Tower tower)
     {
-        _map[enemy.TowerType].Return(enemy);
+        _map[tower.TowerType].Return(tower);
     }
 
     public void ReturnAll(Tower tower)

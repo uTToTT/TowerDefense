@@ -24,12 +24,9 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 
     public void Initialize()
     {
-        _targetingModule = GetComponent<TargetingModule>();
-        _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
-        AddModule(_targetingModule);
-        _upgradeController = new TowerUpgradeController(this);
-        _isInit = true;
+
     }
+
     private void Update()
     {
         if (_isInit) Tick(Time.deltaTime);
@@ -58,7 +55,6 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         {
             BindOnHitEffects();
         }
-
     }
 
     private bool HasModule(ModuleType moduleType)
@@ -100,6 +96,11 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
             module.TryApplyConfig(config);
     }
 
+    private void ClearModules()
+    {
+        _modules.Clear();
+    }
+
     public void Tick(float dt)
     {
         foreach (var module in _modules)
@@ -114,9 +115,26 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
     public int GetSpecPrice(int index) => 0;
     public void SetUniqueTowerIndex(int index) { }
     public void Dispose() { }
-    public void OnPreload() { }
-    public void OnActivated() { }
-    public void OnDeactivated() { }
+
+    public void OnPreload()
+    {
+        _targetingModule = GetComponent<TargetingModule>();
+        _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
+
+        _upgradeController = new TowerUpgradeController(this);
+        _isInit = true;
+    }
+
+    public void OnActivated()
+    {
+        AddModule(_targetingModule);
+    }
+
+    public void OnDeactivated()
+    {
+        ClearModules();
+    }
+
     public void OnReturned() { }
     public void OnDestroyed() { }
 }

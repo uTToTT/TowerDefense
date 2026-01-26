@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class TowerPlacer : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class TowerPlacer : MonoBehaviour
         {
             button.TowerPlacer = this;
         }
+
         _towerFactory.Init();
         _towerPreviewFactory.Init();
     }
@@ -34,7 +36,7 @@ public class TowerPlacer : MonoBehaviour
 
         UpdatePreviewPosition();
 
-        if (/*GameManager.Instance.PlayerInputController.IsPointerDown == false*/)
+        if (GameManager.Instance.PlayerInputController.IsPointerDown == false)
             TryPlaceTower();
     }
 
@@ -50,11 +52,7 @@ public class TowerPlacer : MonoBehaviour
 
     private void UpdatePreviewPosition()
     {
-        Vector3 screenPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
-        screenPos.z = -Camera.main.transform.position.z;
-
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-        worldPos.z = 0f;
+        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
 
         if (!IsValidPlacement(worldPos))
         {
@@ -78,20 +76,31 @@ public class TowerPlacer : MonoBehaviour
         }
 
         var tower = _towerFactory.Create(_draggingType);
+        tower.transform.position = _towerPreview.transform.position;
         tower.Initialize();
         tower.UpgradeController.Purchase(tower.UpgradeTree);
 
         var mapPos = MapUtils.WorldToMap(snapped, _grid);
-
 
         foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
         {
             _mapManager.SetTowerInCell(cell, tower);
         }
 
-        tower.transform.position = _towerPreview.transform.position;
-
         _towerPreviewFactory.Return(_towerPreview);
+    }
+
+    public void TryDestroyTower(Tower tower)
+    {
+        if (tower == null) return;
+
+        var snapped = MapUtils.SnapToGrid(tower.transform.position, _grid);
+        var mapPos = MapUtils.WorldToMap(snapped, _grid);
+        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
+        {
+            _mapManager.DestroyTowerInCell(cell);
+        }
+        _towerFactory.Return(tower);
     }
 
     private void CancelPlacement()
