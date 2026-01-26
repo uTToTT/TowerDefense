@@ -1,17 +1,32 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectionMenu : MonoBehaviour
 {
     public event Action OnClose;
-    public event Action OnUpgrade;
+    public event Action<UpgradeNodeConfig> OnUpgrade;
 
     [SerializeField] private Button _closeButton;
-    [SerializeField] private Button _upgradeButton;
+    [SerializeField] private Transform _upgradeButtonsParent;
+    [SerializeField] private TowerUpgradeButton _upgradeButtonPrefab;
 
-    public void HighlightUpgrade() => _upgradeButton.interactable = true;
-    public void DisableUpgrade() => _upgradeButton.interactable = false;
+    private List<TowerUpgradeButton> _buttons = new();
+
+    public void CreateUpgradeButtons(IReadOnlyCollection<UpgradeNodeConfig> upgrades)
+    {
+        ClearButtons();
+
+        foreach (var upgrade in upgrades)
+        {
+            var button = Instantiate(_upgradeButtonPrefab, _upgradeButtonsParent);
+            button.Setup(upgrade);
+            button.OnClicked += HandleUpgradeSelected;
+
+            _buttons.Add(button);
+        }
+    }
 
     public void Enable() => gameObject.SetActive(true);
     public void Disable() => gameObject.SetActive(false);
@@ -19,7 +34,6 @@ public class SelectionMenu : MonoBehaviour
     private void Awake()
     {
         _closeButton.onClick.AddListener(CloseMenu);
-        _upgradeButton.onClick.AddListener(Upgrade);
     }
 
     private void CloseMenu()
@@ -28,8 +42,20 @@ public class SelectionMenu : MonoBehaviour
         Disable();
     }
 
-    private void Upgrade()
+    private void HandleUpgradeSelected(TowerUpgradeButton button, UpgradeNodeConfig config)
     {
-        OnUpgrade?.Invoke();
+        OnUpgrade?.Invoke(config);
+        Debug.Log($"Upgrade {config.name}");
+        CreateUpgradeButtons(config.Next);
+    }
+
+    private void ClearButtons()
+    {
+        for (int i = _buttons.Count -1; i >= 0; i--)
+        {
+            Destroy(_buttons[i].gameObject);
+        }
+
+        _buttons.Clear();
     }
 }

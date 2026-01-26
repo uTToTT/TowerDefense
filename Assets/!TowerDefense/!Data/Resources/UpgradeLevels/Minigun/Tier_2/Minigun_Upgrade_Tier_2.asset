@@ -15,7 +15,9 @@ MonoBehaviour:
   _id: 
   _icon: {fileID: 0}
   _cost: 0
-  _next: []
+  _next:
+  - {fileID: 11400000, guid: b6b52c12d88c66b4d8817188827037d6, type: 2}
+  - {fileID: 11400000, guid: 94ab4430aa7f8814dbf856479770658e, type: 2}
   _conditions: []
   _addModuleConfigs: []
   _modifyModuleConfigs:

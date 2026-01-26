@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class CellSelector : MonoBehaviour
@@ -10,11 +9,17 @@ public class CellSelector : MonoBehaviour
     private List<CellSelection> _selections = new();
 
     private Tower _selectedTower;
+    public bool IsTowerSelected => _selectedTower != null;
 
     public void Init()
     {
         _selectionFactory.Init();
         _selectionMenu.OnUpgrade += UpgradeTower;
+    }
+
+    private void UpgradeTower(UpgradeNodeConfig upgrade)
+    {
+        if (IsTowerSelected) _selectedTower.UpgradeController.Purchase(upgrade);
     }
 
     public void OnTap()
@@ -47,15 +52,7 @@ public class CellSelector : MonoBehaviour
 
             if (mapObject is Tower tower)
             {
-                _selectedTower = tower;
-                if (EconomyService.Instance.CanSpend(_selectedTower.UpgradeTree.Next.ElementAt(0).Cost))
-                {
-                    _selectionMenu.HighlightUpgrade();
-                }
-                else
-                {
-                    _selectionMenu.DisableUpgrade();
-                }
+                SelectTower(tower);
             }
         }
         else
@@ -69,6 +66,12 @@ public class CellSelector : MonoBehaviour
         _selectionMenu.transform.position = MapUtils.SnapToGrid(worldPos, MapManager.Instance.Grid);
     }
 
+    private void SelectTower(Tower tower)
+    {
+        _selectedTower = tower;
+        _selectionMenu.CreateUpgradeButtons(tower.UpgradeController.CurrentUpgrade.Next);
+    }
+
     private void ClearSellection()
     {
         if (_selections.Count < 0) return;
@@ -80,14 +83,8 @@ public class CellSelector : MonoBehaviour
 
         _selections.Clear();
         _selectionMenu.Disable();
-    }
 
-    private void UpgradeTower()
-    {
-        if (_selectedTower != null)
-        {
-            _selectedTower.UpgradeController.Purchase(_selectedTower.UpgradeTree.Next.ElementAt(0));
-        }
+        _selectedTower = null;
     }
 
     public static List<Vector2Int> GetOccupiedCells(

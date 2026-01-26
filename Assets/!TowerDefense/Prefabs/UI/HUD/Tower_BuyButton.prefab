@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1965397839640932078}
   - component: {fileID: 9050845775316408518}
   m_Layer: 5
-  m_Name: TowerButton
+  m_Name: Tower_BuyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

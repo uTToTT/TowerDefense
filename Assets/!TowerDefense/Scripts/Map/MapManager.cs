@@ -29,8 +29,13 @@ public class MapManager : MonoBehaviour
     public Route GetRoute(RouteId routeId) =>
      _mapData.GetRoute(routeId);
 
-    public CellData GetCellData(Vector2Int v2Int) =>
-        _cellData[v2Int.x, v2Int.y];
+    public CellData GetCellData(Vector2Int v2Int)
+    {
+        if (IsInside(v2Int))
+            return _cellData[v2Int.x, v2Int.y];
+
+        return null;
+    }
 
     public bool IsInside(Vector2Int pos)
     {
@@ -42,30 +47,22 @@ public class MapManager : MonoBehaviour
     public bool IsInside(Vector3 worldPos)
     {
         var mapPos = MapUtils.WorldToMap(worldPos, _grid);
-        var isInside = IsInside(mapPos);
-
-        if (_debug)
-        {
-            Debug.Log($"{mapPos} is inside: [{isInside}]");
-        }
-
-        return isInside;
+        return IsInside(mapPos);
     }
 
     public bool IsCellBusy(Vector2Int pos)
     {
-        var isBusy = _cellData[pos.x, pos.y].IsBusy;
+        if (IsInside(pos))
+            return _cellData[pos.x, pos.y].IsBusy;
 
-        if (_debug)
-        {
-            Debug.Log($"{pos} is busy: [{isBusy}]");
-        }
-
-        return isBusy;
+        return false;
     }
 
-    public void SetBusyState(Vector2Int pos, bool state) =>
-        _cellData[pos.x, pos.y].IsBusy = state;
+    public void SetBusyState(Vector2Int pos, bool state)
+    {
+        if (IsInside(pos))
+            _cellData[pos.x, pos.y].IsBusy = state;
+    }
 
     public void SetTowerInCell(Vector2Int pos, Tower tower)
     {

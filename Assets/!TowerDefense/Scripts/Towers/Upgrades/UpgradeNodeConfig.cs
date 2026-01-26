@@ -11,7 +11,6 @@ public class UpgradeNodeConfig : ScriptableObject
     [HorizontalLine]
 
     [SerializeField] private UpgradeNodeConfig[] _next;
-    [SerializeField] private UpgradeCondition[] _conditions;
     [SerializeField] private TowerModuleConfig[] _addModuleConfigs;
     [SerializeField] private TowerModuleConfig[] _modifyModuleConfigs;
 
@@ -20,7 +19,6 @@ public class UpgradeNodeConfig : ScriptableObject
     public int Cost => _cost;
 
     public IReadOnlyCollection<UpgradeNodeConfig> Next => _next;
-    public IReadOnlyCollection<UpgradeCondition> Conditions => _conditions;
     public IReadOnlyCollection<TowerModuleConfig> AddModuleConfigs => _addModuleConfigs;
     public IReadOnlyCollection<TowerModuleConfig> ModifyModuleConfigs => _modifyModuleConfigs;
 }

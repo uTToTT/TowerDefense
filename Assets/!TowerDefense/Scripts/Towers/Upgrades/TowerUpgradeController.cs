@@ -3,6 +3,7 @@ public class TowerUpgradeController
     private readonly Tower _tower;
     private readonly TowerUpgradeState _state;
 
+    public UpgradeNodeConfig CurrentUpgrade {  get; private set; }
     public TowerUpgradeState State => _state;
 
     public TowerUpgradeController(Tower tower)
@@ -16,9 +17,9 @@ public class TowerUpgradeController
         if (_state.IsPurchased(node))
             return false;
 
-        foreach (var condition in node.Conditions)
-            if (!condition.IsSatisfied(_tower))
-                return false;
+        //foreach (var condition in node.Conditions)
+        //    if (!condition.IsSatisfied(_tower))
+        //        return false;
 
         return EconomyService.Instance.CanSpend(node.Cost);
     }
@@ -32,5 +33,6 @@ public class TowerUpgradeController
 
         _tower.ApplyUpgrade(node);
         _state.MarkPurchased(node);
+        CurrentUpgrade = node;
     }
 }
