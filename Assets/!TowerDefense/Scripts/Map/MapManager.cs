@@ -117,9 +117,9 @@ public class MapManager : MonoBehaviour
         {
             var seleciton = _selectionFactory.Create();
             seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
+            seleciton.transform.rotation = Quaternion.identity;
             seleciton.transform.parent = mapObject.Transform;
             _selections.Add(seleciton);
-            
         }
     }
 

@@ -308,16 +308,16 @@ public class TowerControl : MonoBehaviour
     {
         List<Enemy> enemiesInRange = new List<Enemy>();
 
-        foreach (var enemy in WaveController.Instance.Enemies)
-        {
-            if (Vector2.Distance(enemy.transform.position, transform.position) < _currMaxAtackRadius)
-            {
-                if (Vector2.Distance(enemy.transform.position, transform.position) > _minAtackRadius)
-                {
-                    enemiesInRange.Add(enemy);
-                }
-            }
-        }
+        //foreach (var enemy in WaveController.Instance.Enemies)
+        //{
+        //    if (Vector2.Distance(enemy.transform.position, transform.position) < _currMaxAtackRadius)
+        //    {
+        //        if (Vector2.Distance(enemy.transform.position, transform.position) > _minAtackRadius)
+        //        {
+        //            enemiesInRange.Add(enemy);
+        //        }
+        //    }
+        //}
 
         return enemiesInRange;
     }

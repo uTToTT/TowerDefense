@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    private bool _isBattle;
+    public bool IsBattle { get; private set; }
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        if (_isBattle)
+        if (IsBattle)
         {
             _moveManager.Tick(dt);
             _waveController.Tick(dt);
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         _waveController.PlayerStartWave();
         UIManager.Instance.CloseWindow(WindowType.PreparingToWave);
 
-        _isBattle = true;
+        IsBattle = true;
     }
 
     public void WaveEnded()
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         _waveController.StopWave();
         UIManager.Instance.OpenWindow(WindowType.PreparingToWave);
 
-        _isBattle = false;
+        IsBattle = false;
     }
 
     public void AllWavesEnded()
@@ -86,14 +86,14 @@ public class GameManager : MonoBehaviour
             GameVictory();
         }
 
-        _isBattle = false;
+        IsBattle = false;
     }
 
     public void PlayerBaseDestroyed()
     {
         GameDefeat();
 
-        _isBattle = false;
+        IsBattle = false;
     }
 
     private void GameVictory()
@@ -101,13 +101,13 @@ public class GameManager : MonoBehaviour
         _waveController.StopWave();
         UIManager.Instance.OpenWindow(WindowType.Victory);
 
-        _isBattle = false;
+        IsBattle = false;
     }
 
     private void GameDefeat()
     {
         UIManager.Instance.OpenWindow(WindowType.Defeat);
 
-        _isBattle = false;
+        IsBattle = false;
     }
 }

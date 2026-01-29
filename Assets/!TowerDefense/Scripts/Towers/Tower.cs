@@ -42,7 +42,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         foreach (var moduleConfig in config.ModifyModuleConfigs)
         {
             ApplyConfig(moduleConfig);
-            Debug.Log($"Apply {moduleConfig.GetType()}");
+            //Debug.Log($"Apply {moduleConfig.GetType()}");
         }
 
         if (modulesChanged)
@@ -106,7 +106,6 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         if (!IsEnabled)
             return;
 
-        Debug.Log("Tick");
         foreach (var module in _modules)
             module.Tick(dt);
     }

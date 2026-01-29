@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class WaveController : Loader<WaveController>
+public class WaveController : MonoBehaviour
 {
     public event Action<float> OnMoneyDropped;
 
@@ -27,6 +27,8 @@ public class WaveController : Loader<WaveController>
     private EnemyTracker _enemyTracker;
 
     private bool _isPlayerWaveStarted;
+    private bool _isWaveEnded;
+    private bool _isAllWavesCompleted;
 
     public void Init()
     {
@@ -38,7 +40,9 @@ public class WaveController : Loader<WaveController>
 
     public void Tick(float dt)
     {
-        if (!_isPlayerWaveStarted) return;
+        if (!_isPlayerWaveStarted ||
+            _isWaveEnded ||
+            _isAllWavesCompleted) return;
 
         switch (_state)
         {
@@ -133,12 +137,10 @@ public class WaveController : Loader<WaveController>
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
         enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
         enemy.SetLane(group.Lane);
-        enemy.OnDeath += OnEnemyDeath;
+        enemy.OnDeath += OnEnemyDeath; 
 
         _moveManager.Register(enemy);
         RegisterEnemy(enemy);
-
-        EventBus.onShowEnemyInfo?.Invoke(enemy);
 
         // Debug.Log(
         //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
@@ -149,8 +151,8 @@ public class WaveController : Loader<WaveController>
     {
         enemy.OnDeath -= OnEnemyDeath;
         _factories.Return(enemy);
+        UnregisterEnemy(enemy);
     }
-
 
     private void SetTextWave(int waveCount)
     {
@@ -158,14 +160,28 @@ public class WaveController : Loader<WaveController>
     }
 
     public void RegisterEnemy(Enemy enemy) => _enemyTracker.Register(enemy);
-    public void UnregisterEnemy(Enemy enemy) => _enemyTracker.Unregister(enemy);
+    public void UnregisterEnemy(Enemy enemy)
+    {
+        _enemyTracker.Unregister(enemy);
+
+        if (_enemyTracker.AliveCount <= 0)
+        {
+            if (_isAllWavesCompleted)
+            {
+                _isAllWavesCompleted = false;
+                GameManager.Instance.AllWavesEnded();
+            }
+            else if (_isWaveEnded)
+            {
+                _isWaveEnded = false;
+                GameManager.Instance.WaveEnded();
+            }
+        }
+    }
 
     public void PlayerStartWave() => _isPlayerWaveStarted = true;
     public void StopWave() => _isPlayerWaveStarted = false;
 
-    private void AllWavesCompleted() => GameManager.Instance.AllWavesEnded();
-    private void WaveEnded()
-    {
-        GameManager.Instance.WaveEnded();
-    }
+    private void AllWavesCompleted() => _isAllWavesCompleted = true;
+    private void WaveEnded() => _isWaveEnded = true;
 }

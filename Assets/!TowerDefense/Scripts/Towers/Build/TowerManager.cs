@@ -57,7 +57,9 @@ public class TowerManager : MonoBehaviour
     public void SelectTower(Tower tower)
     {
         if (tower == null) return;
+        if (GameManager.Instance.IsBattle) return;
 
+        tower.Disable();
         _selectedTower = tower;
         _lastTowerValidPosition = _selectedTower.transform.position;
 
@@ -72,6 +74,7 @@ public class TowerManager : MonoBehaviour
         if (_selectedTower == null) return;
 
         PlaceTower(_selectedTower, _lastTowerValidPosition);
+        _selectedTower.Enable();
 
         _selectedTower = null;
     }
