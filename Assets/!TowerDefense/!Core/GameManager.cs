@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     private PlayerInputController _playerInputController;
 
     public PlayerInputController PlayerInputController => _playerInputController;
+    public TowerManager TowerManager => _towerManager;
+
     public static GameManager Instance { get; private set; }
 
     private bool _isBattle;
@@ -35,7 +37,8 @@ public class GameManager : MonoBehaviour
         _playerInputController.EnableInput();
 
         _cellSelector.Init();
-        _playerInputController.OnTapPerformed += _cellSelector.OnTap;
+        _playerInputController.OnTapPerformed += _cellSelector.OnTapPerformed;
+        _playerInputController.OnTapCanceled += _cellSelector.OnTapCanceled;
 
         _waveController.Init();
         _towerManager.Init();

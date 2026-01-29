@@ -48,4 +48,15 @@ public static class MapUtils
 
     public static Vector3Int WorldToGrid(Vector3 worldPos, Grid grid) =>
         grid.WorldToCell(worldPos);
+
+
+    /* =========================
+     * Moving with snap to grid
+     * ========================= */
+
+    public static void SnapToGridUnderPointer(Transform transform)
+    {
+        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
+    }
 }

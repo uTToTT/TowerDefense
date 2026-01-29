@@ -8142,12 +8142,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460040217}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1625364986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &485205329
 GameObject:
@@ -8932,8 +8932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb73ccf71550cc45aeba7819ec323cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CellSelector
-  _selectionFactory: {fileID: 11400000, guid: 5f11a0bb8fd27ed48a71fe808f6ac644, type: 2}
-  _selectionMenu: {fileID: 837328896}
 --- !u!1 &837328894
 GameObject:
   m_ObjectHideFlags: 0
@@ -8987,6 +8985,7 @@ MonoBehaviour:
   _closeButton: {fileID: 1663252129}
   _upgradeButtonsParent: {fileID: 1252288189}
   _upgradeButtonPrefab: {fileID: 5866497551016552016, guid: cf7023c2cc30eed49a43169b7ad9617e, type: 3}
+  _buttons: []
 --- !u!1 &858670986
 GameObject:
   m_ObjectHideFlags: 0
@@ -10752,6 +10751,8 @@ Transform:
   - {fileID: 1006413811}
   - {fileID: 756892452}
   - {fileID: 1523481841}
+  - {fileID: 1982400814}
+  - {fileID: 460040219}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1663252127
@@ -12307,6 +12308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
   _debug: 0
+  _selectionFactory: {fileID: 11400000, guid: 5f11a0bb8fd27ed48a71fe808f6ac644, type: 2}
   _grid: {fileID: 1116896032}
   _mapComposer: {fileID: 460040218}
   _mapData: {fileID: 11400000, guid: 96bd79dd1b08aa94399642326af82613, type: 2}
@@ -12318,12 +12320,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982400812}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1625364986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2009410498 stripped
 MonoBehaviour:
@@ -12752,8 +12754,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 58116582}
   - {fileID: 985328394}
-  - {fileID: 460040219}
-  - {fileID: 1982400814}
   - {fileID: 1144666569}
   - {fileID: 1093447683}
   - {fileID: 1535930454}

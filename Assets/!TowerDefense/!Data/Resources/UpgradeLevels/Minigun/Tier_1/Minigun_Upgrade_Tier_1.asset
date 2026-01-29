@@ -17,7 +17,6 @@ MonoBehaviour:
   _cost: 0
   _next:
   - {fileID: 11400000, guid: 43d673b969876cd419c9525eacda5f6d, type: 2}
-  _conditions: []
   _addModuleConfigs:
   - {fileID: 11400000, guid: 72e9430d06315704190a9df4f6e00a0f, type: 2}
   _modifyModuleConfigs:

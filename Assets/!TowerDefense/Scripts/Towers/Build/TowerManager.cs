@@ -16,6 +16,9 @@ public class TowerManager : MonoBehaviour
     private TowerType _draggingType;
     private bool _isDragging;
 
+    private Tower _selectedTower;
+    private Vector2 _lastTowerValidPosition;
+
     private Grid Grid => MapManager.Instance.Grid;
     private MapManager MapManager => MapManager.Instance;
 
@@ -32,7 +35,14 @@ public class TowerManager : MonoBehaviour
 
     public void Tick(float dt)
     {
-        foreach(var tower in _builtTowers)
+        if (_selectedTower != null)
+        {
+            MapUtils.SnapToGridUnderPointer(_selectedTower.transform);
+            if (IsValidPlacement(_selectedTower.transform.position))
+                _lastTowerValidPosition = _selectedTower.transform.position;
+        }
+
+        foreach (var tower in _builtTowers)
             tower.Tick(dt);
 
         if (!_isDragging)
@@ -42,6 +52,28 @@ public class TowerManager : MonoBehaviour
 
         if (GameManager.Instance.PlayerInputController.IsPointerDown == false)
             TryPlaceTower();
+    }
+
+    public void SelectTower(Tower tower)
+    {
+        if (tower == null) return;
+
+        _selectedTower = tower;
+        _lastTowerValidPosition = _selectedTower.transform.position;
+
+        foreach (var cell in MapManager.GetOccupiedCells(tower.MapPos, tower.Shape))
+        {
+            MapManager.RemoveTowerInCell(cell);
+        }
+    }
+
+    public void UnselectTower()
+    {
+        if (_selectedTower == null) return;
+
+        PlaceTower(_selectedTower, _lastTowerValidPosition);
+
+        _selectedTower = null;
     }
 
     public void BeginDrag(TowerType towerType)
@@ -56,15 +88,24 @@ public class TowerManager : MonoBehaviour
 
     private void UpdatePreviewPosition()
     {
-        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        MapUtils.SnapToGridUnderPointer(_towerPreview.transform);
 
-        if (!IsValidPlacement(worldPos))
+        if (IsValidPlacement(_towerPreview.transform.position))
+            _lastTowerValidPosition = _towerPreview.transform.position;
+    }
+
+    /// <returns>Return snapped position</returns>
+    private void PlaceTower(Tower tower, Vector2 pos)
+    {
+        tower.transform.position = pos;
+
+        var mapPos = MapUtils.WorldToMap(_lastTowerValidPosition, Grid);
+        tower.MapPos = mapPos; 
+
+        foreach (var cell in MapManager.GetOccupiedCells(mapPos, tower.Shape))
         {
-            return;
+            MapManager.SetTowerInCell(cell, tower);
         }
-
-        _towerPreview.transform.position =
-            MapUtils.SnapToGrid(worldPos, Grid);
     }
 
     private void TryPlaceTower()
@@ -80,34 +121,12 @@ public class TowerManager : MonoBehaviour
         }
 
         var tower = _towerFactory.Create(_draggingType);
-        tower.transform.position = _towerPreview.transform.position;
-        tower.UpgradeController.Purchase(tower.UpgradeTree);
-
+        PlaceTower(tower, snapped);
         _builtTowers.Add(tower);
 
         tower.Enable();
 
-        var mapPos = MapUtils.WorldToMap(snapped, Grid);
-
-        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
-        {
-            MapManager.SetTowerInCell(cell, tower);
-        }
-
         _towerPreviewFactory.Return(_towerPreview);
-    }
-
-    public void TryDestroyTower(Tower tower)
-    {
-        if (tower == null) return;
-
-        var snapped = MapUtils.SnapToGrid(tower.transform.position, Grid);
-        var mapPos = MapUtils.WorldToMap(snapped, Grid);
-        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
-        {
-            MapManager.DestroyTowerInCell(cell);
-        }
-        _towerFactory.Return(tower);
     }
 
     private void CancelPlacement()
@@ -119,7 +138,7 @@ public class TowerManager : MonoBehaviour
     {
         Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
 
-        foreach (var cell in CellSelector.GetOccupiedCells(mapPos, _towerPreview.Shape))
+        foreach (var cell in MapManager.GetOccupiedCells(mapPos, _towerPreview.Shape))
         {
             if (!MapManager.IsInside(cell))
                 return false;

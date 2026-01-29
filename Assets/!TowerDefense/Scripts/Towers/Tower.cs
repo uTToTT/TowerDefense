@@ -42,7 +42,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         foreach (var moduleConfig in config.ModifyModuleConfigs)
         {
             ApplyConfig(moduleConfig);
-            //Debug.Log($"Apply {moduleConfig.GetType()}");
+            Debug.Log($"Apply {moduleConfig.GetType()}");
         }
 
         if (modulesChanged)
@@ -86,6 +86,12 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 
     private void ApplyConfig(TowerModuleConfig config)
     {
+        if (config is TargetingModuleConfig)
+        {
+            _targetingModule.TryApplyConfig(config);
+            return;
+        }
+
         foreach (var module in _modules)
             module.TryApplyConfig(config);
     }
@@ -97,11 +103,16 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 
     public void Tick(float dt)
     {
+        if (!IsEnabled)
+            return;
+
+        Debug.Log("Tick");
         foreach (var module in _modules)
             module.Tick(dt);
     }
 
-    public Vector2Int Anchor => MapUtils.WorldToMap(transform.position, MapManager.Instance.Grid);
+    public Transform Transform => transform;
+    public Vector2Int MapPos { get;  set; }
     public MapObjectShape Shape => _shape;
     public TowerType TowerType => _towerType;
     public bool IsActive { get; set; }
@@ -112,16 +123,17 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 
     public void OnPreload()
     {
+        IsEnabled = false;
+
         _targetingModule = GetComponent<TargetingModule>();
         _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
 
         _upgradeController = new TowerUpgradeController(this);
-        IsEnabled = false;
+        _upgradeController.Purchase(UpgradeTree);
     }
 
     public void OnActivated()
     {
-        AddModule(_targetingModule);
     }
 
     public void OnDeactivated()

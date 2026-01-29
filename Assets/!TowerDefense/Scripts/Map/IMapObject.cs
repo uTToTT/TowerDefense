@@ -2,6 +2,7 @@ using UnityEngine;
 
 public interface IMapObject
 {
-    Vector2Int Anchor { get; }
+    Transform Transform { get; }
+    Vector2Int MapPos { get; }
     MapObjectShape Shape { get; }
 }

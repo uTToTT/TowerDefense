@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    [SerializeField] private bool _debug;
     [HorizontalLine]
+    [SerializeField] private bool _debug;
 
+    [HorizontalLine]
+    [SerializeField] private CellSelectionFactory _selectionFactory;
+
+    [HorizontalLine]
     [SerializeField] private Grid _grid;
     [SerializeField] private MapComposer _mapComposer;
     [SerializeField] private MapData _mapData;
 
     private CellData[,] _cellData;
+    private List<CellSelection> _selections = new();
 
     public Grid Grid => _grid;
 
@@ -22,6 +27,7 @@ public class MapManager : MonoBehaviour
         Instance = this;
 
         CenterGrid(_mapData);
+        _selectionFactory.Init();
         _cellData = new CellData[_mapData.width, _mapData.height];
         _mapComposer.Build(_mapData, _cellData, _grid);
     }
@@ -73,7 +79,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void DestroyTowerInCell(Vector2Int pos)
+    public void RemoveTowerInCell(Vector2Int pos)
     {
         _cellData[pos.x, pos.y].MapObject = null;
         _cellData[pos.x, pos.y].IsBusy = false;
@@ -92,6 +98,43 @@ public class MapManager : MonoBehaviour
         return points;
     }
 
+    public CellData Raycast()
+    {
+        if (GameManager.Instance.PlayerInputController.IsPointerOverUI())
+            return null;
+
+        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        var mapPos = MapUtils.WorldToMap(worldPos, Grid);
+
+        return GetCellData(mapPos);
+    }
+
+    public void DrawBorderMapObject(IMapObject mapObject)
+    {
+        var occupiedCells = GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
+
+        for (int i = 0; i < occupiedCells.Count; i++)
+        {
+            var seleciton = _selectionFactory.Create();
+            seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
+            seleciton.transform.parent = mapObject.Transform;
+            _selections.Add(seleciton);
+            
+        }
+    }
+
+    public void ClearSellection()
+    {
+        if (_selections.Count < 0) return;
+
+        for (int i = _selections.Count - 1; i >= 0; i--)
+        {
+            _selectionFactory.Return(_selections[i]);
+        }
+
+        _selections.Clear();
+    }
+
     private void CenterGrid(MapData map)
     {
         Vector3 gridSize = new Vector3(
@@ -107,5 +150,22 @@ public class MapManager : MonoBehaviour
                 _grid.cellSize.y * 0.5f,
                 0f
             );
+    }
+
+    public static List<Vector2Int> GetOccupiedCells(
+    Vector2Int anchor,
+    MapObjectShape shape)
+    {
+        var result = new List<Vector2Int>();
+
+        foreach (var offset in shape.OccupiedCells)
+        {
+            result.Add(new Vector2Int(
+                anchor.x + offset.X,
+                anchor.y + offset.Y
+            ));
+        }
+
+        return result;
     }
 }
