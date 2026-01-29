@@ -20,17 +20,11 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
     public TowerUpgradeController UpgradeController => _upgradeController;
     public TargetingModule TargetingModule => _targetingModule;
 
-    private bool _isInit;
+    public bool IsEnabled { get; private set; }
 
-    public void Initialize()
-    {
+    public void Enable() => IsEnabled = true;
+    public void Disable() => IsEnabled = false;
 
-    }
-
-    private void Update()
-    {
-        if (_isInit) Tick(Time.deltaTime);
-    }
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
         bool modulesChanged = false;
@@ -48,7 +42,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         foreach (var moduleConfig in config.ModifyModuleConfigs)
         {
             ApplyConfig(moduleConfig);
-            Debug.Log($"Apply {moduleConfig.GetType()}");
+            //Debug.Log($"Apply {moduleConfig.GetType()}");
         }
 
         if (modulesChanged)
@@ -122,7 +116,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
         _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
 
         _upgradeController = new TowerUpgradeController(this);
-        _isInit = true;
+        IsEnabled = false;
     }
 
     public void OnActivated()

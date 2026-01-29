@@ -1,22 +1,23 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
-public class TowerPlacer : MonoBehaviour
+public class TowerManager : MonoBehaviour
 {
     [SerializeField] private TowerBuildButton[] _buildButtons;
-    [SerializeField] private Grid _grid;
-    [SerializeField] private MapManager _mapManager;
     [HorizontalLine]
 
     [SerializeField] private TowerFactoryRegistry _towerFactory;
     [SerializeField] private TowerPreviewFactoryRegistry _towerPreviewFactory;
 
+    private List<Tower> _builtTowers = new();
     private TowerPreview _towerPreview;
 
     private TowerType _draggingType;
     private bool _isDragging;
+
+    private Grid Grid => MapManager.Instance.Grid;
+    private MapManager MapManager => MapManager.Instance;
 
     public void Init()
     {
@@ -29,8 +30,11 @@ public class TowerPlacer : MonoBehaviour
         _towerPreviewFactory.Init();
     }
 
-    private void Update()
+    public void Tick(float dt)
     {
+        foreach(var tower in _builtTowers)
+            tower.Tick(dt);
+
         if (!_isDragging)
             return;
 
@@ -60,14 +64,14 @@ public class TowerPlacer : MonoBehaviour
         }
 
         _towerPreview.transform.position =
-            MapUtils.SnapToGrid(worldPos, _grid);
+            MapUtils.SnapToGrid(worldPos, Grid);
     }
 
     private void TryPlaceTower()
     {
         _isDragging = false;
 
-        var snapped = MapUtils.SnapToGrid(_towerPreview.transform.position, _grid);
+        var snapped = MapUtils.SnapToGrid(_towerPreview.transform.position, Grid);
 
         if (!IsValidPlacement(snapped))
         {
@@ -77,14 +81,17 @@ public class TowerPlacer : MonoBehaviour
 
         var tower = _towerFactory.Create(_draggingType);
         tower.transform.position = _towerPreview.transform.position;
-        tower.Initialize();
         tower.UpgradeController.Purchase(tower.UpgradeTree);
 
-        var mapPos = MapUtils.WorldToMap(snapped, _grid);
+        _builtTowers.Add(tower);
+
+        tower.Enable();
+
+        var mapPos = MapUtils.WorldToMap(snapped, Grid);
 
         foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
         {
-            _mapManager.SetTowerInCell(cell, tower);
+            MapManager.SetTowerInCell(cell, tower);
         }
 
         _towerPreviewFactory.Return(_towerPreview);
@@ -94,11 +101,11 @@ public class TowerPlacer : MonoBehaviour
     {
         if (tower == null) return;
 
-        var snapped = MapUtils.SnapToGrid(tower.transform.position, _grid);
-        var mapPos = MapUtils.WorldToMap(snapped, _grid);
+        var snapped = MapUtils.SnapToGrid(tower.transform.position, Grid);
+        var mapPos = MapUtils.WorldToMap(snapped, Grid);
         foreach (var cell in CellSelector.GetOccupiedCells(mapPos, tower.Shape))
         {
-            _mapManager.DestroyTowerInCell(cell);
+            MapManager.DestroyTowerInCell(cell);
         }
         _towerFactory.Return(tower);
     }
@@ -110,18 +117,16 @@ public class TowerPlacer : MonoBehaviour
 
     private bool IsValidPlacement(Vector3 worldPos)
     {
-        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, _grid);
+        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
 
         foreach (var cell in CellSelector.GetOccupiedCells(mapPos, _towerPreview.Shape))
         {
-            if (!_mapManager.IsInside(cell))
+            if (!MapManager.IsInside(cell))
                 return false;
-            if (_mapManager.IsCellBusy(cell))
+            if (MapManager.IsCellBusy(cell))
                 return false;
         }
 
         return true;
     }
-
-
 }

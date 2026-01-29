@@ -140,6 +140,7 @@ public class Enemy : MonoBehaviour,
     public void Death()
     {
         WaveController.Instance.UnregisterEnemy(this);
+        MoveManager.Instance.Unregister(this);
         OnDeath?.Invoke(this);
     }
 

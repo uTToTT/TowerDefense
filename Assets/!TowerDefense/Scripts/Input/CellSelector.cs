@@ -4,7 +4,6 @@ using UnityEngine;
 public class CellSelector : MonoBehaviour
 {
     [SerializeField] private CellSelectionFactory _selectionFactory;
-    [SerializeField] private SelectionMenu _selectionMenu;
 
     private List<CellSelection> _selections = new();
 
@@ -14,7 +13,6 @@ public class CellSelector : MonoBehaviour
     public void Init()
     {
         _selectionFactory.Init();
-        _selectionMenu.OnUpgrade += UpgradeTower;
     }
 
     private void UpgradeTower(UpgradeNodeConfig upgrade)
@@ -62,14 +60,10 @@ public class CellSelector : MonoBehaviour
             _selections.Add(seleciton);
         }
 
-        _selectionMenu.Enable();
-        _selectionMenu.transform.position = MapUtils.SnapToGrid(worldPos, MapManager.Instance.Grid);
     }
 
     private void SelectTower(Tower tower)
     {
-        _selectedTower = tower;
-        _selectionMenu.CreateUpgradeButtons(tower.UpgradeController.CurrentUpgrade.Next);
     }
 
     private void ClearSellection()
@@ -82,7 +76,6 @@ public class CellSelector : MonoBehaviour
         }
 
         _selections.Clear();
-        _selectionMenu.Disable();
 
         _selectedTower = null;
     }

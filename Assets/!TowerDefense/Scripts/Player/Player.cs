@@ -39,5 +39,5 @@ public class Player : MonoBehaviour
             Defeat();
     }
 
-    private void Defeat() => EventBus.GameOver?.Invoke();
+    private void Defeat() => GameManager.Instance.PlayerBaseDestroyed();
 }

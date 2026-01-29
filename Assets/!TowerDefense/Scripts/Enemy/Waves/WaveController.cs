@@ -9,17 +9,11 @@ public class WaveController : Loader<WaveController>
     public event Action<float> OnMoneyDropped;
 
     [HorizontalLine]
-    [SerializeField] private bool _enableSpawning = true;
-
-    [HorizontalLine]
     [SerializeField, Range(0, 10)] private float _delayBeforeWave = 3;
 
     [HorizontalLine]
-    [SerializeField] private Grid _grid;
-    [SerializeField] private MapData _mapData;
     [SerializeField] private TextMeshProUGUI _waveText;
     [SerializeField] private WavesData _wavesInfo;
-    [SerializeField] private MapManager _mapManager;
     [SerializeField] private MoveManager _moveManager;
     [HorizontalLine]
     [SerializeField] private EnemyFactoryRegistry _factories;
@@ -32,6 +26,8 @@ public class WaveController : Loader<WaveController>
 
     private EnemyTracker _enemyTracker;
 
+    private bool _isPlayerWaveStarted;
+
     public void Init()
     {
         _factories.Init();
@@ -42,7 +38,7 @@ public class WaveController : Loader<WaveController>
 
     public void Tick(float dt)
     {
-        if (!_enableSpawning) return;
+        if (!_isPlayerWaveStarted) return;
 
         switch (_state)
         {
@@ -85,6 +81,7 @@ public class WaveController : Loader<WaveController>
 
         if (allGroupsCompleted)
         {
+            WaveEnded();
             PrepareNextWave();
         }
     }
@@ -96,7 +93,7 @@ public class WaveController : Loader<WaveController>
         if (_currWaveIndex >= _wavesInfo.Waves.Length)
         {
             _state = WaveSpawnerState.Completed;
-            Debug.Log("All waves completed");
+            AllWavesCompleted();
             return;
         }
 
@@ -128,13 +125,13 @@ public class WaveController : Loader<WaveController>
     private void SpawnEnemy(Group group)
     {
         Enemy enemy = _factories.Create(group.EnemyType);
-        enemy.transform.position = 
+        enemy.transform.position =
             MapUtils.GridToWorld(
-                _mapManager.GetRoute(group.Route).entrance,
-                _grid);
+                MapManager.Instance.GetRoute(group.Route).entrance,
+                MapManager.Instance.Grid);
         enemy.HPMultiply(group.HpMultiplier);
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
-        enemy.BuildRoute(_mapManager.GetRoutePoints(group.Route));
+        enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
         enemy.SetLane(group.Lane);
         enemy.OnDeath += OnEnemyDeath;
 
@@ -143,9 +140,9 @@ public class WaveController : Loader<WaveController>
 
         EventBus.onShowEnemyInfo?.Invoke(enemy);
 
-       // Debug.Log(
-       //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
-       //);
+        // Debug.Log(
+        //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
+        //);
     }
 
     private void OnEnemyDeath(Enemy enemy)
@@ -162,4 +159,13 @@ public class WaveController : Loader<WaveController>
 
     public void RegisterEnemy(Enemy enemy) => _enemyTracker.Register(enemy);
     public void UnregisterEnemy(Enemy enemy) => _enemyTracker.Unregister(enemy);
+
+    public void PlayerStartWave() => _isPlayerWaveStarted = true;
+    public void StopWave() => _isPlayerWaveStarted = false;
+
+    private void AllWavesCompleted() => GameManager.Instance.AllWavesEnded();
+    private void WaveEnded()
+    {
+        GameManager.Instance.WaveEnded();
+    }
 }
