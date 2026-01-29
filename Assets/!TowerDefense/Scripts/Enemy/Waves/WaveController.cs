@@ -1,48 +1,42 @@
 using NaughtyAttributes;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class WaveController : MonoBehaviour
 {
-    public event Action<float> OnMoneyDropped;
-
-    [HorizontalLine]
-    [SerializeField, Range(0, 10)] private float _delayBeforeWave = 3;
-
     [HorizontalLine]
     [SerializeField] private TextMeshProUGUI _waveText;
     [SerializeField] private WavesData _wavesInfo;
-    [SerializeField] private MoveManager _moveManager;
+
     [HorizontalLine]
     [SerializeField] private EnemyFactoryRegistry _factories;
 
+    private float _delayBeforeWave;
     private float _waveDelayTimer;
     private int _currWaveIndex = -1;
     private List<GroupRuntime> _activeGroups;
     private WaveSpawnerState _state;
-    public IReadOnlyCollection<Enemy> Enemies => _enemyTracker.AliveEnemies;
 
-    private EnemyTracker _enemyTracker;
+    public bool IsPlayerWaveStarted { get; set; }
+    public bool IsWaveEnded { get; set; }
+    public bool IsAllWavesCompleted { get; set; }
 
-    private bool _isPlayerWaveStarted;
-    private bool _isWaveEnded;
-    private bool _isAllWavesCompleted;
+    public int CurrWave => _currWaveIndex + 1;
+    public int LastWave => _wavesInfo.Waves.Length;
 
-    public void Init()
+    public void Init(float delayBeforeWave)
     {
         _factories.Init();
-        _enemyTracker = new EnemyTracker();
-        SetTextWave(0);
+        _delayBeforeWave = delayBeforeWave;
         PrepareNextWave();
     }
 
     public void Tick(float dt)
     {
-        if (!_isPlayerWaveStarted ||
-            _isWaveEnded ||
-            _isAllWavesCompleted) return;
+        if (!IsPlayerWaveStarted ||
+            IsWaveEnded ||
+            IsAllWavesCompleted) return;
 
         switch (_state)
         {
@@ -106,6 +100,8 @@ public class WaveController : MonoBehaviour
         _waveDelayTimer = _delayBeforeWave;
         _state = WaveSpawnerState.WaitingForNextWave;
 
+        UpdateWaveText();
+
         Debug.Log($"Wave {_currWaveIndex + 1} will start in {_delayBeforeWave} sec");
     }
 
@@ -137,10 +133,9 @@ public class WaveController : MonoBehaviour
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
         enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
         enemy.SetLane(group.Lane);
-        enemy.OnDeath += OnEnemyDeath; 
+        enemy.OnDeath += OnEnemyDeath;
 
-        _moveManager.Register(enemy);
-        RegisterEnemy(enemy);
+        EnemyManager.Instance.Register(enemy);
 
         // Debug.Log(
         //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
@@ -151,37 +146,14 @@ public class WaveController : MonoBehaviour
     {
         enemy.OnDeath -= OnEnemyDeath;
         _factories.Return(enemy);
-        UnregisterEnemy(enemy);
+        EnemyManager.Instance.Unregister(enemy);
     }
 
-    private void SetTextWave(int waveCount)
-    {
-        _waveText.text = waveCount.ToString() + "\\" + _wavesInfo.Waves.Length.ToString();
-    }
+    private void UpdateWaveText() => _waveText.text = CurrWave + "\\" + LastWave;
 
-    public void RegisterEnemy(Enemy enemy) => _enemyTracker.Register(enemy);
-    public void UnregisterEnemy(Enemy enemy)
-    {
-        _enemyTracker.Unregister(enemy);
+    public void PlayerStartWave() => IsPlayerWaveStarted = true;
+    public void StopWave() => IsPlayerWaveStarted = false;
 
-        if (_enemyTracker.AliveCount <= 0)
-        {
-            if (_isAllWavesCompleted)
-            {
-                _isAllWavesCompleted = false;
-                GameManager.Instance.AllWavesEnded();
-            }
-            else if (_isWaveEnded)
-            {
-                _isWaveEnded = false;
-                GameManager.Instance.WaveEnded();
-            }
-        }
-    }
-
-    public void PlayerStartWave() => _isPlayerWaveStarted = true;
-    public void StopWave() => _isPlayerWaveStarted = false;
-
-    private void AllWavesCompleted() => _isAllWavesCompleted = true;
-    private void WaveEnded() => _isWaveEnded = true;
+    private void AllWavesCompleted() => IsAllWavesCompleted = true;
+    private void WaveEnded() => IsWaveEnded = true;
 }

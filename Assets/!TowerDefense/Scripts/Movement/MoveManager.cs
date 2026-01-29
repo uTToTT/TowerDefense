@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class MoveManager : MonoBehaviour
 {
     [SerializeField] private bool _isMoveActive;
-    //[SerializeField] private TMP_Text _counter;
     [SerializeField] private MapManager _mapManager;
 
     private readonly List<IMovable> _movables = new();
@@ -50,7 +48,6 @@ public class MoveManager : MonoBehaviour
                 _movables.Remove(item);
             }
 
-            //_counter.text = $"Movables: {_movables.Count}";
             _toRemove.Clear();
         }
 
@@ -61,7 +58,6 @@ public class MoveManager : MonoBehaviour
                 _movables.Add(item);
             }
 
-            //_counter.text = $"Movables: {_movables.Count}";
             _toAdd.Clear();
         }
     }
