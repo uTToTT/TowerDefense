@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class MapUtils
@@ -59,4 +60,71 @@ public static class MapUtils
         var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
         transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
     }
+
+
+    /* =========================
+     * Ports
+     * ========================= */
+    public static List<WorldPort> GetWorldPorts(IMapObject obj)
+    {
+        var result = new List<WorldPort>();
+
+        foreach (var port in obj.Shape.Ports)
+        {
+            var worldCell = new Vector2Int(
+                obj.MapPos.x + port.Cell.X,
+                obj.MapPos.y + port.Cell.Y
+            );
+
+            result.Add(new WorldPort
+            {
+                Owner = obj,
+                Cell = worldCell,
+                Direction = port.Direction,
+                Type = port.Type
+            });
+        }
+
+        return result;
+    }
+
+    public static bool ArePortsConnected(WorldPort a, WorldPort b)
+    {
+        if (a.Owner == b.Owner)
+            return false;
+
+        if (a.Type != b.Type)
+            return false;
+
+        if (a.Direction.Opposite() != b.Direction)
+            return false;
+
+        return a.Cell + a.Direction.ToOffset() == b.Cell;
+    }
+
+    public static void ResolveConnections(IMapObject placedObject)
+    {
+        var ports = GetWorldPorts(placedObject);
+
+        foreach (var port in ports)
+        {
+            var targetCell = port.Cell + port.Direction.ToOffset();
+
+            var cellData = MapManager.Instance.GetCellData(targetCell);
+            if (cellData?.MapObject == null)
+                continue;
+
+            var otherObject = cellData.MapObject;
+            var otherPorts = GetWorldPorts(otherObject);
+
+            foreach (var otherPort in otherPorts)
+            {
+                if (ArePortsConnected(port, otherPort))
+                {
+                    //ApplyBuff(port, otherPort);
+                }
+            }
+        }
+    }
 }
+

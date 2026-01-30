@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button _startWaveButton;
 
     [SerializeField] private MapManager _mapManager;
-    [SerializeField] private MoveManager _moveManager;
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private CellSelector _cellSelector;
     [SerializeField] private EconomyService _economyService;
@@ -60,7 +59,6 @@ public class GameManager : MonoBehaviour
 
         if (IsBattle)
         {
-            _moveManager.Tick(dt);
             _enemyManager.Tick(dt);
         }
 
@@ -85,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void AllWavesEnded()
     {
-        Debug.Log("All waves completed");
+        //Debug.Log("All waves completed");
         if (_player.CurrHP > 0)
         {
             GameVictory();

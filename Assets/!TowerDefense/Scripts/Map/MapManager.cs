@@ -64,12 +64,6 @@ public class MapManager : MonoBehaviour
         return false;
     }
 
-    public void SetBusyState(Vector2Int pos, bool state)
-    {
-        if (IsInside(pos))
-            _cellData[pos.x, pos.y].IsBusy = state;
-    }
-
     public void SetTowerInCell(Vector2Int pos, Tower tower)
     {
         if (tower != null)
