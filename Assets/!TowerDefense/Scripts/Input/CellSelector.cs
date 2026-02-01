@@ -9,6 +9,7 @@ public class CellSelector : MonoBehaviour
     public void OnTapCanceled()
     {
         MapManager.Instance.ClearSellection();
+        MapManager.Instance.HideMapObjectPorts();
         UnselectTower();
     }
 
@@ -28,6 +29,7 @@ public class CellSelector : MonoBehaviour
             if (mapObject is Tower tower)
             {
                 SelectTower(tower);
+                MapManager.Instance.ShowMapObjectPorts(tower);
             }
         }
     }

@@ -14,7 +14,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
     [SerializeField] private TypeTargetByCharacteristic _targetCharacteristic;
     [SerializeField] private TypeTargetByDistance _targetDistance;
 
-    private TargetingModuleConfig _config;
+    public TargetingModuleConfig Config;
+
     private List<Enemy> _targets = new();
 
     public ModuleType ModuleType => ModuleType.Targeting;
@@ -30,11 +31,11 @@ public class TargetingModule : MonoBehaviour, ITowerModule
 
     private void OnDrawGizmos()
     {
-        if (!_debug || _config == null) return;
+        if (!_debug || Config == null) return;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _config.MinRange);
-        Gizmos.DrawSphere(transform.position, _config.MaxRange);
+        Gizmos.DrawWireSphere(transform.position, Config.MinRange);
+        Gizmos.DrawSphere(transform.position, Config.MaxRange);
     }
 
     public void Tick(float deltaTime) { }
@@ -44,8 +45,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         if (config is not TargetingModuleConfig targetingConfig)
             return false;
 
-        _config = targetingConfig;
-        _collider.radius = _config.MaxRange;
+        Config = targetingConfig;
+        _collider.radius = Config.MaxRange;
 
         return true;
     }
@@ -67,8 +68,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
 
         Vector3 towerPos = transform.position;
 
-        float minRangeSqr = _config.MinRange * _config.MinRange;
-        float maxRangeSqr = _config.MaxRange * _config.MaxRange;
+        float minRangeSqr = Config.MinRange * Config.MinRange;
+        float maxRangeSqr = Config.MaxRange * Config.MaxRange;
 
         for (int i = _targets.Count - 1; i >= 0; i--)
         {

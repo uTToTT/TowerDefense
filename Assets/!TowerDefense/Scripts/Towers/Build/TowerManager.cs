@@ -109,6 +109,9 @@ public class TowerManager : MonoBehaviour
         {
             MapManager.SetTowerInCell(cell, tower);
         }
+
+        MapManager.ResolveConnections(tower);
+        EnergyNetworkManager.Instance.RegisterNode(tower);
     }
 
     private void TryPlaceTower()

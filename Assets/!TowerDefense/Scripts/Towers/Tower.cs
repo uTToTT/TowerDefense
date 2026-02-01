@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetingModule))]
-public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
+public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
 {
     [SerializeField] protected TowerType _towerType;
     [SerializeField] private MapObjectShape _shape;
@@ -115,6 +115,11 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
     public MapObjectShape Shape => _shape;
     public TowerType TowerType => _towerType;
     public bool IsActive { get; set; }
+    public EnergyNetwork EnergyNetwork { get ; set; }
+
+    public float EnergyProduction => 1;
+
+    public float EnergyConsumption => 2;
 
     public int GetSpecPrice(int index) => 0;
     public void SetUniqueTowerIndex(int index) { }
@@ -142,6 +147,11 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IMapObject
 
     public void OnReturned() { }
     public void OnDestroyed() { }
+
+    public void OnNetworkUpdated(EnergyNetwork network)
+    {
+        //throw new System.NotImplementedException();
+    }
 }
 
 public enum SpecTypeMinigun

@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -17,6 +18,9 @@ public class MapManager : MonoBehaviour
 
     private CellData[,] _cellData;
     private List<CellSelection> _selections = new();
+
+    private bool _isDrawMapObjectPorts;
+    private IMapObject _selectedMapObject;
 
     public Grid Grid => _grid;
 
@@ -117,6 +121,105 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void ShowMapObjectPorts(IMapObject mapObject)
+    {
+        _isDrawMapObjectPorts = true;
+        _selectedMapObject = mapObject;
+    }
+
+    public void HideMapObjectPorts()
+    {
+        _isDrawMapObjectPorts = false;
+        _selectedMapObject = null;
+    }
+
+    public static List<WorldPort> GetWorldPorts(IMapObject obj)
+    {
+        var result = new List<WorldPort>();
+
+        foreach (var port in obj.Shape.Ports)
+        {
+            var worldCell = new Vector2Int(
+                obj.MapPos.x + port.Cell.X,
+                obj.MapPos.y + port.Cell.Y
+            );
+
+            result.Add(new WorldPort
+            {
+                Owner = obj,
+                Cell = worldCell,
+                Direction = port.Direction,
+                Type = port.Type
+            });
+        }
+
+        return result;
+    }
+
+    public bool ArePortsConnected(WorldPort a, WorldPort b)
+    {
+        if (a.Owner == b.Owner)
+            return false;
+
+        if (a.Type != b.Type)
+            return false;
+
+        if (a.Direction.Opposite() != b.Direction)
+            return false;
+
+        return a.Cell + a.Direction.ToOffset() == b.Cell;
+    }
+
+    public void ResolveConnections(IMapObject placedObject)
+    {
+        var ports = GetWorldPorts(placedObject);
+
+        foreach (var port in ports)
+        {
+            var targetCell = port.Cell + port.Direction.ToOffset();
+
+            var cellData = GetCellData(targetCell);
+            if (cellData?.MapObject == null)
+                continue;
+
+            var otherObject = cellData.MapObject;
+            var otherPorts = GetWorldPorts(otherObject);
+
+            foreach (var otherPort in otherPorts)
+            {
+                if (ArePortsConnected(port, otherPort))
+                {
+                    Debug.Log($"[{port.Cell}]&[{otherPort.Cell}] | [{port.Type}] Connected");
+                    //ApplyBuff(port, otherPort);
+                }
+            }
+        }
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        if (_isDrawMapObjectPorts &&
+            _selectedMapObject.Shape.Ports != null &&
+            _selectedMapObject.Shape.Ports.Length > 0)
+        {
+            DrawPorts(_selectedMapObject);
+        }
+    }
+
+    private void DrawPorts(IMapObject mapObject)
+    {
+        var ports = GetPortCells(mapObject.MapPos, mapObject.Shape);
+
+        for (int i = 0; i < ports.Count; i++)
+        {
+            var portOrigin = MapUtils.MapToWorld(ports[i].Key, Grid);
+            var portEnd = MapUtils.MapToWorld(ports[i].Key + ports[i].Value.ToOffset(), Grid);
+
+            Debug.DrawLine(portOrigin, portEnd, Color.red);
+        }
+    }
+
     public void ClearSellection()
     {
         if (_selections.Count < 0) return;
@@ -158,6 +261,26 @@ public class MapManager : MonoBehaviour
                 anchor.x + offset.X,
                 anchor.y + offset.Y
             ));
+        }
+
+        return result;
+    }
+
+    public static List<KeyValuePair<Vector2Int, PortDirection>> GetPortCells(
+    Vector2Int anchor,
+    MapObjectShape shape)
+    {
+        var result = new List<KeyValuePair<Vector2Int, PortDirection>>();
+
+        foreach (var offset in shape.Ports)
+        {
+            var cell = new Vector2Int(
+                anchor.x + offset.Cell.X,
+                anchor.y + offset.Cell.Y);
+
+            result.Add(new KeyValuePair<Vector2Int, PortDirection>(
+                cell,
+                offset.Direction));
         }
 
         return result;

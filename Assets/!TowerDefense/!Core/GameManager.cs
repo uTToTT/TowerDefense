@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [HorizontalLine]
     [SerializeField] private Button _startWaveButton;
 
+    [HorizontalLine]
     [SerializeField] private MapManager _mapManager;
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private CellSelector _cellSelector;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private EnergyNetworkManager _energyNetworkManager;
 
     private PlayerInputController _playerInputController;
 
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
         _mapManager.Init();
         _economyService.Init();
         _enemyManager.Init();
+        _energyNetworkManager.Init();
 
         _startWaveButton.onClick.AddListener(PlayerStartWave);
 
