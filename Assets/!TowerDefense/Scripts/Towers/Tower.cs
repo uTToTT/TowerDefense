@@ -14,7 +14,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
-    private readonly HashSet<ITowerModule> _modules = new();
+    private readonly Dictionary<ModuleType, ITowerModule> _modules = new();
 
     public UpgradeNodeConfig UpgradeTree => _upgradeTree;
     public TowerUpgradeController UpgradeController => _upgradeController;
@@ -53,13 +53,16 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
 
     private bool HasModule(ModuleType moduleType)
     {
-        foreach (var module in _modules)
-            if (module.ModuleType == moduleType)
-                return true;
-
-        return false;
+        return _modules.ContainsKey(moduleType);
     }
 
+    private T GetModule<T>(ModuleType moduleType) where T : class, ITowerModule
+    {
+        if (_modules.TryGetValue(moduleType, out var module))
+            return module as T;
+
+        return null;
+    }
 
     private void BindOnHitEffects()
     {
@@ -67,7 +70,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
         if (attack == null)
             return;
 
-        foreach (var module in _modules)
+        foreach (var module in _modules.Values)
         {
             if (module is IOnHitEffect effect)
             {
@@ -78,9 +81,13 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
 
     private void AddModule(ITowerModule module)
     {
-        if (!_modules.Add(module))
+        if (_modules.ContainsKey(module.ModuleType))
         {
             Debug.Log($"Module already exists [{module.GetType()}]");
+        }
+        else
+        {
+            _modules.Add(module.ModuleType, module);
         }
     }
 
@@ -92,8 +99,10 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
             return;
         }
 
-        foreach (var module in _modules)
-            module.TryApplyConfig(config);
+        if (_modules.ContainsKey(config.ModuleType))
+        {
+            _modules[config.ModuleType].TryApplyConfig(config);
+        }
     }
 
     private void ClearModules()
@@ -106,20 +115,40 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
         if (!IsEnabled)
             return;
 
-        foreach (var module in _modules)
+        foreach (var module in _modules.Values)
             module.Tick(dt);
     }
 
     public Transform Transform => transform;
-    public Vector2Int MapPos { get;  set; }
+    public Vector2Int MapPos { get; set; }
     public MapObjectShape Shape => _shape;
     public TowerType TowerType => _towerType;
     public bool IsActive { get; set; }
-    public EnergyNetwork EnergyNetwork { get ; set; }
+    public EnergyNetwork EnergyNetwork { get; set; }
 
-    public float EnergyProduction => 1;
+    public float EnergyProduction
+    {
+        get
+        {
+            var module = GetModule<EnergyModule>(ModuleType.Energy);
+            return module != null ? module.GetProduction() : 0;
+        }
+    }
 
-    public float EnergyConsumption => 2;
+    public float EnergyConsumption
+    {
+        get
+        {
+            var module = GetModule<EnergyModule>(ModuleType.Energy);
+            return module != null ? module.GetConsumption() : 0;
+        }
+    }
+
+    public float GetEnergyEffectivity()
+    {
+        var module = GetModule<EnergyModule>(ModuleType.Energy);
+        return module != null ? module.GetEnergyEffectivity() : 0;
+    }
 
     public int GetSpecPrice(int index) => 0;
     public void SetUniqueTowerIndex(int index) { }
@@ -151,6 +180,12 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
     public void OnNetworkUpdated(EnergyNetwork network)
     {
         //throw new System.NotImplementedException();
+    }
+
+    public void SetReceivedEnergy(float amount)
+    {
+        var module = GetModule<EnergyModule>(ModuleType.Energy);
+        module.SetReceivedEnergy(amount);
     }
 }
 

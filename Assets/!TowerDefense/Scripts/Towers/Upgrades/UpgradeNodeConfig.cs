@@ -5,11 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "TD/Tower/Upgrade Node")]
 public class UpgradeNodeConfig : ScriptableObject
 {
+    [HorizontalLine]
     [SerializeField] private string _id;
     [SerializeField] private Sprite _icon;
     [SerializeField] private int _cost;
+    
     [HorizontalLine]
-
     [SerializeField] private UpgradeNodeConfig[] _next;
     [SerializeField] private TowerModuleConfig[] _addModuleConfigs;
     [SerializeField] private TowerModuleConfig[] _modifyModuleConfigs;

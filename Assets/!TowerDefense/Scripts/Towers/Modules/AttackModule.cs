@@ -35,11 +35,19 @@ public sealed class AttackModule : ITowerModule
 
     public void Tick(float dt)
     {
+        if (_config != null)
+        {
+
+            Debug.Log(
+                $"Base fire rate: [{_config.FireRate}]\n" +
+                $"Curr fire rate: [{_config.FireRate * _tower.GetEnergyEffectivity()}]\n");
+        }
+
         RotateTower(dt);
 
         if (_cooldown > 0)
         {
-            _cooldown -= dt;
+            _cooldown -= dt * _tower.GetEnergyEffectivity();
             return;
         }
 

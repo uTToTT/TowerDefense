@@ -103,7 +103,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         return result;
     }
 
-    private bool AreNodesConnected(List<WorldPort> aPorts, IEnergyNode other)
+    public bool AreNodesConnected(List<WorldPort> aPorts, IEnergyNode other)
     {
         var bPorts = MapManager.GetWorldPorts(other);
 
@@ -170,5 +170,18 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         }
 
         return result;
+    }
+
+    [SerializeField] private bool _draw = true;
+
+    private void OnDrawGizmos()
+    {
+        if (!_draw)
+            return;
+
+        foreach (var network in _networks)
+        {
+            network.DrawDebug();
+        }
     }
 }

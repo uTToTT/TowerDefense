@@ -7,7 +7,6 @@ public class AttackModuleConfig : TowerModuleConfig
     [SerializeField, Range(0, 500)] private float _damage = 1;
     [SerializeField, Range(0.01f, 30)] private float _baseFireRate = 1;
     [SerializeField, Range(0f, 1f)] private float _piercing = 0;
-    [SerializeField, Range(0f, 20f)] private float _energyCoeficient = 0;
     [HorizontalLine]
 
     [SerializeField,Min(0)] private float _rotationSpeed = 1;

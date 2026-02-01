@@ -7,6 +7,7 @@ public class MapManager : MonoBehaviour
 {
     [HorizontalLine]
     [SerializeField] private bool _debug;
+    [SerializeField] private bool _drawPorts;
 
     [HorizontalLine]
     [SerializeField] private CellSelectionFactory _selectionFactory;
@@ -133,7 +134,7 @@ public class MapManager : MonoBehaviour
         _selectedMapObject = null;
     }
 
-    public static List<WorldPort> GetWorldPorts(IMapObject obj)
+    public static List<WorldPort> GetWorldPorts(IEnergyNode obj)
     {
         var result = new List<WorldPort>();
 
@@ -170,7 +171,7 @@ public class MapManager : MonoBehaviour
         return a.Cell + a.Direction.ToOffset() == b.Cell;
     }
 
-    public void ResolveConnections(IMapObject placedObject)
+    public void ResolveConnections(IEnergyNode placedObject)
     {
         var ports = GetWorldPorts(placedObject);
 
@@ -179,10 +180,10 @@ public class MapManager : MonoBehaviour
             var targetCell = port.Cell + port.Direction.ToOffset();
 
             var cellData = GetCellData(targetCell);
-            if (cellData?.MapObject == null)
+            if (cellData?.MapObject == null ||
+                cellData?.MapObject is not IEnergyNode otherObject)
                 continue;
 
-            var otherObject = cellData.MapObject;
             var otherPorts = GetWorldPorts(otherObject);
 
             foreach (var otherPort in otherPorts)
@@ -199,6 +200,7 @@ public class MapManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!_drawPorts) return;
         if (_isDrawMapObjectPorts &&
             _selectedMapObject.Shape.Ports != null &&
             _selectedMapObject.Shape.Ports.Length > 0)

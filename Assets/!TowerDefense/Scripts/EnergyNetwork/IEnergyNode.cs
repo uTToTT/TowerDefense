@@ -6,4 +6,5 @@ public interface IEnergyNode : IMapObject
     float EnergyConsumption { get; }
 
     void OnNetworkUpdated(EnergyNetwork network);
+    void SetReceivedEnergy(float amount);
 }

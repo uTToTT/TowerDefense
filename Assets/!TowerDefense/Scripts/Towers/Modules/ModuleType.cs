@@ -3,5 +3,6 @@ public enum ModuleType
     None = 0,
     Attack,
     Targeting,
-    Freeze
+    Freeze,
+    Energy
 }

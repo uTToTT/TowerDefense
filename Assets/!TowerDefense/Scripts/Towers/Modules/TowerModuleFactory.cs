@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 
 public static class TowerModuleFactory
 {
@@ -10,6 +9,7 @@ public static class TowerModuleFactory
         return config switch
         {
             AttackModuleConfig attack => new AttackModule(attack, tower),
+            EnergyModuleConfig energy => new EnergyModule(energy, tower),
 
             _ => throw new ArgumentOutOfRangeException
             ($"Unknown module [{config.GetType()}]")
