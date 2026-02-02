@@ -27,6 +27,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
 
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
+        Debug.Log($"Applied upgrade [{config.name}]");
         bool modulesChanged = false;
 
         foreach (var moduleConfig in config.AddModuleConfigs)

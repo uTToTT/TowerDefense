@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TowerManager : MonoBehaviour
@@ -21,6 +22,8 @@ public class TowerManager : MonoBehaviour
 
     private Grid Grid => MapManager.Instance.Grid;
     private MapManager MapManager => MapManager.Instance;
+
+    #region Life cycle
 
     public void Init()
     {
@@ -54,7 +57,11 @@ public class TowerManager : MonoBehaviour
             TryPlaceTower();
     }
 
-    public void SelectTower(Tower tower)
+    #endregion
+
+    #region Input handling 
+
+    public void DragTowerPerformed(Tower tower)
     {
         if (tower == null) return;
         if (GameManager.Instance.IsBattle) return;
@@ -64,13 +71,13 @@ public class TowerManager : MonoBehaviour
         _selectedTower = tower;
         _lastTowerValidPosition = _selectedTower.transform.position;
 
-        foreach (var cell in MapManager.GetOccupiedCells(tower.MapPos, tower.Shape))
+        foreach (var cell in MapUtils.GetOccupiedCells(tower.MapPos, tower.Shape))
         {
-            MapManager.RemoveTowerInCell(cell);
+            MapManager.RemoveMapObject(cell);
         }
     }
 
-    public void UnselectTower()
+    public void DragTowerCanceled()
     {
         if (_selectedTower == null) return;
 
@@ -90,6 +97,8 @@ public class TowerManager : MonoBehaviour
         _isDragging = true;
     }
 
+    #endregion
+
     private void UpdatePreviewPosition()
     {
         MapUtils.SnapToGridUnderPointer(_towerPreview.transform);
@@ -98,17 +107,25 @@ public class TowerManager : MonoBehaviour
             _lastTowerValidPosition = _towerPreview.transform.position;
     }
 
-    /// <returns>Return snapped position</returns>
     private void PlaceTower(Tower tower, Vector2 pos)
     {
-        tower.transform.position = pos;
-
-        var mapPos = MapUtils.WorldToMap(_lastTowerValidPosition, Grid);
-        tower.MapPos = mapPos; 
-
-        foreach (var cell in MapManager.GetOccupiedCells(mapPos, tower.Shape))
+        var RaycastCell = MapManager.Instance.Raycast();
+        if (RaycastCell != null &&
+            RaycastCell.MapObject != null &&
+            RaycastCell.MapObject is Tower towerInCell)
         {
-            MapManager.SetTowerInCell(cell, tower);
+            towerInCell.UpgradeController.Purchase(towerInCell.UpgradeController.CurrentUpgrade.Next.ElementAt(0));
+            _towerFactory.Return(_selectedTower);
+            return;
+        }
+
+        tower.transform.position = pos;
+        var mapPos = MapUtils.WorldToMap(_lastTowerValidPosition, Grid);
+        tower.MapPos = mapPos;
+
+        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, tower.Shape))
+        {
+            MapManager.PlaceMapObject(cell, tower);
         }
 
         MapManager.ResolveConnections(tower);
@@ -136,16 +153,21 @@ public class TowerManager : MonoBehaviour
         _towerPreviewFactory.Return(_towerPreview);
     }
 
-    private void CancelPlacement()
-    {
+    private void CancelPlacement() =>
         _towerPreviewFactory.Return(_towerPreview);
+
+    #region Validation
+
+    private bool IsCellHasTower()
+    {
+        return false;
     }
 
     private bool IsValidPlacement(Vector3 worldPos)
     {
         Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
 
-        foreach (var cell in MapManager.GetOccupiedCells(mapPos, _towerPreview.Shape))
+        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, _towerPreview.Shape))
         {
             if (!MapManager.IsInside(cell))
                 return false;
@@ -155,4 +177,6 @@ public class TowerManager : MonoBehaviour
 
         return true;
     }
+
+    #endregion
 }

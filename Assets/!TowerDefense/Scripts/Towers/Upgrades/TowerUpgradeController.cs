@@ -21,7 +21,9 @@ public class TowerUpgradeController
         //    if (!condition.IsSatisfied(_tower))
         //        return false;
 
-        return EconomyService.Instance.CanSpend(node.Cost);
+        //return EconomyService.Instance.CanSpend(node.Cost);
+
+        return true;
     }
 
     public void Purchase(UpgradeNodeConfig node)
@@ -29,7 +31,7 @@ public class TowerUpgradeController
         if (!CanPurchase(node))
             return;
 
-        EconomyService.Instance.Spend(node.Cost);
+        //EconomyService.Instance.Spend(node.Cost);
 
         _tower.ApplyUpgrade(node);
         _state.MarkPurchased(node);

@@ -101,7 +101,7 @@ public static class MapUtils
 
         return a.Cell + a.Direction.ToOffset() == b.Cell;
     }
-
+    
     public static void ResolveConnections(IMapObject placedObject)
     {
         var ports = GetWorldPorts(placedObject);
@@ -125,6 +125,27 @@ public static class MapUtils
                 }
             }
         }
+    }
+
+    /* =========================
+     * Cells
+     * ========================= */
+
+    public static List<Vector2Int> GetOccupiedCells(
+       Vector2Int anchor,
+       MapObjectShape shape)
+    {
+        var result = new List<Vector2Int>();
+
+        foreach (var offset in shape.OccupiedCells)
+        {
+            result.Add(new Vector2Int(
+                anchor.x + offset.X,
+                anchor.y + offset.Y
+            ));
+        }
+
+        return result;
     }
 }
 

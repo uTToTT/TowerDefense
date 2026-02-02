@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class CellSelector : MonoBehaviour
 {
-    public void Init()
-    {
-    }
+    public void Init() { }
 
     public void OnTapCanceled()
     {
@@ -36,11 +34,11 @@ public class CellSelector : MonoBehaviour
 
     private void SelectTower(Tower tower)
     {
-        GameManager.Instance.TowerManager.SelectTower(tower);
+        GameManager.Instance.TowerManager.DragTowerPerformed(tower);
     }
 
     private void UnselectTower()
     {
-        GameManager.Instance.TowerManager.UnselectTower();
+        GameManager.Instance.TowerManager.DragTowerCanceled();
     }
 }

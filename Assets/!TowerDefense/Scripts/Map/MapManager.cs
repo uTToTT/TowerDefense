@@ -27,6 +27,8 @@ public class MapManager : MonoBehaviour
 
     public static MapManager Instance { get; private set; }
 
+    #region Init
+
     public void Init()
     {
         Instance = this;
@@ -37,51 +39,59 @@ public class MapManager : MonoBehaviour
         _mapComposer.Build(_mapData, _cellData, _grid);
     }
 
-    public Route GetRoute(RouteId routeId) =>
-     _mapData.GetRoute(routeId);
+    #endregion
 
-    public CellData GetCellData(Vector2Int v2Int)
+    #region Unity API
+
+    private void OnDrawGizmos()
     {
-        if (IsInside(v2Int))
-            return _cellData[v2Int.x, v2Int.y];
-
-        return null;
-    }
-
-    public bool IsInside(Vector2Int pos)
-    {
-        return pos.x >= 0 && pos.y >= 0 &&
-               pos.x < _mapData.width &&
-               pos.y < _mapData.height;
-    }
-
-    public bool IsInside(Vector3 worldPos)
-    {
-        var mapPos = MapUtils.WorldToMap(worldPos, _grid);
-        return IsInside(mapPos);
-    }
-
-    public bool IsCellBusy(Vector2Int pos)
-    {
-        if (IsInside(pos))
-            return _cellData[pos.x, pos.y].IsBusy;
-
-        return false;
-    }
-
-    public void SetTowerInCell(Vector2Int pos, Tower tower)
-    {
-        if (tower != null)
+        if (!_drawPorts) return;
+        if (_isDrawMapObjectPorts &&
+            _selectedMapObject.Shape.Ports != null &&
+            _selectedMapObject.Shape.Ports.Length > 0)
         {
-            _cellData[pos.x, pos.y].MapObject = tower;
-            _cellData[pos.x, pos.y].IsBusy = true;
+            DrawPorts(_selectedMapObject);
         }
     }
 
-    public void RemoveTowerInCell(Vector2Int pos)
+    #endregion
+
+    public Route GetRoute(RouteId routeId) =>
+        _mapData.GetRoute(routeId);
+
+    public CellData GetCellData(Vector2Int v2Int) =>
+        IsInside(v2Int) ? _cellData[v2Int.x, v2Int.y] : null;
+
+    public bool IsInside(Vector2Int pos) =>
+        pos.x >= 0 &&
+        pos.y >= 0 &&
+        pos.x < _mapData.width &&
+        pos.y < _mapData.height;
+
+    public bool IsCellBusy(Vector2Int pos)
     {
-        _cellData[pos.x, pos.y].MapObject = null;
-        _cellData[pos.x, pos.y].IsBusy = false;
+        var cell = GetCellData(pos);
+        return cell != null && cell.IsBusy;
+    }
+
+    public void PlaceMapObject(Vector2Int pos, IMapObject mapObject)
+    {
+        var cell = GetCellData(pos);
+        if (cell != null && mapObject != null)
+        {
+            cell.MapObject = mapObject;
+            cell.IsBusy = true;
+        }
+    }
+
+    public void RemoveMapObject(Vector2Int pos)
+    {
+        var cell = GetCellData(pos);
+        if (cell != null)
+        {
+            cell.MapObject = null;
+            cell.IsBusy = false;
+        }
     }
 
     public List<Vector3> GetRoutePoints(RouteId routeId)
@@ -110,7 +120,7 @@ public class MapManager : MonoBehaviour
 
     public void DrawBorderMapObject(IMapObject mapObject)
     {
-        var occupiedCells = GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
+        var occupiedCells = MapUtils.GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
 
         for (int i = 0; i < occupiedCells.Count; i++)
         {
@@ -157,19 +167,7 @@ public class MapManager : MonoBehaviour
         return result;
     }
 
-    public bool ArePortsConnected(WorldPort a, WorldPort b)
-    {
-        if (a.Owner == b.Owner)
-            return false;
-
-        if (a.Type != b.Type)
-            return false;
-
-        if (a.Direction.Opposite() != b.Direction)
-            return false;
-
-        return a.Cell + a.Direction.ToOffset() == b.Cell;
-    }
+    #region Ports
 
     public void ResolveConnections(IEnergyNode placedObject)
     {
@@ -188,7 +186,7 @@ public class MapManager : MonoBehaviour
 
             foreach (var otherPort in otherPorts)
             {
-                if (ArePortsConnected(port, otherPort))
+                if (MapUtils.ArePortsConnected(port, otherPort))
                 {
                     Debug.Log($"[{port.Cell}]&[{otherPort.Cell}] | [{port.Type}] Connected");
                     //ApplyBuff(port, otherPort);
@@ -197,16 +195,24 @@ public class MapManager : MonoBehaviour
         }
     }
 
-
-    private void OnDrawGizmos()
+    public static List<KeyValuePair<Vector2Int, PortDirection>> GetPortCells(
+       Vector2Int anchor,
+       MapObjectShape shape)
     {
-        if (!_drawPorts) return;
-        if (_isDrawMapObjectPorts &&
-            _selectedMapObject.Shape.Ports != null &&
-            _selectedMapObject.Shape.Ports.Length > 0)
+        var result = new List<KeyValuePair<Vector2Int, PortDirection>>();
+
+        foreach (var offset in shape.Ports)
         {
-            DrawPorts(_selectedMapObject);
+            var cell = new Vector2Int(
+                anchor.x + offset.Cell.X,
+                anchor.y + offset.Cell.Y);
+
+            result.Add(new KeyValuePair<Vector2Int, PortDirection>(
+                cell,
+                offset.Direction));
         }
+
+        return result;
     }
 
     private void DrawPorts(IMapObject mapObject)
@@ -221,6 +227,8 @@ public class MapManager : MonoBehaviour
             Debug.DrawLine(portOrigin, portEnd, Color.red);
         }
     }
+
+    #endregion
 
     public void ClearSellection()
     {
@@ -249,42 +257,5 @@ public class MapManager : MonoBehaviour
                 _grid.cellSize.y * 0.5f,
                 0f
             );
-    }
-
-    public static List<Vector2Int> GetOccupiedCells(
-    Vector2Int anchor,
-    MapObjectShape shape)
-    {
-        var result = new List<Vector2Int>();
-
-        foreach (var offset in shape.OccupiedCells)
-        {
-            result.Add(new Vector2Int(
-                anchor.x + offset.X,
-                anchor.y + offset.Y
-            ));
-        }
-
-        return result;
-    }
-
-    public static List<KeyValuePair<Vector2Int, PortDirection>> GetPortCells(
-    Vector2Int anchor,
-    MapObjectShape shape)
-    {
-        var result = new List<KeyValuePair<Vector2Int, PortDirection>>();
-
-        foreach (var offset in shape.Ports)
-        {
-            var cell = new Vector2Int(
-                anchor.x + offset.Cell.X,
-                anchor.y + offset.Cell.Y);
-
-            result.Add(new KeyValuePair<Vector2Int, PortDirection>(
-                cell,
-                offset.Direction));
-        }
-
-        return result;
     }
 }

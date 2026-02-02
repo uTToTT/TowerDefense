@@ -110,7 +110,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         foreach (var a in aPorts)
             foreach (var b in bPorts)
             {
-                if (MapManager.Instance.ArePortsConnected(a, b))
+                if (MapUtils.ArePortsConnected(a, b))
                     return true;
             }
 
