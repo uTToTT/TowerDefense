@@ -4,5 +4,6 @@ public enum ModuleType
     Attack,
     Targeting,
     Freeze,
-    Energy
+    Energy,
+    EnergyRetranslator
 }

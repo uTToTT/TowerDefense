@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2a9353eae815b43b56806b84349d83, type: 3}
   m_Name: Minigun_EnergyModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::EnergyModuleConfig
-  EnergyProduction: 2
+  EnergyProduction: 25
   EnergyConsumpition: 4

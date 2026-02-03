@@ -10090,6 +10090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnergyNetworkManager
   Energy: 0
+  _draw: 1
 --- !u!1 &1372403150
 GameObject:
   m_ObjectHideFlags: 0
@@ -12396,6 +12397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
   _debug: 0
+  _drawPorts: 0
   _selectionFactory: {fileID: 11400000, guid: 5f11a0bb8fd27ed48a71fe808f6ac644, type: 2}
   _grid: {fileID: 1116896032}
   _mapComposer: {fileID: 460040218}
