@@ -4,14 +4,14 @@ using UnityEngine;
 
 public sealed class EnergyNetwork
 {
-    private readonly HashSet<IEnergyNode> _nodes = new();
+    private readonly HashSet<IGearNode> _nodes = new();
 
-    public IReadOnlyCollection<IEnergyNode> Nodes => _nodes;
+    public IReadOnlyCollection<IGearNode> Nodes => _nodes;
 
     public float TotalProduction { get; private set; }
     public float TotalConsumption { get; private set; }
 
-    public void AddNode(IEnergyNode node)
+    public void AddNode(IGearNode node)
     {
         if (_nodes.Add(node))
         {
@@ -20,7 +20,7 @@ public sealed class EnergyNetwork
         }
     }
 
-    public void RemoveNode(IEnergyNode node)
+    public void RemoveNode(IGearNode node)
     {
         if (_nodes.Remove(node))
         {
@@ -65,7 +65,6 @@ public sealed class EnergyNetwork
         }
     }
 
-
     public bool HasEnoughEnergy =>
         TotalProduction >= TotalConsumption;
 
@@ -101,7 +100,7 @@ public sealed class EnergyNetwork
     }
 
 
-    private void DrawNode(IEnergyNode node)
+    private void DrawNode(IGearNode node)
     {
         Vector3 pos = node.Transform.position;
 
@@ -143,5 +142,4 @@ public sealed class EnergyNetwork
             }
         }
     }
-
 }

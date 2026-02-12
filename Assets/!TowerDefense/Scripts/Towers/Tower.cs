@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetingModule))]
-public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IEnergyNode
+public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
 {
     [SerializeField] protected TowerType _towerType;
     [SerializeField] private MapObjectShape _shape;

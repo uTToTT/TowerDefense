@@ -144,7 +144,7 @@ public class MapManager : MonoBehaviour
         _selectedMapObject = null;
     }
 
-    public static List<WorldPort> GetWorldPorts(IEnergyNode obj)
+    public static List<WorldPort> GetWorldPorts(IGearNode obj)
     {
         var result = new List<WorldPort>();
 
@@ -169,7 +169,7 @@ public class MapManager : MonoBehaviour
 
     #region Ports
 
-    public void ResolveConnections(IEnergyNode placedObject)
+    public void ResolveConnections(IGearNode placedObject)
     {
         var ports = GetWorldPorts(placedObject);
 
@@ -179,7 +179,7 @@ public class MapManager : MonoBehaviour
 
             var cellData = GetCellData(targetCell);
             if (cellData?.MapObject == null ||
-                cellData?.MapObject is not IEnergyNode otherObject)
+                cellData?.MapObject is not IGearNode otherObject)
                 continue;
 
             var otherPorts = GetWorldPorts(otherObject);

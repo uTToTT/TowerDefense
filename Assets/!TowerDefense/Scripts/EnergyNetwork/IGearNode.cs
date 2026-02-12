@@ -1,4 +1,4 @@
-public interface IEnergyNode : IMapObject
+public interface IGearNode : IMapObject
 {
     EnergyNetwork EnergyNetwork { get; set; }
 

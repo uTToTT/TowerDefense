@@ -158,10 +158,7 @@ public class TowerManager : MonoBehaviour
 
     #region Validation
 
-    private bool IsCellHasTower()
-    {
-        return false;
-    }
+   
 
     private bool IsValidPlacement(Vector3 worldPos)
     {

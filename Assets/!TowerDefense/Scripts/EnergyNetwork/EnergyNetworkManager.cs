@@ -30,7 +30,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         Instance = this;
     }
 
-    public void RegisterNode(IEnergyNode node)
+    public void RegisterNode(IGearNode node)
     {
         var connectedNetworks = FindConnectedNetworks(node);
 
@@ -59,7 +59,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         Energy = prod;
     }
 
-    public void UnregisterNode(IEnergyNode node)
+    public void UnregisterNode(IGearNode node)
     {
         var network = FindNetworkContaining(node);
         if (network == null)
@@ -71,7 +71,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         RebuildDisconnected(network.Nodes);
     }
 
-    private EnergyNetwork FindNetworkContaining(IEnergyNode node) => node.EnergyNetwork;
+    private EnergyNetwork FindNetworkContaining(IGearNode node) => node.EnergyNetwork;
 
     private void MergeNetworks(EnergyNetwork main, EnergyNetwork network)
     {
@@ -83,7 +83,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         _networks.Remove(network);
     }
 
-    private List<EnergyNetwork> FindConnectedNetworks(IEnergyNode node)
+    private List<EnergyNetwork> FindConnectedNetworks(IGearNode node)
     {
         var result = new List<EnergyNetwork>();
         var nodePorts = MapManager.GetWorldPorts(node);
@@ -103,7 +103,7 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         return result;
     }
 
-    public bool AreNodesConnected(List<WorldPort> aPorts, IEnergyNode other)
+    public bool AreNodesConnected(List<WorldPort> aPorts, IGearNode other)
     {
         var bPorts = MapManager.GetWorldPorts(other);
 
@@ -117,9 +117,9 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         return false;
     }
 
-    private void RebuildDisconnected(IEnumerable<IEnergyNode> nodes)
+    private void RebuildDisconnected(IEnumerable<IGearNode> nodes)
     {
-        var unvisited = new HashSet<IEnergyNode>(nodes);
+        var unvisited = new HashSet<IGearNode>(nodes);
 
         while (unvisited.Count > 0)
         {
@@ -138,13 +138,13 @@ public sealed class EnergyNetworkManager : MonoBehaviour
         }
     }
 
-    private List<IEnergyNode> FloodFill(
-    IEnergyNode start,
-    HashSet<IEnergyNode> allowed)
+    private List<IGearNode> FloodFill(
+    IGearNode start,
+    HashSet<IGearNode> allowed)
     {
-        var result = new List<IEnergyNode>();
-        var stack = new Stack<IEnergyNode>();
-        var visited = new HashSet<IEnergyNode>();
+        var result = new List<IGearNode>();
+        var stack = new Stack<IGearNode>();
+        var visited = new HashSet<IGearNode>();
 
         stack.Push(start);
         visited.Add(start);
