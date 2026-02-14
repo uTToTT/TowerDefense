@@ -4,4 +4,5 @@ public enum PortType
     Energy,
     Attack,
     FireRate,
+    Rotation,
 }

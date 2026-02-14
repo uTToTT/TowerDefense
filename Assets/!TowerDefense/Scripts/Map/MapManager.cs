@@ -132,6 +132,22 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public bool HasMapObject(Vector2Int pos, MapObjectType type, out IMapObject mapObject)
+    {
+        var cell = GetCellData(pos);
+
+        var hasObject =
+            cell != null &&
+            cell.MapObject != null &&
+            cell.MapObject.Type == type;
+
+        mapObject = hasObject ? cell.MapObject : null;
+
+        return hasObject;
+    }
+
+    #region Ports
+
     public void ShowMapObjectPorts(IMapObject mapObject)
     {
         _isDrawMapObjectPorts = true;
@@ -166,8 +182,6 @@ public class MapManager : MonoBehaviour
 
         return result;
     }
-
-    #region Ports
 
     public void ResolveConnections(IGearNode placedObject)
     {

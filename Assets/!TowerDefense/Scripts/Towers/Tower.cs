@@ -120,6 +120,7 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
             module.Tick(dt);
     }
 
+    public MapObjectType Type => MapObjectType.Tower;
     public Transform Transform => transform;
     public Vector2Int MapPos { get; set; }
     public MapObjectShape Shape => _shape;

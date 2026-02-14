@@ -6,6 +6,7 @@ public class GearNetwork : MonoBehaviour
     private readonly HashSet<Gear> _gears = new();
 
     public int TotalPower { get; private set; }
+    public IReadOnlyCollection<Gear> Gears => _gears;
 
     public void Register(Gear gear) => _gears.Add(gear);
     public void Unregister(Gear gear) => _gears.Remove(gear);
