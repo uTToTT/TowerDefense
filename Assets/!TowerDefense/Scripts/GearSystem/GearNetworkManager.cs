@@ -70,4 +70,32 @@ public class GearNetworkManager : MonoBehaviour
             }
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        if (_networks == null || MapManager.Instance == null)
+            return;
+
+        const float pointRadius = 0.2f;
+
+        for (int n = 0; n < _networks.Count; n++)
+        {
+            var net = _networks[n];
+
+            Gizmos.color = Color.HSVToRGB(
+                Mathf.Repeat(n * 0.173f, 1f), 
+                0.8f,
+                1f
+            );
+
+            for (int i = 0; i < net.Gears.Count; i++)
+            {
+                var gear = net.Gears.ElementAt(i);
+
+                Vector3 pos = MapUtils.GridToWorld(gear.MapPos, MapManager.Instance.Grid);
+
+                Gizmos.DrawSphere(pos, pointRadius);
+            }
+        }
+    }
 }

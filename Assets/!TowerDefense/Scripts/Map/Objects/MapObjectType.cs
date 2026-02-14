@@ -1,6 +1,9 @@
 public enum MapObjectType 
 {
-    None,
-    Tower,
-    Gear
+    None =0,
+    Gear,
+    Minigun,
+    Twiin,
+    Gravity,
+    Rail
 }

@@ -1,10 +1,10 @@
-public interface IGearNode : IMapObject
-{
-    EnergyNetwork EnergyNetwork { get; set; }
+//public interface IGearNode : IMapObject
+//{
+//    EnergyNetwork EnergyNetwork { get; set; }
 
-    float EnergyProduction { get;  }
-    float EnergyConsumption { get; }
+//    float EnergyProduction { get;  }
+//    float EnergyConsumption { get; }
 
-    void OnNetworkUpdated(EnergyNetwork network);
-    void SetReceivedEnergy(float amount);
-}
+//    void OnNetworkUpdated(EnergyNetwork network);
+//    void SetReceivedEnergy(float amount);
+//}

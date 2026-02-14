@@ -1,187 +1,187 @@
-using NaughtyAttributes;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+//using NaughtyAttributes;
+//using System.Collections.Generic;
+//using System.Linq;
+//using UnityEngine;
 
-public sealed class EnergyNetworkManager : MonoBehaviour
-{
-    [ProgressBar(nameof(Energy), nameof(Consumption), EColor.Yellow)]
-    public float Energy;
+//public sealed class EnergyNetworkManager : MonoBehaviour
+//{
+//    [ProgressBar(nameof(Energy), nameof(Consumption), EColor.Yellow)]
+//    public float Energy;
 
-    private readonly List<EnergyNetwork> _networks = new();
+//    private readonly List<EnergyNetwork> _networks = new();
 
-    public static EnergyNetworkManager Instance { get; private set; }
+//    public static EnergyNetworkManager Instance { get; private set; }
 
-    public float Consumption
-    {
-        get
-        {
-            float consumption = 0;
-            foreach (EnergyNetwork network in _networks)
-            {
-                consumption += network.TotalConsumption;
-            }
-            return consumption;
-        }
-    }
+//    public float Consumption
+//    {
+//        get
+//        {
+//            float consumption = 0;
+//            foreach (EnergyNetwork network in _networks)
+//            {
+//                consumption += network.TotalConsumption;
+//            }
+//            return consumption;
+//        }
+//    }
 
-    public void Init()
-    {
-        Instance = this;
-    }
+//    public void Init()
+//    {
+//        Instance = this;
+//    }
 
-    public void RegisterNode(IGearNode node)
-    {
-        var connectedNetworks = FindConnectedNetworks(node);
+//    public void RegisterNode(IGearNode node)
+//    {
+//        var connectedNetworks = FindConnectedNetworks(node);
 
-        if (connectedNetworks.Count == 0)
-        {
-            var network = new EnergyNetwork();
-            network.AddNode(node);
-            _networks.Add(network);
-        }
-        else
-        {
-            var main = connectedNetworks[0];
-            main.AddNode(node);
+//        if (connectedNetworks.Count == 0)
+//        {
+//            var network = new EnergyNetwork();
+//            network.AddNode(node);
+//            _networks.Add(network);
+//        }
+//        else
+//        {
+//            var main = connectedNetworks[0];
+//            main.AddNode(node);
 
-            for (int i = 1; i < connectedNetworks.Count; i++)
-            {
-                MergeNetworks(main, connectedNetworks[i]);
-            }
-        }
+//            for (int i = 1; i < connectedNetworks.Count; i++)
+//            {
+//                MergeNetworks(main, connectedNetworks[i]);
+//            }
+//        }
 
-        float prod = 0;
-        foreach (EnergyNetwork network in _networks)
-        {
-            prod += network.TotalProduction;
-        }
-        Energy = prod;
-    }
+//        float prod = 0;
+//        foreach (EnergyNetwork network in _networks)
+//        {
+//            prod += network.TotalProduction;
+//        }
+//        Energy = prod;
+//    }
 
-    public void UnregisterNode(IGearNode node)
-    {
-        var network = FindNetworkContaining(node);
-        if (network == null)
-            return;
+//    public void UnregisterNode(IGearNode node)
+//    {
+//        var network = FindNetworkContaining(node);
+//        if (network == null)
+//            return;
 
-        network.RemoveNode(node);
-        _networks.Remove(network);
+//        network.RemoveNode(node);
+//        _networks.Remove(network);
 
-        RebuildDisconnected(network.Nodes);
-    }
+//        RebuildDisconnected(network.Nodes);
+//    }
 
-    private EnergyNetwork FindNetworkContaining(IGearNode node) => node.EnergyNetwork;
+//    private EnergyNetwork FindNetworkContaining(IGearNode node) => node.EnergyNetwork;
 
-    private void MergeNetworks(EnergyNetwork main, EnergyNetwork network)
-    {
-        foreach (var node in network.Nodes)
-        {
-            main.AddNode(node);
-        }
+//    private void MergeNetworks(EnergyNetwork main, EnergyNetwork network)
+//    {
+//        foreach (var node in network.Nodes)
+//        {
+//            main.AddNode(node);
+//        }
 
-        _networks.Remove(network);
-    }
+//        _networks.Remove(network);
+//    }
 
-    private List<EnergyNetwork> FindConnectedNetworks(IGearNode node)
-    {
-        var result = new List<EnergyNetwork>();
-        var nodePorts = MapManager.GetWorldPorts(node);
+//    private List<EnergyNetwork> FindConnectedNetworks(IGearNode node)
+//    {
+//        var result = new List<EnergyNetwork>();
+//        var nodePorts = MapManager.GetWorldPorts(node);
 
-        foreach (var network in _networks)
-        {
-            foreach (var other in network.Nodes)
-            {
-                if (AreNodesConnected(nodePorts, other))
-                {
-                    result.Add(network);
-                    break;
-                }
-            }
-        }
+//        foreach (var network in _networks)
+//        {
+//            foreach (var other in network.Nodes)
+//            {
+//                if (AreNodesConnected(nodePorts, other))
+//                {
+//                    result.Add(network);
+//                    break;
+//                }
+//            }
+//        }
 
-        return result;
-    }
+//        return result;
+//    }
 
-    public bool AreNodesConnected(List<WorldPort> aPorts, IGearNode other)
-    {
-        var bPorts = MapManager.GetWorldPorts(other);
+//    public bool AreNodesConnected(List<WorldPort> aPorts, IGearNode other)
+//    {
+//        var bPorts = MapManager.GetWorldPorts(other);
 
-        foreach (var a in aPorts)
-            foreach (var b in bPorts)
-            {
-                if (MapUtils.ArePortsConnected(a, b))
-                    return true;
-            }
+//        foreach (var a in aPorts)
+//            foreach (var b in bPorts)
+//            {
+//                if (MapUtils.ArePortsConnected(a, b))
+//                    return true;
+//            }
 
-        return false;
-    }
+//        return false;
+//    }
 
-    private void RebuildDisconnected(IEnumerable<IGearNode> nodes)
-    {
-        var unvisited = new HashSet<IGearNode>(nodes);
+//    private void RebuildDisconnected(IEnumerable<IGearNode> nodes)
+//    {
+//        var unvisited = new HashSet<IGearNode>(nodes);
 
-        while (unvisited.Count > 0)
-        {
-            var start = unvisited.First();
-            var group = FloodFill(start, unvisited);
+//        while (unvisited.Count > 0)
+//        {
+//            var start = unvisited.First();
+//            var group = FloodFill(start, unvisited);
 
-            var network = new EnergyNetwork();
+//            var network = new EnergyNetwork();
 
-            foreach (var node in group)
-            {
-                network.AddNode(node);
-                unvisited.Remove(node);
-            }
+//            foreach (var node in group)
+//            {
+//                network.AddNode(node);
+//                unvisited.Remove(node);
+//            }
 
-            _networks.Add(network);
-        }
-    }
+//            _networks.Add(network);
+//        }
+//    }
 
-    private List<IGearNode> FloodFill(
-    IGearNode start,
-    HashSet<IGearNode> allowed)
-    {
-        var result = new List<IGearNode>();
-        var stack = new Stack<IGearNode>();
-        var visited = new HashSet<IGearNode>();
+//    private List<IGearNode> FloodFill(
+//    IGearNode start,
+//    HashSet<IGearNode> allowed)
+//    {
+//        var result = new List<IGearNode>();
+//        var stack = new Stack<IGearNode>();
+//        var visited = new HashSet<IGearNode>();
 
-        stack.Push(start);
-        visited.Add(start);
+//        stack.Push(start);
+//        visited.Add(start);
 
-        while (stack.Count > 0)
-        {
-            var current = stack.Pop();
-            result.Add(current);
+//        while (stack.Count > 0)
+//        {
+//            var current = stack.Pop();
+//            result.Add(current);
 
-            var currentPorts = MapManager.GetWorldPorts(current);
+//            var currentPorts = MapManager.GetWorldPorts(current);
 
-            foreach (var other in allowed)
-            {
-                if (visited.Contains(other))
-                    continue;
+//            foreach (var other in allowed)
+//            {
+//                if (visited.Contains(other))
+//                    continue;
 
-                if (AreNodesConnected(currentPorts, other))
-                {
-                    visited.Add(other);
-                    stack.Push(other);
-                }
-            }
-        }
+//                if (AreNodesConnected(currentPorts, other))
+//                {
+//                    visited.Add(other);
+//                    stack.Push(other);
+//                }
+//            }
+//        }
 
-        return result;
-    }
+//        return result;
+//    }
 
-    [SerializeField] private bool _draw = true;
+//    [SerializeField] private bool _draw = true;
 
-    private void OnDrawGizmos()
-    {
-        if (!_draw)
-            return;
+//    private void OnDrawGizmos()
+//    {
+//        if (!_draw)
+//            return;
 
-        foreach (var network in _networks)
-        {
-            network.DrawDebug();
-        }
-    }
-}
+//        foreach (var network in _networks)
+//        {
+//            network.DrawDebug();
+//        }
+//    }
+//}

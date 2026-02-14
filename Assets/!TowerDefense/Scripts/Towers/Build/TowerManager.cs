@@ -67,7 +67,6 @@ public class TowerManager : MonoBehaviour
         if (GameManager.Instance.IsBattle) return;
 
         tower.Disable();
-        EnergyNetworkManager.Instance.UnregisterNode(tower);
         _selectedTower = tower;
         _lastTowerValidPosition = _selectedTower.transform.position;
 
@@ -129,7 +128,6 @@ public class TowerManager : MonoBehaviour
         }
 
         MapManager.ResolveConnections(tower);
-        EnergyNetworkManager.Instance.RegisterNode(tower);
     }
 
     private void TryPlaceTower()

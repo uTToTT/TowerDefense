@@ -4,10 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetingModule))]
-public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
+public class Tower : MapObject, IPoolable, IEntityLifecycle
 {
     [SerializeField] protected TowerType _towerType;
-    [SerializeField] private MapObjectShape _shape;
     [HorizontalLine]
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
@@ -120,13 +119,8 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
             module.Tick(dt);
     }
 
-    public MapObjectType Type => MapObjectType.Tower;
     public Transform Transform => transform;
-    public Vector2Int MapPos { get; set; }
-    public MapObjectShape Shape => _shape;
     public TowerType TowerType => _towerType;
-    public bool IsActive { get; set; }
-    public EnergyNetwork EnergyNetwork { get; set; }
 
     public float EnergyProduction
     {
@@ -154,10 +148,15 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
 
     public int GetSpecPrice(int index) => 0;
     public void SetUniqueTowerIndex(int index) { }
-    public void Dispose() { }
-
-    public void OnPreload()
+    public override void Dispose()
     {
+        base.Dispose();
+    }
+
+    public override void OnPreload()
+    {
+        base.OnPreload();
+
         IsEnabled = false;
 
         _targetingModule = GetComponent<TargetingModule>();
@@ -167,21 +166,26 @@ public class Tower : MonoBehaviour, IPoolable, IEntityLifecycle, IGearNode
         _upgradeController.Purchase(UpgradeTree);
     }
 
-    public void OnActivated()
+    public override void OnActivated()
     {
+        base.OnActivated();
     }
 
-    public void OnDeactivated()
+    public override void OnDeactivated()
     {
+        base.OnDeactivated();
+
         ClearModules();
     }
 
-    public void OnReturned() { }
-    public void OnDestroyed() { }
-
-    public void OnNetworkUpdated(EnergyNetwork network)
+    public override void OnReturned()
     {
-        //throw new System.NotImplementedException();
+        base.OnReturned();
+    }
+
+    public override void OnDestroyed()
+    {
+        base.OnDestroyed();
     }
 
     public void SetReceivedEnergy(float amount)

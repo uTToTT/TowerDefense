@@ -65,7 +65,7 @@ public static class MapUtils
     /* =========================
      * Ports
      * ========================= */
-    public static List<WorldPort> GetWorldPorts(IMapObject obj)
+    public static List<WorldPort> GetWorldPorts(MapObject obj)
     {
         var result = new List<WorldPort>();
 
@@ -102,7 +102,7 @@ public static class MapUtils
         return a.Cell + a.Direction.ToOffset() == b.Cell;
     }
     
-    public static void ResolveConnections(IMapObject placedObject)
+    public static void ResolveConnections(MapObject placedObject)
     {
         var ports = GetWorldPorts(placedObject);
 

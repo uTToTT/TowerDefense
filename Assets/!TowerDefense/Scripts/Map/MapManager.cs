@@ -1,6 +1,5 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -21,7 +20,7 @@ public class MapManager : MonoBehaviour
     private List<CellSelection> _selections = new();
 
     private bool _isDrawMapObjectPorts;
-    private IMapObject _selectedMapObject;
+    private MapObject _selectedMapObject;
 
     public Grid Grid => _grid;
 
@@ -74,7 +73,7 @@ public class MapManager : MonoBehaviour
         return cell != null && cell.IsBusy;
     }
 
-    public void PlaceMapObject(Vector2Int pos, IMapObject mapObject)
+    public void PlaceMapObject(Vector2Int pos, MapObject mapObject)
     {
         var cell = GetCellData(pos);
         if (cell != null && mapObject != null)
@@ -118,7 +117,7 @@ public class MapManager : MonoBehaviour
         return GetCellData(mapPos);
     }
 
-    public void DrawBorderMapObject(IMapObject mapObject)
+    public void DrawBorderMapObject(MapObject mapObject)
     {
         var occupiedCells = MapUtils.GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
 
@@ -127,12 +126,12 @@ public class MapManager : MonoBehaviour
             var seleciton = _selectionFactory.Create();
             seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
             seleciton.transform.rotation = Quaternion.identity;
-            seleciton.transform.parent = mapObject.Transform;
+            seleciton.transform.parent = mapObject.transform;
             _selections.Add(seleciton);
         }
     }
 
-    public bool HasMapObject(Vector2Int pos, MapObjectType type, out IMapObject mapObject)
+    public bool HasMapObject(Vector2Int pos, MapObjectType type, out MapObject mapObject)
     {
         var cell = GetCellData(pos);
 
@@ -148,7 +147,7 @@ public class MapManager : MonoBehaviour
 
     #region Ports
 
-    public void ShowMapObjectPorts(IMapObject mapObject)
+    public void ShowMapObjectPorts(MapObject mapObject)
     {
         _isDrawMapObjectPorts = true;
         _selectedMapObject = mapObject;
@@ -160,7 +159,7 @@ public class MapManager : MonoBehaviour
         _selectedMapObject = null;
     }
 
-    public static List<WorldPort> GetWorldPorts(IGearNode obj)
+    public static List<WorldPort> GetWorldPorts(MapObject obj)
     {
         var result = new List<WorldPort>();
 
@@ -183,7 +182,7 @@ public class MapManager : MonoBehaviour
         return result;
     }
 
-    public void ResolveConnections(IGearNode placedObject)
+    public void ResolveConnections(MapObject placedObject)
     {
         var ports = GetWorldPorts(placedObject);
 
@@ -193,7 +192,7 @@ public class MapManager : MonoBehaviour
 
             var cellData = GetCellData(targetCell);
             if (cellData?.MapObject == null ||
-                cellData?.MapObject is not IGearNode otherObject)
+                cellData?.MapObject is not MapObject otherObject)
                 continue;
 
             var otherPorts = GetWorldPorts(otherObject);
@@ -229,7 +228,7 @@ public class MapManager : MonoBehaviour
         return result;
     }
 
-    private void DrawPorts(IMapObject mapObject)
+    private void DrawPorts(MapObject mapObject)
     {
         var ports = GetPortCells(mapObject.MapPos, mapObject.Shape);
 

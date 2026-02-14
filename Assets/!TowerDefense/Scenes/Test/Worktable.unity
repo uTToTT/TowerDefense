@@ -10293,7 +10293,6 @@ MonoBehaviour:
   _uiManager: {fileID: 1897775909}
   _player: {fileID: 1006413812}
   _enemyManager: {fileID: 794051674}
-  _energyNetworkManager: {fileID: 1326151021}
 --- !u!224 &1424259266 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3099978867416192086, guid: 800c22b42ee37524eb9a63b2ddaf4031, type: 3}
