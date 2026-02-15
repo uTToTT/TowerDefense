@@ -18,11 +18,13 @@ public class MapManager : MonoBehaviour
 
     private CellData[,] _cellData;
     private List<CellSelection> _selections = new();
+    private MapObjectDragger _mapObjectDragger;
 
     private bool _isDrawMapObjectPorts;
     private MapObject _selectedMapObject;
 
     public Grid Grid => _grid;
+    public MapObjectDragger MapObjectDragger => _mapObjectDragger;
 
     public static MapManager Instance { get; private set; }
 
@@ -36,6 +38,18 @@ public class MapManager : MonoBehaviour
         _selectionFactory.Init();
         _cellData = new CellData[_mapData.width, _mapData.height];
         _mapComposer.Build(_mapData, _cellData, _grid);
+
+        _mapObjectDragger = new MapObjectDragger();
+        _mapObjectDragger.EnableDrag();
+    }
+
+    #endregion
+
+    #region API
+
+    public void Tick(float dt)
+    {
+        _mapObjectDragger.Tick(dt);
     }
 
     #endregion

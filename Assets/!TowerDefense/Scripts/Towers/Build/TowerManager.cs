@@ -27,13 +27,17 @@ public class TowerManager : MonoBehaviour
 
     public void Init()
     {
+        _towerFactory.Init();
+        _towerPreviewFactory.Init();
+
+        return;
+
         foreach (var button in _buildButtons)
         {
             button.TowerPlacer = this;
         }
 
-        _towerFactory.Init();
-        _towerPreviewFactory.Init();
+        
     }
 
     public void Tick(float dt)

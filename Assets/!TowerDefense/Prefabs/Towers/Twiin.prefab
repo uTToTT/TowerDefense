@@ -354,8 +354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84934873f0d7dea438cd23e90f1b3f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  _towerType: 1
+  _type: 3
   _shape: {fileID: 11400000, guid: 4ecad989caf5d9844a698062c526a5e6, type: 2}
+  _spriteRenderer: {fileID: 4073701965912703454}
+  _towerType: 1
   _upgradeTree: {fileID: 11400000, guid: e327b65169cb56c4889d85bbc6752079, type: 2}
 --- !u!114 &8200067439836425777
 MonoBehaviour:
@@ -373,6 +375,7 @@ MonoBehaviour:
   _collider: {fileID: 7167402566828935403}
   _targetCharacteristic: 0
   _targetDistance: 0
+  Config: {fileID: 0}
 --- !u!58 &7167402566828935403
 CircleCollider2D:
   m_ObjectHideFlags: 0

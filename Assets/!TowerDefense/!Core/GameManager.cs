@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button _startWaveButton;
 
     [HorizontalLine]
+    [SerializeField] private Camera _worldCamera;
+
+    [HorizontalLine]
     [SerializeField] private MapManager _mapManager;
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private CellSelector _cellSelector;
@@ -15,11 +19,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private BuildManager _buildManager;
+    [SerializeField] private ProductShop _productShop;
 
     private PlayerInputController _playerInputController;
 
     public PlayerInputController PlayerInputController => _playerInputController;
     public TowerManager TowerManager => _towerManager;
+    public BuildManager BuildManager => _buildManager;
+
+    public Camera WorldCamera => _worldCamera;
 
     public static GameManager Instance { get; private set; }
 
@@ -46,6 +55,8 @@ public class GameManager : MonoBehaviour
         _mapManager.Init();
         _economyService.Init();
         _enemyManager.Init();
+        _buildManager.Init();
+        _productShop.Init();
 
         _startWaveButton.onClick.AddListener(PlayerStartWave);
 
@@ -64,6 +75,7 @@ public class GameManager : MonoBehaviour
         }
 
         _towerManager.Tick(dt);
+        _mapManager.Tick(dt);
     }
 
     private void PlayerStartWave()
