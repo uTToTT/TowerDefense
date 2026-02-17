@@ -9,7 +9,6 @@ public class TowerManager : MonoBehaviour
     [HorizontalLine]
 
     [SerializeField] private TowerFactoryRegistry _towerFactory;
-    [SerializeField] private TowerPreviewFactoryRegistry _towerPreviewFactory;
 
     private List<Tower> _builtTowers = new();
     private TowerPreview _towerPreview;
@@ -27,8 +26,7 @@ public class TowerManager : MonoBehaviour
 
     public void Init()
     {
-        _towerFactory.Init();
-        _towerPreviewFactory.Init();
+        //_towerFactory.Init();
 
         return;
 
@@ -96,7 +94,7 @@ public class TowerManager : MonoBehaviour
             return;
 
         _draggingType = towerType;
-        _towerPreview = _towerPreviewFactory.Create(towerType);
+        //_towerPreview = _towerPreviewFactory.Create(towerType);
         _isDragging = true;
     }
 
@@ -152,15 +150,17 @@ public class TowerManager : MonoBehaviour
 
         tower.Enable();
 
-        _towerPreviewFactory.Return(_towerPreview);
+        //_towerPreviewFactory.Return(_towerPreview);
     }
 
-    private void CancelPlacement() =>
-        _towerPreviewFactory.Return(_towerPreview);
+    private void CancelPlacement()
+    {
+        //_towerPreviewFactory.Return(_towerPreview);
+    }
 
     #region Validation
 
-   
+
 
     private bool IsValidPlacement(Vector3 worldPos)
     {

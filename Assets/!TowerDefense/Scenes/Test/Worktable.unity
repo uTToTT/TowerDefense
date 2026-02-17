@@ -12824,6 +12824,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2b0e6807c7f6c3142afefd45ccad7d8e, type: 2}
   - {fileID: 11400000, guid: 38df7f42c07691a498a0bd989db3051d, type: 2}
   _reroll: {fileID: 1399654578}
+  _previewFactory: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
 --- !u!1 &2126351175
 GameObject:
   m_ObjectHideFlags: 0
@@ -12874,7 +12875,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _towerFactory: {fileID: 11400000, guid: 328024393d94f824788111113f140c4d, type: 2}
-  _towerPreviewFactory: {fileID: 11400000, guid: 845fa9710b7cd31419e020773f4cc8af, type: 2}
 --- !u!1 &2144045305
 GameObject:
   m_ObjectHideFlags: 0

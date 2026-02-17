@@ -1,20 +1,14 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public class TowerPreview : MonoBehaviour, IPoolable, IEntityLifecycle
+public class TowerPreview : MapObject, IPoolable, IEntityLifecycle
 {
-    [SerializeField] private TowerType _towerType;
-    [SerializeField] private MapObjectShape _towerShape;
     [Expandable]
     [SerializeField] private TargetingModuleConfig _config;
     [HorizontalLine]
 
     [SerializeField] private GameObject _minRange;
     [SerializeField] private GameObject _maxRange;
-
-    public TowerType TowerType => _towerType;
-    public MapObjectShape Shape => _towerShape;
-    public bool IsActive { get; set; }
 
     [Button]
     private void UpdateRange()
@@ -29,10 +23,10 @@ public class TowerPreview : MonoBehaviour, IPoolable, IEntityLifecycle
             new Vector3(_config.MaxRange * 2, _config.MaxRange * 2);
     }
 
-    public void Dispose() { }
-    public void OnActivated() { }
-    public void OnDeactivated() { }
-    public void OnDestroyed() { }
-    public void OnPreload() { }
-    public void OnReturned() { }
+    public override void Dispose() { }
+    public override void OnActivated() { }
+    public override void OnDeactivated() { }
+    public override void OnDestroyed() { }
+    public override void OnPreload() { }
+    public override void OnReturned() { }
 }

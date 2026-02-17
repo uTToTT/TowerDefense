@@ -31,13 +31,20 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        MapManager.Instance.MapObjectDragger.BeginDrag(MapObject);
+        var dragCtx = new DragContext()
+        {
+            MapObject = MapObject
+        };
+
+        MapManager.Instance.MapObjectDragger.BeginDrag(dragCtx);
         Debug.Log("Down");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        MapManager.Instance.MapObjectDragger.EndDrag();
+        var dragCtx = new DragContext();
+
+        MapManager.Instance.MapObjectDragger.EndDrag(dragCtx);
         Debug.Log("UP");
     }
 }

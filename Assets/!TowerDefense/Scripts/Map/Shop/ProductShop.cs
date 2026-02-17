@@ -6,9 +6,11 @@ public class ProductShop : MonoBehaviour
     [SerializeField] private ProductSlot[] _slots;
     [SerializeField] private ProductConfig[] _products;
     [SerializeField] private Button _reroll;
+    [SerializeField] private MapObjectPreviewFactoryRegistry _previewFactory;
 
     public void Init()
     {
+        _previewFactory.Init();
         _reroll.onClick.AddListener(() => Reroll());
     }
 
@@ -16,28 +18,24 @@ public class ProductShop : MonoBehaviour
     {
         ClearSlots();
 
-        var builder = GameManager.Instance.BuildManager;
-
         float totalWeight = CalculateTotalWeight();
 
         for (int si = 0; si < _slots.Length; si++)
         {
             var product = PickWeighted(totalWeight);
 
-            var mapObject = builder.Create(product.ProductType);
+            var mapObject = _previewFactory.Create(product.ProductType);
             _slots[si].SetProduct(mapObject, product);
         }
     }
 
     public void ClearSlots()
     {
-        var builder = GameManager.Instance.BuildManager;
-
         foreach (var slot in _slots)
         {
             if (slot.MapObject != null)
             {
-                builder.Return(slot.MapObject);
+                _previewFactory.Return(slot.MapObject);
                 slot.Clear();
             }
         }
