@@ -1,9 +1,13 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public event Action<ProductSlot> OnDragPerformed;
+    public event Action<ProductSlot> OnDragCanceled;
+
     [SerializeField] private TMP_Text _price;
 
     public MapObject MapObject;
@@ -31,20 +35,11 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        var dragCtx = new DragContext()
-        {
-            MapObject = MapObject
-        };
-
-        MapManager.Instance.MapObjectDragger.BeginDrag(dragCtx);
-        Debug.Log("Down");
+        OnDragPerformed?.Invoke(this);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        var dragCtx = new DragContext();
-
-        MapManager.Instance.MapObjectDragger.EndDrag(dragCtx);
-        Debug.Log("UP");
+        OnDragCanceled?.Invoke(this);
     }
 }

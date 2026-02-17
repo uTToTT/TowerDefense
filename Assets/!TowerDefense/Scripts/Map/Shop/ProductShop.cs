@@ -8,10 +8,21 @@ public class ProductShop : MonoBehaviour
     [SerializeField] private Button _reroll;
     [SerializeField] private MapObjectPreviewFactoryRegistry _previewFactory;
 
+    private MapObject _selectedProduct;
+    private ProductSlot _selectedSlot;
+
+    private PlacementController PlacementController => MapManager.Instance.PlacementController;
+
     public void Init()
     {
         _previewFactory.Init();
         _reroll.onClick.AddListener(() => Reroll());
+
+        foreach (var s in _slots)
+        {
+            s.OnDragPerformed += OnProductDragPerformed;
+            s.OnDragCanceled += OnProductDragCanceled;
+        }
     }
 
     public void Reroll()
@@ -40,6 +51,41 @@ public class ProductShop : MonoBehaviour
             }
         }
     }
+
+    #region Handlers
+
+    private void OnProductDragPerformed(ProductSlot slot)
+    {
+        PlacementController.BeginDrag(slot.MapObject);
+        _selectedProduct = slot.MapObject;
+
+        PlacementController.OnPlaced += OnProductPlacePerformed;
+        PlacementController.OnCanceled += OnProductPlaceCanceled;
+    }
+
+    private void OnProductDragCanceled(ProductSlot slot)
+    {
+        PlacementController.EndDrag(slot.MapObject);
+        _selectedProduct = null;
+
+        PlacementController.OnPlaced -= OnProductPlacePerformed;
+        PlacementController.OnCanceled -= OnProductPlaceCanceled;
+    }
+
+    private void OnProductPlacePerformed()
+    {
+        _previewFactory.Return(_selectedProduct);
+        var obj = GameManager.Instance.BuildManager.Create(_selectedProduct.Type);
+        obj.transform.position = 
+            MapUtils.SnapToGrid(_selectedProduct.transform.position, MapManager.Instance.Grid);
+    }
+
+    private void OnProductPlaceCanceled()
+    {
+        _selectedProduct.transform.position = _selectedSlot.transform.position;
+    }
+
+    #endregion
 
     #region Weights
 

@@ -18,13 +18,13 @@ public class MapManager : MonoBehaviour
 
     private CellData[,] _cellData;
     private List<CellSelection> _selections = new();
-    private DragController _mapObjectDragger;
+    private PlacementController _mapObjectDragger;
 
     private bool _isDrawMapObjectPorts;
     private MapObject _selectedMapObject;
 
     public Grid Grid => _grid;
-    public DragController MapObjectDragger => _mapObjectDragger;
+    public PlacementController PlacementController => _mapObjectDragger;
 
     public static MapManager Instance { get; private set; }
 
@@ -39,7 +39,7 @@ public class MapManager : MonoBehaviour
         _cellData = new CellData[_mapData.width, _mapData.height];
         _mapComposer.Build(_mapData, _cellData, _grid);
 
-        _mapObjectDragger = new DragController();
+        _mapObjectDragger = new PlacementController();
         _mapObjectDragger.EnableDrag();
     }
 
@@ -256,6 +256,25 @@ public class MapManager : MonoBehaviour
     }
 
     #endregion
+
+    public bool IsValidPlacement(MapObject mapObject, Vector3 worldPos)
+    {
+        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
+        return IsValidPlacement(mapObject, mapPos);
+    }
+
+    public bool IsValidPlacement(MapObject mapObject, Vector2Int mapPos)
+    {
+        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, mapObject.Shape))
+        {
+            if (!IsInside(cell))
+                return false;
+            if (IsCellBusy(cell))
+                return false;
+        }
+
+        return true;
+    }
 
     public void ClearSellection()
     {
