@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +13,7 @@ public class GameManager : MonoBehaviour
     [HorizontalLine]
     [SerializeField] private MapManager _mapManager;
     [SerializeField] private TowerManager _towerManager;
-    [SerializeField] private CellSelector _cellSelector;
+    [SerializeField] private ObjectSelector _cellSelector;
     [SerializeField] private EconomyService _economyService;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private Player _player;
@@ -47,9 +46,7 @@ public class GameManager : MonoBehaviour
         _playerInputController.Init();
         _playerInputController.EnableInput();
 
-        _cellSelector.Init();
-        _playerInputController.OnTapPerformed += _cellSelector.OnTapPerformed;
-        _playerInputController.OnTapCanceled += _cellSelector.OnTapCanceled;
+        _cellSelector.Init(_playerInputController, _mapManager);
 
         _towerManager.Init();
         _mapManager.Init();

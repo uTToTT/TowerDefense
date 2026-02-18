@@ -8935,7 +8935,7 @@ GameObject:
   - component: {fileID: 756892452}
   - component: {fileID: 756892453}
   m_Layer: 0
-  m_Name: CellSelector
+  m_Name: ObjectSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8968,6 +8968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb73ccf71550cc45aeba7819ec323cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CellSelector
+  _selectionFactory: {fileID: 11400000, guid: 5f11a0bb8fd27ed48a71fe808f6ac644, type: 2}
 --- !u!1 &794051672
 GameObject:
   m_ObjectHideFlags: 0

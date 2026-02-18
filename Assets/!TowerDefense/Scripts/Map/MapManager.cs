@@ -145,19 +145,22 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public bool HasMapObject(Vector2Int pos, MapObjectType type, out MapObject mapObject)
+    public bool TryGetObject(Vector2Int mapPos, out MapObject mapObject) =>
+        TryGetObject(GetCellData(mapPos), out mapObject);
+    public bool TryGetObject(CellData cellData, out MapObject mapObject)
     {
-        var cell = GetCellData(pos);
+        if (!HasObject(cellData))
+        {
+            mapObject = null;
+            return false;
+        }
 
-        var hasObject =
-            cell != null &&
-            cell.MapObject != null &&
-            cell.MapObject.Type == type;
-
-        mapObject = hasObject ? cell.MapObject : null;
-
-        return hasObject;
+        mapObject = cellData.MapObject;
+        return true;
     }
+
+    public bool HasObject(CellData cell) => cell != null && cell.MapObject != null;
+    public bool HasObject(Vector2Int pos) => HasObject(GetCellData(pos));
 
     #region Ports
 

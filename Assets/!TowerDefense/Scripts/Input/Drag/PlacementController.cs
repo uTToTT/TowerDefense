@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public sealed class PlacementController
 {
@@ -10,9 +9,6 @@ public sealed class PlacementController
     private bool _enabled;
 
     private MapObject _draggedObject;
-
-    private Vector3 GetPointerPosition() =>
-        GameManager.Instance.PlayerInputController.GetPointerPosition();
 
     public void Tick(float dt)
     {
@@ -45,7 +41,14 @@ public sealed class PlacementController
         _isDragging = false;
     }
 
-    private void Place() => OnPlaced?.Invoke();
+    private void Place()
+    {
+        //var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, MapManager.Instance.Grid);
+        //MapManager.Instance.RemoveMapObject(_draggedObject.MapPos);
+        //MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
+        OnPlaced?.Invoke();
+    }
+
     private void Cancele() => OnCanceled?.Invoke();
 
     private bool IsValidPlacement(MapObject mapObject)

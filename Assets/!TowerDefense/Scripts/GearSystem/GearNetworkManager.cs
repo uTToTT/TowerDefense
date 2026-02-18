@@ -24,7 +24,7 @@ public class GearNetworkManager : MonoBehaviour
         {
             var pos = gear.MapPos + offset;
 
-            if (MapManager.Instance.HasMapObject(pos, MapObjectType.Gear, out var mapObject))
+            if (MapManager.Instance.TryGetObject(pos, out var mapObject))
             {
                 var neighbour = mapObject as Gear;
                 if (neighbour.GearNetwork != null && !visitedNetworks.Contains(neighbour.GearNetwork))
