@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class MapManager : MonoBehaviour
 {
@@ -89,21 +90,31 @@ public class MapManager : MonoBehaviour
 
     public void PlaceMapObject(Vector2Int pos, MapObject mapObject)
     {
-        var cell = GetCellData(pos);
-        if (cell != null && mapObject != null)
+        var occupiedPoss = MapUtils.GetOccupiedCells(pos,mapObject.Shape);
+
+        foreach (var p in occupiedPoss)
         {
-            cell.MapObject = mapObject;
-            cell.IsBusy = true;
+            var cell = GetCellData(p);
+            if (cell != null && mapObject != null)
+            {
+                cell.MapObject = mapObject;
+                cell.IsBusy = true;
+            }
         }
     }
 
-    public void RemoveMapObject(Vector2Int pos)
+    public void RemoveMapObject(MapObject mapObject)
     {
-        var cell = GetCellData(pos);
-        if (cell != null)
+        var occupiedPoss = MapUtils.GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
+
+        foreach (var p in occupiedPoss)
         {
-            cell.MapObject = null;
-            cell.IsBusy = false;
+            var cell = GetCellData(p);
+            if (cell != null)
+            {
+                cell.MapObject = null;
+                cell.IsBusy = false;
+            }
         }
     }
 
@@ -133,14 +144,16 @@ public class MapManager : MonoBehaviour
 
     public void DrawBorderMapObject(MapObject mapObject)
     {
-        var occupiedCells = MapUtils.GetOccupiedCells(mapObject.MapPos, mapObject.Shape);
+        var worldPos = mapObject.transform.position;
+        var mapPos = MapUtils.WorldToMap(worldPos, _grid);
+        var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
 
         for (int i = 0; i < occupiedCells.Count; i++)
         {
             var seleciton = _selectionFactory.Create();
             seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
             seleciton.transform.rotation = Quaternion.identity;
-            seleciton.transform.parent = mapObject.transform;
+            //seleciton.transform.parent = mapObject.transform;
             _selections.Add(seleciton);
         }
     }
@@ -260,14 +273,10 @@ public class MapManager : MonoBehaviour
 
     #endregion
 
-    public bool IsValidPlacement(MapObject mapObject, Vector3 worldPos)
+    public bool IsValidPlacement(MapObject mapObject)
     {
-        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
-        return IsValidPlacement(mapObject, mapPos);
-    }
+        Vector2Int mapPos = MapUtils.WorldToMap(mapObject.transform.position, Grid);
 
-    public bool IsValidPlacement(MapObject mapObject, Vector2Int mapPos)
-    {
         foreach (var cell in MapUtils.GetOccupiedCells(mapPos, mapObject.Shape))
         {
             if (!IsInside(cell))

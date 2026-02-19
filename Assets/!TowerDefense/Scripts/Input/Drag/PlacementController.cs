@@ -25,6 +25,7 @@ public sealed class PlacementController
     public void BeginDrag(MapObject mapObject)
     {
         _draggedObject = mapObject;
+        MapManager.Instance.RemoveMapObject(_draggedObject);
 
         _isDragging = true;
     }
@@ -43,16 +44,27 @@ public sealed class PlacementController
 
     private void Place()
     {
-        //var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, MapManager.Instance.Grid);
-        //MapManager.Instance.RemoveMapObject(_draggedObject.MapPos);
-        //MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
+        if (_draggedObject == null) return;
+
+        var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, MapManager.Instance.Grid);
+        MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
+        _draggedObject.MapPos = mapPos;
+        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid); 
         OnPlaced?.Invoke();
     }
 
-    private void Cancele() => OnCanceled?.Invoke();
+    private void Cancele()
+    {
+        if (_draggedObject == null) return;
+
+        var mapPos = _draggedObject.MapPos;
+        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid);
+        MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
+        OnCanceled?.Invoke();
+    }
 
     private bool IsValidPlacement(MapObject mapObject)
     {
-        return MapManager.Instance.IsValidPlacement(mapObject, mapObject.transform.position);
+        return MapManager.Instance.IsValidPlacement(mapObject);
     }
 }

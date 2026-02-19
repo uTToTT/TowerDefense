@@ -74,7 +74,7 @@ public class TowerManager : MonoBehaviour
 
         foreach (var cell in MapUtils.GetOccupiedCells(tower.MapPos, tower.Shape))
         {
-            MapManager.RemoveMapObject(cell);
+            //MapManager.RemoveMapObject(cell);
         }
     }
 

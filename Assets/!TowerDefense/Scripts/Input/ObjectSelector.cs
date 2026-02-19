@@ -16,6 +16,17 @@ public class ObjectSelector : MonoBehaviour
 
         playerInputController.OnTapPerformed += OnTapPerformed;
         playerInputController.OnTapCanceled += OnTapCanceled;
+
+        MapManager.Instance.ClearSellection();
+    }
+
+    public void Tick(float dt)
+    {
+        if(_selectedObject != null)
+        {
+            MapManager.Instance.ClearSellection();
+            MapManager.Instance.DrawBorderMapObject(_selectedObject);
+        }
     }
 
     private void OnTapPerformed()
@@ -36,8 +47,8 @@ public class ObjectSelector : MonoBehaviour
         {
             _selectedObject = mapObject;
 
-            MapManager.Instance.ClearSellection();
-            MapManager.Instance.DrawBorderMapObject(_selectedObject);
+            //MapManager.Instance.ClearSellection();
+            //MapManager.Instance.DrawBorderMapObject(_selectedObject);
             MapManager.Instance.PlacementController.BeginDrag(_selectedObject);
         }
     }
@@ -48,5 +59,7 @@ public class ObjectSelector : MonoBehaviour
 
         MapManager.Instance.ClearSellection();
         MapManager.Instance.PlacementController.EndDrag(_selectedObject);
+
+        _selectedObject = null;
     }
 }

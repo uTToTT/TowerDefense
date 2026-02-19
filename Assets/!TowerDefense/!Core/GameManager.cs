@@ -46,14 +46,13 @@ public class GameManager : MonoBehaviour
         _playerInputController.Init();
         _playerInputController.EnableInput();
 
-        _cellSelector.Init(_playerInputController, _mapManager);
-
         _towerManager.Init();
         _mapManager.Init();
         _economyService.Init();
         _enemyManager.Init();
         _buildManager.Init();
         _productShop.Init();
+        _cellSelector.Init(_playerInputController, _mapManager);
 
         _startWaveButton.onClick.AddListener(PlayerStartWave);
 
@@ -69,6 +68,11 @@ public class GameManager : MonoBehaviour
         if (IsBattle)
         {
             _enemyManager.Tick(dt);
+        }
+
+        if (!IsBattle)
+        {
+            _cellSelector.Tick(dt);
         }
 
         _towerManager.Tick(dt);

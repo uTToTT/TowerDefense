@@ -75,9 +75,13 @@ public class ProductShop : MonoBehaviour
     private void OnProductPlacePerformed()
     {
         _previewFactory.Return(_selectedProduct);
+        var grid = MapManager.Instance.Grid;
+        var worldPos = _selectedProduct.transform.position;
         var obj = GameManager.Instance.BuildManager.Create(_selectedProduct.Type);
-        obj.transform.position = 
-            MapUtils.SnapToGrid(_selectedProduct.transform.position, MapManager.Instance.Grid);
+        var mapPos = MapUtils.WorldToMap(worldPos, grid);
+        obj.transform.position = MapUtils.SnapToGrid(worldPos, grid);
+        obj.MapPos = mapPos;
+        MapManager.Instance.PlaceMapObject(mapPos, obj);
     }
 
     private void OnProductPlaceCanceled()
