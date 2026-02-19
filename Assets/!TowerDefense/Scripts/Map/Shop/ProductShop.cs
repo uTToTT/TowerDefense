@@ -11,31 +11,38 @@ public class ProductShop : MonoBehaviour
     private MapObject _selectedProduct;
     private ProductSlot _selectedSlot;
 
+    private float _totalWeight;
+
     private PlacementController PlacementController => MapManager.Instance.PlacementController;
 
     public void Init()
     {
         _previewFactory.Init();
         _reroll.onClick.AddListener(() => Reroll());
+        _totalWeight = CalculateTotalWeight();
 
         foreach (var s in _slots)
         {
             s.OnDragPerformed += OnProductDragPerformed;
             s.OnDragCanceled += OnProductDragCanceled;
         }
+
+        Invoke(nameof(Reroll), 0.1f);
     }
 
     public void Reroll()
     {
         ClearSlots();
 
-        float totalWeight = CalculateTotalWeight();
-
         for (int si = 0; si < _slots.Length; si++)
         {
-            var product = PickWeighted(totalWeight);
+            var product = PickWeighted(_totalWeight);
 
             var mapObject = _previewFactory.Create(product.ProductType);
+            if (mapObject is TowerPreview towerPrev)
+            {
+                towerPrev.Disable();
+            }
             _slots[si].SetProduct(mapObject, product);
         }
     }
@@ -58,6 +65,12 @@ public class ProductShop : MonoBehaviour
     {
         PlacementController.BeginDrag(slot.MapObject);
         _selectedProduct = slot.MapObject;
+        _selectedSlot = slot;
+
+        if (_selectedProduct is TowerPreview towerPrev)
+        {
+            towerPrev.Enable();
+        }
 
         PlacementController.OnPlaced += OnProductPlacePerformed;
         PlacementController.OnCanceled += OnProductPlaceCanceled;
@@ -66,7 +79,14 @@ public class ProductShop : MonoBehaviour
     private void OnProductDragCanceled(ProductSlot slot)
     {
         PlacementController.EndDrag(slot.MapObject);
+
+        if (_selectedProduct is TowerPreview towerPrev)
+        {
+            towerPrev.Disable();
+        }
+
         _selectedProduct = null;
+        _selectedSlot = null;
 
         PlacementController.OnPlaced -= OnProductPlacePerformed;
         PlacementController.OnCanceled -= OnProductPlaceCanceled;
@@ -81,6 +101,14 @@ public class ProductShop : MonoBehaviour
         var mapPos = MapUtils.WorldToMap(worldPos, grid);
         obj.transform.position = MapUtils.SnapToGrid(worldPos, grid);
         obj.MapPos = mapPos;
+
+        if (obj is Tower tower)
+        {
+            tower.HideRange();
+            tower.Enable();
+            GameManager.Instance.TowerManager.Register(tower);
+        }
+
         MapManager.Instance.PlaceMapObject(mapPos, obj);
     }
 

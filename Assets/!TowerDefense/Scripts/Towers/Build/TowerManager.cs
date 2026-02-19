@@ -40,24 +40,31 @@ public class TowerManager : MonoBehaviour
 
     public void Tick(float dt)
     {
-        if (_selectedTower != null)
-        {
-            MapUtils.SnapToGridUnderPointer(_selectedTower.transform);
-            if (IsValidPlacement(_selectedTower.transform.position))
-                _lastTowerValidPosition = _selectedTower.transform.position;
-        }
+        //if (_selectedTower != null)
+        //{
+        //    MapUtils.SnapToGridUnderPointer(_selectedTower.transform);
+        //    if (IsValidPlacement(_selectedTower.transform.position))
+        //        _lastTowerValidPosition = _selectedTower.transform.position;
+        //}
 
         foreach (var tower in _builtTowers)
             tower.Tick(dt);
 
-        if (!_isDragging)
-            return;
+        //if (!_isDragging)
+        //    return;
 
-        UpdatePreviewPosition();
+        //UpdatePreviewPosition();
 
-        if (GameManager.Instance.PlayerInputController.IsPointerDown == false)
-            TryPlaceTower();
+        //if (GameManager.Instance.PlayerInputController.IsPointerDown == false)
+        //    TryPlaceTower();
     }
+
+    #endregion
+
+    #region Registering
+
+    public void Register(Tower tower) => _builtTowers.Add(tower); 
+    public void Unregister(Tower tower) => _builtTowers.Remove(tower); 
 
     #endregion
 

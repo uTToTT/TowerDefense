@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 2620142187718937548, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: _config
       value: 
-      objectReference: {fileID: 11400000, guid: ae80951f8c3ab1c42b60466d97c83ad6, type: 2}
+      objectReference: {fileID: 11400000, guid: 414c60c3d2ab70a4788468b97d86bce2, type: 2}
     - target: {fileID: 2620142187718937548, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: _towerType
       value: 3
@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: _spriteRenderer
       value: 
       objectReference: {fileID: 7130529083307314087}
+    - target: {fileID: 2961690654004475707, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -78,11 +82,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4280040587477236037, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalScale.x
-      value: 16
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4280040587477236037, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalScale.y
-      value: 16
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697693123551750190, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6431618746298742783, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_Sprite
@@ -90,11 +98,11 @@ PrefabInstance:
       objectReference: {fileID: 990884294, guid: 8a815608636045d4199f782590773d27, type: 3}
     - target: {fileID: 8279897758249972814, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8279897758249972814, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

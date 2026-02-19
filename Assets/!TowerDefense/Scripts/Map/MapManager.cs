@@ -152,8 +152,13 @@ public class MapManager : MonoBehaviour
         {
             var seleciton = _selectionFactory.Create();
             seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
+
+            if (IsCellBusy(occupiedCells[i]))
+                seleciton.SetBusyColor();
+            else
+                seleciton.SetFreeColor();
+
             seleciton.transform.rotation = Quaternion.identity;
-            //seleciton.transform.parent = mapObject.transform;
             _selections.Add(seleciton);
         }
     }

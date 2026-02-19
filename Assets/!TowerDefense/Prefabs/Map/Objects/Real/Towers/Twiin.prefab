@@ -89,7 +89,7 @@ Transform:
   m_GameObject: {fileID: 3878233760640578271}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -340,6 +340,7 @@ Transform:
   - {fileID: 5742061312322136745}
   - {fileID: 4879194679009480340}
   - {fileID: 8638879724813452198}
+  - {fileID: 4254162897962430496}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-8512383437046038696
@@ -359,6 +360,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 4073701965912703454}
   _towerType: 1
   _upgradeTree: {fileID: 11400000, guid: e327b65169cb56c4889d85bbc6752079, type: 2}
+  _towerPreview: {fileID: 2681430237472966226}
 --- !u!114 &8200067439836425777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,3 +414,80 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!1001 &4242336596876014022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9112609783730870117}
+    m_Modifications:
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732746029012710275, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_Name
+      value: Twiin_Preview
+      objectReference: {fileID: 0}
+    - target: {fileID: 4624243942813595066, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+--- !u!114 &2681430237472966226 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2299532020390197140, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+  m_PrefabInstance: {fileID: 4242336596876014022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d05cd900a45eea4e8e53cb858a631e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerPreview
+--- !u!4 &4254162897962430496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 132324256500236774, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+  m_PrefabInstance: {fileID: 4242336596876014022}
+  m_PrefabAsset: {fileID: 0}

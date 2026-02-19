@@ -22,11 +22,11 @@ public class ObjectSelector : MonoBehaviour
 
     public void Tick(float dt)
     {
-        if(_selectedObject != null)
-        {
-            MapManager.Instance.ClearSellection();
-            MapManager.Instance.DrawBorderMapObject(_selectedObject);
-        }
+        //if(_selectedObject != null)
+        //{
+        //    MapManager.Instance.ClearSellection();
+        //    MapManager.Instance.DrawBorderMapObject(_selectedObject);
+        //}
     }
 
     private void OnTapPerformed()

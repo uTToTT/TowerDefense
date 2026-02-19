@@ -187,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 5052595356694918391}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -308,6 +308,7 @@ Transform:
   - {fileID: 3253683724457557407}
   - {fileID: 8597084253842478069}
   - {fileID: 1727409613550289799}
+  - {fileID: 2599702514638069060}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-1959643415032227143
@@ -326,7 +327,8 @@ MonoBehaviour:
   _shape: {fileID: 11400000, guid: 692f2b90c2b18444ab27c7a26106e093, type: 2}
   _spriteRenderer: {fileID: 8794856169514248620}
   _towerType: 3
-  _upgradeTree: {fileID: 11400000, guid: ca98c6769e0a11c4eb75b1437a89e8be, type: 2}
+  _upgradeTree: {fileID: 11400000, guid: 4bb0df1f3ead7e54c997147d66df29ca, type: 2}
+  _towerPreview: {fileID: 4191856935631465270}
 --- !u!114 &5448730927788856528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,3 +382,80 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!1001 &2721831809060723874
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 68993924830721766}
+    m_Modifications:
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732746029012710275, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_Name
+      value: Rail_Preview
+      objectReference: {fileID: 0}
+    - target: {fileID: 4624243942813595066, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+--- !u!4 &2599702514638069060 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 132324256500236774, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+  m_PrefabInstance: {fileID: 2721831809060723874}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4191856935631465270 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2299532020390197140, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+  m_PrefabInstance: {fileID: 2721831809060723874}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d05cd900a45eea4e8e53cb858a631e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerPreview

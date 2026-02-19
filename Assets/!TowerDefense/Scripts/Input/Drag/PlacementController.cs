@@ -16,7 +16,11 @@ public sealed class PlacementController
         if (!_isDragging) return;
 
         if (_draggedObject != null)
+        {
             DragUtils.SnapToPointer(_draggedObject.transform);
+            MapManager.Instance.ClearSellection();
+            MapManager.Instance.DrawBorderMapObject(_draggedObject);
+        }
     }
 
     public void EnableDrag() => _enabled = true;
@@ -25,6 +29,13 @@ public sealed class PlacementController
     public void BeginDrag(MapObject mapObject)
     {
         _draggedObject = mapObject;
+
+        if (mapObject is Tower tower)
+        {
+            tower.Disable();
+            tower.ShowRange();
+        }
+
         MapManager.Instance.RemoveMapObject(_draggedObject);
 
         _isDragging = true;
@@ -36,6 +47,12 @@ public sealed class PlacementController
             Place();
         else
             Cancele();
+
+        if (mapObject is Tower tower)
+        {
+            tower.Enable();
+            tower.HideRange();
+        }
 
         _draggedObject = null;
 
@@ -49,7 +66,9 @@ public sealed class PlacementController
         var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, MapManager.Instance.Grid);
         MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
         _draggedObject.MapPos = mapPos;
-        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid); 
+        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid);
+
+        MapManager.Instance.ClearSellection();
         OnPlaced?.Invoke();
     }
 
@@ -59,7 +78,9 @@ public sealed class PlacementController
 
         var mapPos = _draggedObject.MapPos;
         _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid);
+
         MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
+        MapManager.Instance.ClearSellection();
         OnCanceled?.Invoke();
     }
 

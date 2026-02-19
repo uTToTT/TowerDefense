@@ -20,6 +20,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
 
     public ModuleType ModuleType => ModuleType.Targeting;
 
+    #region Unity API
+
     private void Reset()
     {
         _collider = GetComponent<CircleCollider2D>();
@@ -37,6 +39,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         Gizmos.DrawWireSphere(transform.position, Config.MinRange);
         Gizmos.DrawSphere(transform.position, Config.MaxRange);
     }
+
+    #endregion
 
     public void Tick(float deltaTime) { }
 
@@ -123,7 +127,10 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         if (collision.CompareTag(Tags.ENEMY))
         {
             if (collision.TryGetComponent<Enemy>(out var enemy))
+            {
                 _targets.Add(enemy);
+                Debug.Log($"Register enemy in range [{gameObject.name}]");
+            }
         }
     }
 

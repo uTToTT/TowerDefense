@@ -10,6 +10,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     [HorizontalLine]
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
+    [SerializeField] private TowerPreview _towerPreview;
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
@@ -23,6 +24,9 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     public void Enable() => IsEnabled = true;
     public void Disable() => IsEnabled = false;
+
+    public void ShowRange() => _towerPreview.Enable();
+    public void HideRange() => _towerPreview.Disable();
 
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
@@ -42,7 +46,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         foreach (var moduleConfig in config.ModifyModuleConfigs)
         {
             ApplyConfig(moduleConfig);
-            //Debug.Log($"Apply {moduleConfig.GetType()}");
+            Debug.Log($"Apply {moduleConfig.GetType()}");
         }
 
         if (modulesChanged)
@@ -87,6 +91,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         }
         else
         {
+            Debug.Log($"Add {module.ModuleType}");
             _modules.Add(module.ModuleType, module);
         }
     }
@@ -121,30 +126,6 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     public Transform Transform => transform;
     public TowerType TowerType => _towerType;
-
-    public float EnergyProduction
-    {
-        get
-        {
-            var module = GetModule<EnergyModule>(ModuleType.Energy);
-            return module != null ? module.GetProduction() : 0;
-        }
-    }
-
-    public float EnergyConsumption
-    {
-        get
-        {
-            var module = GetModule<EnergyModule>(ModuleType.Energy);
-            return module != null ? module.GetConsumption() : 0;
-        }
-    }
-
-    public float GetEnergyEffectivity()
-    {
-        var module = GetModule<EnergyModule>(ModuleType.Energy);
-        return module != null ? module.GetEnergyEffectivity() : 0;
-    }
 
     public int GetSpecPrice(int index) => 0;
     public void SetUniqueTowerIndex(int index) { }
