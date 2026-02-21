@@ -120,8 +120,11 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         if (!IsEnabled)
             return;
 
+        _targetingModule.Tick(dt);
+
         foreach (var module in _modules.Values)
             module.Tick(dt);
+
     }
 
     public Transform Transform => transform;

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class SlowdownModule : ITowerModule
 {
@@ -51,16 +52,11 @@ public class SlowdownModule : ITowerModule
 
     private Buff GetBuff()
     {
-        var buff = new Buff
-        {
-            ID = Tags.GRAVITY,
-            Type = BuffType.Percent,
-            Characteristic = Characteristics.SPEED,
-            Value = _config.Force * -1f,
-            Duration = _config.Duration,
-            TimeLeft = _config.Duration
-        };
-
-        return buff;
+        return new Buff(
+            Tags.GRAVITY,
+            Characteristics.SPEED,
+            BuffType.Percent,
+            _config.Force * -1f,
+            _config.Duration);
     }
 }

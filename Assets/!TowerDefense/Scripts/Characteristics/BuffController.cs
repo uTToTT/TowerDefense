@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BuffController
 {
@@ -18,8 +19,6 @@ public class BuffController
 
                 if (buff.IsExpired)
                     expired.Add(pair.Key);
-                else
-                    buffMap[pair.Key] = buff;
             }
 
             foreach (var id in expired)

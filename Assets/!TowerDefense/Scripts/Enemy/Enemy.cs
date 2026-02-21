@@ -53,8 +53,6 @@ public class Enemy : MonoBehaviour,
     public bool IsActive { get; set; }
     public bool IsAlive { get; private set; }
     public float CurrMoneyDrop => _config.DropMoney;
-    private float GetSpeed() =>
-        BuffController.Calculate(Characteristics.SPEED, _config.Speed);
     public BuffController BuffController => _buffController;
 
     private List<Vector3> _points;
@@ -70,8 +68,9 @@ public class Enemy : MonoBehaviour,
     public void Tick(float dt)
     {
         if (!IsActive || !IsAlive) return;
+        _buffController.Update(dt);
         Move(dt);
-        TESTSPEED = GetSpeed();
+        TESTSPEED = CurrSpeed;
     }
 
     private void OnValidate()
@@ -113,7 +112,7 @@ public class Enemy : MonoBehaviour,
 
         Vector3 target = _pathController.Peek();
 
-        transform.MoveTowards(target, GetSpeed(), dt);
+        transform.MoveTowards(target, CurrSpeed, dt);
     }
 
     private void OnDrawGizmos()
@@ -208,8 +207,6 @@ public class Enemy : MonoBehaviour,
     public void OnDestroyed()
     {
     }
-
-
 }
 
 

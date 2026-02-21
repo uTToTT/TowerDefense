@@ -1,4 +1,4 @@
-public struct Buff 
+public class Buff 
 {
     public string ID;
     public BuffType Type;
