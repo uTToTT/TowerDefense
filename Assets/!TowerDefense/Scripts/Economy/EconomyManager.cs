@@ -1,11 +1,11 @@
 using TMPro;
 using UnityEngine;
 
-public class EconomyService : MonoBehaviour
+public class EconomyManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text _balanceText;
 
-    public static EconomyService Instance { get; private set; }
+    public static EconomyManager Instance { get; private set; }
 
     private float _balance;
 

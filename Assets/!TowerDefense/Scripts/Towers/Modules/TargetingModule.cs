@@ -1,10 +1,15 @@
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class TargetingModule : MonoBehaviour, ITowerModule
 {
+    public event Action<Enemy> OnTargetEntry;
+    public event Action<Enemy> OnTargetExit;
+
     [SerializeField] private bool _debug;
     [HorizontalLine]
 
@@ -17,8 +22,12 @@ public class TargetingModule : MonoBehaviour, ITowerModule
     public TargetingModuleConfig Config;
 
     private List<Enemy> _targets = new();
+    private List<Enemy> _toAdd = new();
+    private List<Enemy> _toRemove = new();
 
     public ModuleType ModuleType => ModuleType.Targeting;
+
+    public List<Enemy> Targets => _targets;
 
     #region Unity API
 
@@ -42,7 +51,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
 
     #endregion
 
-    public void Tick(float deltaTime) { }
+    public void Tick(float deltaTime) { RebuildTargets(); }
 
     public bool TryApplyConfig(TowerModuleConfig config)
     {
@@ -81,7 +90,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
 
             if (enemy == null || !enemy.IsAlive)
             {
-                _targets.RemoveAt(i);
+                _toRemove.Add(enemy);
                 continue;
             }
 
@@ -122,13 +131,32 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         return best;
     }
 
+    private void RebuildTargets()
+    {
+        for (int i = 0; i < _toAdd.Count; i++)
+        {
+            _targets.Add(_toAdd[i]);
+            OnTargetEntry?.Invoke(_toAdd[i]);
+        }
+
+        _toAdd.Clear();
+
+        for (int i = 0; i < _toRemove.Count; i++)
+        {
+            _targets.Remove(_toRemove[i]);
+            OnTargetExit?.Invoke(_toRemove[i]);
+        }
+
+        _toRemove.Clear();
+    }
+
     private void Register(Collider2D collision)
     {
         if (collision.CompareTag(Tags.ENEMY))
         {
             if (collision.TryGetComponent<Enemy>(out var enemy))
             {
-                _targets.Add(enemy);
+                _toAdd.Add(enemy);
                 Debug.Log($"Register enemy in range [{gameObject.name}]");
             }
         }
@@ -139,7 +167,9 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         if (collision.CompareTag(Tags.ENEMY))
         {
             if (collision.TryGetComponent<Enemy>(out var enemy))
-                _targets.Remove(enemy);
+            {
+                _toRemove.Add(enemy);
+            }
         }
     }
 }

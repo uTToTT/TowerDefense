@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,18 +9,25 @@ public class ProductShop : MonoBehaviour
     [SerializeField] private Button _reroll;
     [SerializeField] private MapObjectPreviewFactoryRegistry _previewFactory;
 
+    [Header("Reroll economy")]
+    [SerializeField] private int _startRerollCost = 5;
+    [SerializeField] private int _rerollDelta;
+
     private MapObject _selectedProduct;
     private ProductSlot _selectedSlot;
 
     private float _totalWeight;
+    private int _currRerollCost;
 
     private PlacementController PlacementController => MapManager.Instance.PlacementController;
 
     public void Init()
     {
         _previewFactory.Init();
-        _reroll.onClick.AddListener(() => Reroll());
+        _reroll.onClick.AddListener(() => Reroll(false));
         _totalWeight = CalculateTotalWeight();
+
+        ResetShop();
 
         foreach (var s in _slots)
         {
@@ -30,8 +38,25 @@ public class ProductShop : MonoBehaviour
         Invoke(nameof(Reroll), 0.1f);
     }
 
-    public void Reroll()
+    public void ResetShop()
     {
+        _currRerollCost = _startRerollCost;
+    }
+
+    public void Reroll(bool free = true)
+    {
+        if (!free)
+        {
+            if (!EconomyManager.Instance.CanSpend(_currRerollCost))
+            {
+                Debug.Log("Not enough money!");
+                return;
+            }
+
+            EconomyManager.Instance.Spend(_currRerollCost);
+            _currRerollCost += _rerollDelta;
+        }
+
         ClearSlots();
 
         for (int si = 0; si < _slots.Length; si++)
@@ -63,6 +88,12 @@ public class ProductShop : MonoBehaviour
 
     private void OnProductDragPerformed(ProductSlot slot)
     {
+        if (!EconomyManager.Instance.CanSpend(slot.ProductConfig.Cost))
+        {
+            Debug.Log("Not enough money!");
+            return;
+        }
+
         PlacementController.BeginDrag(slot.MapObject);
         _selectedProduct = slot.MapObject;
         _selectedSlot = slot;
@@ -110,6 +141,15 @@ public class ProductShop : MonoBehaviour
         }
 
         MapManager.Instance.PlaceMapObject(mapPos, obj);
+
+        EconomyManager.Instance.Spend(_selectedSlot.ProductConfig.Cost);
+
+        bool anySlotNotEmpty = _slots.Any(s => !s.IsEmpty);
+
+        if (!anySlotNotEmpty)
+        {
+            Reroll();
+        }
     }
 
     private void OnProductPlaceCanceled()

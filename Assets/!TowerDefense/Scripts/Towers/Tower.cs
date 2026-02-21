@@ -55,12 +55,12 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         }
     }
 
-    private bool HasModule(ModuleType moduleType)
+    public bool HasModule(ModuleType moduleType)
     {
         return _modules.ContainsKey(moduleType);
     }
 
-    private T GetModule<T>(ModuleType moduleType) where T : class, ITowerModule
+    public T GetModule<T>(ModuleType moduleType) where T : class, ITowerModule
     {
         if (_modules.TryGetValue(moduleType, out var module))
             return module as T;
@@ -91,8 +91,8 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         }
         else
         {
-            Debug.Log($"Add {module.ModuleType}");
             _modules.Add(module.ModuleType, module);
+            Debug.Log($"Add {module.ModuleType}");
         }
     }
 

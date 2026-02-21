@@ -5,5 +5,6 @@ public enum ModuleType
     Targeting,
     Freeze,
     Energy,
-    EnergyRetranslator
+    EnergyRetranslator,
+    Slowdown,
 }

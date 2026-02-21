@@ -10,20 +10,28 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     [SerializeField] private TMP_Text _price;
 
+    public bool IsEmpty => MapObject == null;
+
     public MapObject MapObject;
+    public ProductConfig ProductConfig;
 
     public void SetProduct(MapObject mapObject, ProductConfig product)
     {
         if (mapObject == null) return;
 
         MapObject = mapObject;
+        ProductConfig = product;
 
         PositionMapObject();
 
         _price.text = product.Cost.ToString();
     }
 
-    public void Clear() => MapObject = null;
+    public void Clear()
+    {
+        MapObject = null;
+        ProductConfig = null;
+    }
 
     private void PositionMapObject()
     {

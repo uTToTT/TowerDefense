@@ -1,62 +1,21 @@
-using NaughtyAttributes;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class TowerManager : MonoBehaviour
 {
-    [SerializeField] private TowerBuildButton[] _buildButtons;
-    [HorizontalLine]
-
-    [SerializeField] private TowerFactoryRegistry _towerFactory;
-
     private List<Tower> _builtTowers = new();
-    private TowerPreview _towerPreview;
-
-    private TowerType _draggingType;
-    private bool _isDragging;
-
-    private Tower _selectedTower;
-    private Vector2 _lastTowerValidPosition;
-
-    private Grid Grid => MapManager.Instance.Grid;
-    private MapManager MapManager => MapManager.Instance;
 
     #region Life cycle
 
     public void Init()
     {
-        //_towerFactory.Init();
-
-        return;
-
-        foreach (var button in _buildButtons)
-        {
-            button.TowerPlacer = this;
-        }
-
         
     }
 
     public void Tick(float dt)
     {
-        //if (_selectedTower != null)
-        //{
-        //    MapUtils.SnapToGridUnderPointer(_selectedTower.transform);
-        //    if (IsValidPlacement(_selectedTower.transform.position))
-        //        _lastTowerValidPosition = _selectedTower.transform.position;
-        //}
-
         foreach (var tower in _builtTowers)
             tower.Tick(dt);
-
-        //if (!_isDragging)
-        //    return;
-
-        //UpdatePreviewPosition();
-
-        //if (GameManager.Instance.PlayerInputController.IsPointerDown == false)
-        //    TryPlaceTower();
     }
 
     #endregion
@@ -65,124 +24,6 @@ public class TowerManager : MonoBehaviour
 
     public void Register(Tower tower) => _builtTowers.Add(tower); 
     public void Unregister(Tower tower) => _builtTowers.Remove(tower); 
-
-    #endregion
-
-    #region Input handling 
-
-    public void DragTowerPerformed(Tower tower)
-    {
-        if (tower == null) return;
-        if (GameManager.Instance.IsBattle) return;
-
-        tower.Disable();
-        _selectedTower = tower;
-        _lastTowerValidPosition = _selectedTower.transform.position;
-
-        foreach (var cell in MapUtils.GetOccupiedCells(tower.MapPos, tower.Shape))
-        {
-            //MapManager.RemoveMapObject(cell);
-        }
-    }
-
-    public void DragTowerCanceled()
-    {
-        if (_selectedTower == null) return;
-
-        PlaceTower(_selectedTower, _lastTowerValidPosition);
-        _selectedTower.Enable();
-
-        _selectedTower = null;
-    }
-
-    public void BeginDrag(TowerType towerType)
-    {
-        if (_isDragging)
-            return;
-
-        _draggingType = towerType;
-        //_towerPreview = _towerPreviewFactory.Create(towerType);
-        _isDragging = true;
-    }
-
-    #endregion
-
-    private void UpdatePreviewPosition()
-    {
-        MapUtils.SnapToGridUnderPointer(_towerPreview.transform);
-
-        if (IsValidPlacement(_towerPreview.transform.position))
-            _lastTowerValidPosition = _towerPreview.transform.position;
-    }
-
-    private void PlaceTower(Tower tower, Vector2 pos)
-    {
-        var RaycastCell = MapManager.Instance.Raycast();
-        if (RaycastCell != null &&
-            RaycastCell.MapObject != null &&
-            RaycastCell.MapObject is Tower towerInCell)
-        {
-            towerInCell.UpgradeController.Purchase(towerInCell.UpgradeController.CurrentUpgrade.Next.ElementAt(0));
-            _towerFactory.Return(_selectedTower);
-            return;
-        }
-
-        tower.transform.position = pos;
-        var mapPos = MapUtils.WorldToMap(_lastTowerValidPosition, Grid);
-        tower.MapPos = mapPos;
-
-        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, tower.Shape))
-        {
-            MapManager.PlaceMapObject(cell, tower);
-        }
-
-        MapManager.ResolveConnections(tower);
-    }
-
-    private void TryPlaceTower()
-    {
-        _isDragging = false;
-
-        var snapped = MapUtils.SnapToGrid(_towerPreview.transform.position, Grid);
-
-        if (!IsValidPlacement(snapped))
-        {
-            CancelPlacement();
-            return;
-        }
-
-        var tower = _towerFactory.Create(_draggingType);
-        PlaceTower(tower, snapped);
-        _builtTowers.Add(tower);
-
-        tower.Enable();
-
-        //_towerPreviewFactory.Return(_towerPreview);
-    }
-
-    private void CancelPlacement()
-    {
-        //_towerPreviewFactory.Return(_towerPreview);
-    }
-
-    #region Validation
-
-
-
-    private bool IsValidPlacement(Vector3 worldPos)
-    {
-        Vector2Int mapPos = MapUtils.WorldToMap(worldPos, Grid);
-
-        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, _towerPreview.Shape))
-        {
-            if (!MapManager.IsInside(cell))
-                return false;
-            if (MapManager.IsCellBusy(cell))
-                return false;
-        }
-
-        return true;
-    }
 
     #endregion
 }

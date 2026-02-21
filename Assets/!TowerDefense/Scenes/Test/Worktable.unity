@@ -11151,6 +11151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c31ce72debdfa468d503a03b33057e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _startMoney: 10000
   _startWaveButton: {fileID: 858670988}
   _worldCamera: {fileID: 626061978}
   _mapManager: {fileID: 1982400813}
@@ -11994,8 +11995,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2126351176}
-  - {fileID: 509675766}
   - {fileID: 1006413811}
+  - {fileID: 509675766}
   - {fileID: 756892452}
   - {fileID: 1523481841}
   - {fileID: 1982400814}
@@ -13546,6 +13547,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38df7f42c07691a498a0bd989db3051d, type: 2}
   _reroll: {fileID: 1399654578}
   _previewFactory: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
+  _startRerollCost: 5
+  _rerollDelta: 5
 --- !u!1 &2126351175
 GameObject:
   m_ObjectHideFlags: 0
@@ -13590,12 +13593,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd2d6cfb85a728c4980fee1b147a14e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerPlacer
-  _buildButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _towerFactory: {fileID: 11400000, guid: 328024393d94f824788111113f140c4d, type: 2}
 --- !u!1 &2144045305
 GameObject:
   m_ObjectHideFlags: 0

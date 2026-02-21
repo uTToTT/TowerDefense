@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Economy")]
+    [HorizontalLine]
+    [SerializeField] private int _startMoney;
+
     [HorizontalLine]
     [SerializeField] private Button _startWaveButton;
 
@@ -14,7 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MapManager _mapManager;
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private ObjectSelector _cellSelector;
-    [SerializeField] private EconomyService _economyService;
+    [SerializeField] private EconomyManager _economyService;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
@@ -26,7 +30,6 @@ public class GameManager : MonoBehaviour
     public PlayerInputController PlayerInputController => _playerInputController;
     public TowerManager TowerManager => _towerManager;
     public BuildManager BuildManager => _buildManager;
-
     public Camera WorldCamera => _worldCamera;
 
     public static GameManager Instance { get; private set; }
@@ -36,6 +39,32 @@ public class GameManager : MonoBehaviour
     private bool _isInit = false;
 
     private void Awake()
+    {
+        InitDependencies();
+        SetData();
+    }
+
+    private void Update()
+    {
+        if (!_isInit) return;
+
+        float dt = Time.deltaTime;
+
+        if (IsBattle)
+        {
+            _enemyManager.Tick(dt);
+        }
+
+        if (!IsBattle)
+        {
+            _cellSelector.Tick(dt);
+        }
+
+        _towerManager.Tick(dt);
+        _mapManager.Tick(dt);
+    }
+
+    private void InitDependencies()
     {
         Instance = this;
 
@@ -59,25 +88,12 @@ public class GameManager : MonoBehaviour
         _isInit = true;
     }
 
-    private void Update()
+    private void SetData()
     {
-        if (!_isInit) return;
-
-        float dt = Time.deltaTime;
-
-        if (IsBattle)
-        {
-            _enemyManager.Tick(dt);
-        }
-
-        if (!IsBattle)
-        {
-            _cellSelector.Tick(dt);
-        }
-
-        _towerManager.Tick(dt);
-        _mapManager.Tick(dt);
+        _economyService.AddMoney(_startMoney);
     }
+
+    #region Game cycle
 
     private void PlayerStartWave()
     {
@@ -127,4 +143,6 @@ public class GameManager : MonoBehaviour
 
         IsBattle = false;
     }
+
+    #endregion
 }

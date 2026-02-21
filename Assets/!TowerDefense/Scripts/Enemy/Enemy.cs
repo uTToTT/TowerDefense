@@ -39,7 +39,6 @@ public class Enemy : MonoBehaviour,
     [Space]
 
     private float _currArmor;
-    private float _currSpeed;
 
     private PathLane _lane;
 
@@ -54,6 +53,8 @@ public class Enemy : MonoBehaviour,
     public bool IsActive { get; set; }
     public bool IsAlive { get; private set; }
     public float CurrMoneyDrop => _config.DropMoney;
+    private float GetSpeed() =>
+        BuffController.Calculate(Characteristics.SPEED, _config.Speed);
     public BuffController BuffController => _buffController;
 
     private List<Vector3> _points;
@@ -63,7 +64,6 @@ public class Enemy : MonoBehaviour,
         _buffController = new BuffController();
         _pathController = new PathController();
         _currArmor = _config.Armor;
-        _currSpeed = _config.Speed;
         _currHP = _config.HP;
     }
 
@@ -71,11 +71,13 @@ public class Enemy : MonoBehaviour,
     {
         if (!IsActive || !IsAlive) return;
         Move(dt);
+        TESTSPEED = GetSpeed();
     }
 
     private void OnValidate()
     {
-        TESTSPEED = _currSpeed;
+        if (!Application.isPlaying) return;
+
         TESTARMOR = _currArmor;
         TESTHP = CurrHP;
         TESTMONEY = _currDropMoney;
@@ -111,7 +113,7 @@ public class Enemy : MonoBehaviour,
 
         Vector3 target = _pathController.Peek();
 
-        transform.MoveTowards(target, _config.Speed, dt);
+        transform.MoveTowards(target, GetSpeed(), dt);
     }
 
     private void OnDrawGizmos()
@@ -132,7 +134,7 @@ public class Enemy : MonoBehaviour,
         }
     }
 
-    private void DropMoney() => EconomyService.Instance.AddMoney(CurrMoneyDrop);
+    private void DropMoney() => EconomyManager.Instance.AddMoney(CurrMoneyDrop);
 
     public void Death()
     {
@@ -181,7 +183,6 @@ public class Enemy : MonoBehaviour,
 
     public void Dispose()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void OnPreload()
@@ -196,19 +197,16 @@ public class Enemy : MonoBehaviour,
 
     public void OnDeactivated()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void OnReturned()
     {
         IsAlive = false;
         _pathController.Clear();
-        //throw new System.NotImplementedException();
     }
 
     public void OnDestroyed()
     {
-        //throw new System.NotImplementedException();
     }
 
 
