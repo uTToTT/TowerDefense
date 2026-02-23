@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour,
 
     [Space]
     [SerializeField] private ParticleSystem _deathExmplosion;
-    [SerializeField] private ParticleSystem _hitVFX;
+    [SerializeField] private CustomParticleSystem _hitVFX;
 
     private float _currHP;
     private float _currDropMoney;
@@ -133,9 +133,10 @@ public class Enemy : MonoBehaviour,
         }
     }
 
-    private void DropMoney() => EconomyManager.Instance.AddMoney(CurrMoneyDrop);
+    private void DropMoney() =>
+        EconomyManager.Instance.AddMoney(CurrMoneyDrop);
 
-    public void Death()
+    private void Death()
     {
         MoveManager.Instance.Unregister(this);
         OnDeath?.Invoke(this);
@@ -160,12 +161,10 @@ public class Enemy : MonoBehaviour,
             Death();
             return;
         }
+        Debug.Log("Hit enemy");
+        _hitVFX.Play();
 
-        if (_hitVFX != null)
-        {
-            _hitVFX.gameObject.SetActive(true);
-            _hitVFX.Play();
-        }
+        //ParticlesGenerator.Instance.PlayParticles(ParticlesType.Blood, transform.position);
 
         _currArmor = tmpArmor;
     }
@@ -180,13 +179,8 @@ public class Enemy : MonoBehaviour,
     public void MoneyDropMultiply(float multipier) =>
         _currDropMoney *= multipier;
 
-    public void Dispose()
-    {
-    }
-
-    public void OnPreload()
-    {
-    }
+    public void Dispose() { }
+    public void OnPreload() { }
 
     public void OnActivated()
     {
@@ -194,9 +188,7 @@ public class Enemy : MonoBehaviour,
         IsAlive = true;
     }
 
-    public void OnDeactivated()
-    {
-    }
+    public void OnDeactivated() { }
 
     public void OnReturned()
     {
@@ -204,9 +196,7 @@ public class Enemy : MonoBehaviour,
         _pathController.Clear();
     }
 
-    public void OnDestroyed()
-    {
-    }
+    public void OnDestroyed() { }
 }
 
 

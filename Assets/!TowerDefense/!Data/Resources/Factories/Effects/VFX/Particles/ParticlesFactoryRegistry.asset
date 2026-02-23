@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
-  m_Name: Minigun_AttackModule_Tier_1
-  m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
-  _damage: 1
-  _baseFireRate: 10
-  _piercing: 0
-  _rotationSpeed: 720
+  m_Script: {fileID: 11500000, guid: 95c520225be96ee468c4973dfec39bd1, type: 3}
+  m_Name: ParticlesFactoryRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::ParticlesFactoryRegistry
+  _factories:
+  - {fileID: 11400000, guid: cea08dd0923a85444b6caf8f77939e2b, type: 2}

@@ -50,6 +50,10 @@ public sealed class AttackModule : ITowerModule
             return;
         }
 
+        Debug.Log($"" +
+            $"Damage [{_config.Damage}]\n" +
+            $"Piercing [{_config.Piercing}]\n" +
+            $"Target [{_target.name}]");
         _target.TakeDamage(_config.Damage, _config.Piercing);
 
         var hit = new HitContext

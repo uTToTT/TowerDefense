@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private BuildManager _buildManager;
     [SerializeField] private ProductShop _productShop;
+    [SerializeField] private ParticlesGenerator _particlesGenerator;
 
     private PlayerInputController _playerInputController;
 
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
         _buildManager.Init();
         _productShop.Init();
         _cellSelector.Init(_playerInputController, _mapManager);
+        _particlesGenerator.Init();
 
         _startWaveButton.onClick.AddListener(PlayerStartWave);
 

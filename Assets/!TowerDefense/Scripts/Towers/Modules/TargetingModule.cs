@@ -59,7 +59,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
             return false;
 
         Config = targetingConfig;
-        _collider.radius = Config.MaxRange;
+        _collider.radius = Config.MaxRange * 2 + 0.5f;
 
         return true;
     }
