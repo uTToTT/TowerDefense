@@ -29,6 +29,11 @@ public class Player : MonoBehaviour
         CurrHP = _maxHP;
     }
 
+    public void Restart()
+    {
+
+    }
+
     public void Heal(int amount) => CurrHP += amount;
 
     public void TakeDamage(int damage)

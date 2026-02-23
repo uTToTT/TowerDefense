@@ -15,6 +15,7 @@ public class WaveController : MonoBehaviour
     private float _delayBeforeWave;
     private float _waveDelayTimer;
     private int _currWaveIndex = -1;
+    private int _spawnedEnemyCount;
     private List<GroupRuntime> _activeGroups;
     private WaveSpawnerState _state;
 
@@ -131,11 +132,22 @@ public class WaveController : MonoBehaviour
                 MapManager.Instance.Grid);
         enemy.HPMultiply(group.HpMultiplier);
         enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
+
+        PathLane lane;
+
+        if (group.Lane == PathLane.LeftRight)
+            lane = _spawnedEnemyCount % 2 == 0 ? PathLane.Left : PathLane.Right;
+        else
+            lane = group.Lane;
+
+        enemy.SetLane(lane);
         enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
-        enemy.SetLane(group.Lane);
+
         enemy.OnDeath += OnEnemyDeath;
 
         EnemyManager.Instance.Register(enemy);
+
+        _spawnedEnemyCount++;
 
         // Debug.Log(
         //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"

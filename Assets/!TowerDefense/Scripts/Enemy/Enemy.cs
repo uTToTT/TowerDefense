@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour,
 
     [HorizontalLine]
     [SerializeField] private EnemyType _enemyType;
-    [SerializeField, Range(0, 1)] private float _laneOffset;
 
     [HorizontalLine]
     [Expandable]
@@ -86,7 +85,7 @@ public class Enemy : MonoBehaviour,
 
     public void BuildRoute(List<Vector3> points)
     {
-        _points = PathController.OffsetPath(points, _laneOffset, true);
+        _points = PathController.OffsetPath(points, _lane);
         _pathController.SetPath(_points, transform.position);
         _pathController.OnFinishReached += () => HitPlayer();
 

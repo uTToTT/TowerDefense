@@ -159,6 +159,19 @@ public sealed class PathController
         return true;
     }
 
+    public static List<Vector3> OffsetPath(List<Vector3> path,
+        PathLane lane)
+    {
+        float offset = lane switch
+        {
+            PathLane.Left => 0.25f,
+            PathLane.Right => -0.25f,
+            _ => 0
+        };
+        Debug.Log(offset + lane.ToString());
+        return OffsetPath(path, offset);
+    }
+
     public static List<Vector3> OffsetPath(
         List<Vector3> path,
         float offset,

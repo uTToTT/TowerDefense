@@ -1,9 +1,14 @@
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public event Action OnGameVictory;
+    public event Action OnGameDefeat;
+    public event Action OnGameRestart;
+
     [Header("Economy")]
     [HorizontalLine]
     [SerializeField] private int _startMoney;
@@ -38,6 +43,8 @@ public class GameManager : MonoBehaviour
     public bool IsBattle { get; private set; }
 
     private bool _isInit = false;
+    private float _timeModifier = 1f;
+    private bool _timeFreezed = false;
 
     private void Awake()
     {
@@ -48,8 +55,9 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (!_isInit) return;
+        if (_timeFreezed) return;
 
-        float dt = Time.deltaTime;
+        float dt = Time.deltaTime * _timeModifier;
 
         if (IsBattle)
         {
@@ -92,15 +100,35 @@ public class GameManager : MonoBehaviour
 
     private void SetData()
     {
-        _economyService.AddMoney(_startMoney);
     }
 
+    #region Time
+
+    public void StopTime() { _timeFreezed = true; }
+    public void StartTime() { _timeFreezed = false; }
+    public void SetTimeModifier(float mod) { _timeModifier = Mathf.Max(0, mod); }
+
+    #endregion
+
     #region Game cycle
+
+    public void RestartGame()
+    {
+        StopTime();
+
+        _towerManager.Restart();
+        _economyService.Restart();
+        _player.Restart();
+        _enemyManager.Restart();
+        _particlesGenerator.Restart();
+
+        StartTime();
+    }
 
     private void PlayerStartWave()
     {
         _enemyManager.WaveController.PlayerStartWave();
-        UIManager.Instance.CloseWindow(WindowType.PreparingToWave);
+        UIManager.Instance.CloseWindow(WindowType.Gameplay);
 
         IsBattle = true;
     }
@@ -108,7 +136,8 @@ public class GameManager : MonoBehaviour
     public void WaveEnded()
     {
         _enemyManager.WaveController.StopWave();
-        UIManager.Instance.OpenWindow(WindowType.PreparingToWave);
+        UIManager.Instance.OpenWindow(WindowType.Gameplay);
+        _productShop.Reroll();
 
         IsBattle = false;
     }

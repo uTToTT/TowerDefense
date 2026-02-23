@@ -14,6 +14,11 @@ public class ParticlesGenerator : MonoBehaviour
         _factory.Init();
     }
 
+    public void Restart()
+    {
+        Dispose();
+    }
+
     public void Dispose()
     {
         _factory.ReturnAll();

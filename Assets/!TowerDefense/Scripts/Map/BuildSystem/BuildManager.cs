@@ -3,7 +3,6 @@ using UnityEngine;
 public class BuildManager : MonoBehaviour
 {
     [SerializeField] private MapObjectFactoryRegistry _factory;
-    [SerializeField] private BuildManagerUI _ui;
 
     public void Init()
     {

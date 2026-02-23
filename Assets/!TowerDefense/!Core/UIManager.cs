@@ -5,12 +5,17 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private List<WindowData> _windowDatas = new();
+    [SerializeField] private MainMenuController _mainMenu;
+    [SerializeField] private GameplayInterfaceController _gameplay;
 
     public static UIManager Instance { get; private set; }
 
     public void Init()
     {
         Instance = this;
+
+        _mainMenu.Init();
+        _gameplay.Init();
     }
 
     public void OpenWindow(WindowType windowType) =>

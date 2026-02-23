@@ -12,6 +12,11 @@ public class TowerManager : MonoBehaviour
         
     }
 
+    public void Restart()
+    {
+
+    }
+
     public void Tick(float dt)
     {
         foreach (var tower in _builtTowers)

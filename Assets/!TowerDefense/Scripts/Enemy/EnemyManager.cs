@@ -21,6 +21,11 @@ public class EnemyManager : MonoBehaviour
         _waveController.Init(_delayBeforeWave);
     }
 
+    public void Restart()
+    {
+
+    }
+
     public void Tick(float dt)
     {
         UpdateColleciton();

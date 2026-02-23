@@ -15,10 +15,17 @@ MonoBehaviour:
   _waves:
   - _groups:
     - _route: 1
-      _lane: 1
+      _lane: 3
       _enemyType: 0
       _enemyCount: 49
       _timeBtwSpawn: 0.1
+      _hpMultiplier: 1
+      _moneyDropMultiplier: 1
+    - _route: 1
+      _lane: 0
+      _enemyType: 0
+      _enemyCount: 5
+      _timeBtwSpawn: 0.5
       _hpMultiplier: 1
       _moneyDropMultiplier: 1
   - _groups:

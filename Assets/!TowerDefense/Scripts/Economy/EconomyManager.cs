@@ -4,6 +4,7 @@ using UnityEngine;
 public class EconomyManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text _balanceText;
+    [SerializeField] private int _startMoney;
 
     public static EconomyManager Instance { get; private set; }
 
@@ -12,7 +13,12 @@ public class EconomyManager : MonoBehaviour
     public void Init()
     {
         Instance = this;
-        SetBalance(0);
+        Restart();
+    }
+
+    public void Restart()
+    {
+        SetBalance(_startMoney);
     }
 
     public bool CanSpend(int moneyAmoount) => _balance - moneyAmoount >= 0;
