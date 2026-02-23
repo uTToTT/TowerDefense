@@ -36,6 +36,7 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void PositionMapObject()
     {
         MapObject.transform.position = transform.position;
+        MapObject.transform.parent = transform;
 
         MapObject.SetRenderLayer(RenderLayers.UI);
         MapObject.SetRenderOrder(100);

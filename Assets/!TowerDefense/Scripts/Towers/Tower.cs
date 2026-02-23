@@ -11,6 +11,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
     [SerializeField] private TowerPreview _towerPreview;
+    [SerializeField] private CustomParticleSystem _particles;
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
@@ -27,6 +28,8 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     public void ShowRange() => _towerPreview.Enable();
     public void HideRange() => _towerPreview.Disable();
+
+    public void PlayParticle() => _particles.Play();
 
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
