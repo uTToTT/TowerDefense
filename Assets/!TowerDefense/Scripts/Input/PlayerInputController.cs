@@ -36,9 +36,9 @@ public class PlayerInputController
     public Vector2 GetPointerPosition()
     {
         Vector3 screenPos = _input.GamePlay.PointerPos.ReadValue<Vector2>();
-        screenPos.z = -Camera.main.transform.position.z;
+        screenPos.z = -UnityEngine.Camera.main.transform.position.z;
 
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        Vector2 worldPos = UnityEngine.Camera.main.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
 

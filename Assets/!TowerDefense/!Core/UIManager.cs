@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
 
+        InitActions();
+
         _mainMenu.Init();
         _gameplay.Init();
     }
@@ -31,5 +33,61 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private WindowData FindWindowData(WindowType type) => _windowDatas.FirstOrDefault(w => w.Type == type);
+    private void InitActions()
+    {
+        GameManager.Instance.OnGameDefeat += OpenDefeat;
+        GameManager.Instance.OnGameVictory += OpenVictory;
+        GameManager.Instance.OnWaveEnded += OpenPreparing;
+        GameManager.Instance.OnWaveStarted += OpenWave;
+    }
+
+    #region Windows
+
+    // Gameplay
+
+    public void OpenGameplay()
+    {
+        CloseAllWindows();
+        OpenWindow(WindowType.Gameplay);
+    }
+
+    public void OpenPreparing()
+    {
+        OpenGameplay();
+        _gameplay.OpenPreparing();
+    }
+
+    public void OpenDefeat()
+    {
+        OpenGameplay();
+        _gameplay.OpenDefeat();
+    }
+
+    public void OpenVictory()
+    {
+        OpenGameplay();
+        _gameplay.OpenVictory();
+    }
+
+    public void OpenWave()
+    {
+        OpenGameplay();
+        _gameplay.OpenWave();
+    }
+
+
+    //--------
+    public void OpenMain()
+    {
+        CloseAllWindows();
+        OpenWindow(WindowType.Main);
+        //_mainMenu.OpenPlay();
+    }
+
+    
+
+    #endregion
+
+    private WindowData FindWindowData(WindowType type) =>
+        _windowDatas.FirstOrDefault(w => w.Type == type);
 }

@@ -17,7 +17,7 @@ public class CameraAspectRatio : MonoBehaviour
         // Вычисляем масштаб, который нужно применить к камере
         float scaleHeight = currentAspect / targetAspect;
 
-        Camera camera = GetComponent<Camera>();
+        UnityEngine.Camera camera = GetComponent<UnityEngine.Camera>();
 
         // Если текущее соотношение сторон экрана шире желаемого, устанавливаем размер камеры по ширине
         if (scaleHeight < 1.0f)

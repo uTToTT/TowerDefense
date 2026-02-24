@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private CameraShaker _shaker;
+
     [SerializeField] private int _maxHP;
     [SerializeField] private int _currHp;
     [HorizontalLine]
@@ -39,7 +41,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         CurrHP -= damage;
-
+        _shaker.Shake();
         if (CurrHP <= 0)
             Defeat();
     }

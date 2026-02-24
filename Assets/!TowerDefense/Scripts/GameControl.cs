@@ -57,7 +57,7 @@ public class GameControl : Loader<GameControl>
     [Space]
     [Space]
     [Header("Gameobjects")]
-    [SerializeField] private Camera _camera;
+    [SerializeField] private UnityEngine.Camera _camera;
     [SerializeField] private GameObject _allocation;
     [SerializeField] private GameObject _allocationMap;
     [Space]

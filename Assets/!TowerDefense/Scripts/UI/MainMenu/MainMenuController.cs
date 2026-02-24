@@ -1,16 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : InterfaceContorller
 {
     [SerializeField] private ButtonWrapper _playButton;
 
+    #region Init
+
     public void Init()
+    {
+        InitButtons();
+    }
+
+    #endregion
+
+    private void InitButtons()
     {
         _playButton.OnClick += () =>
         {
-            UIManager.Instance.CloseWindow(WindowType.Main);
-            UIManager.Instance.OpenWindow(WindowType.Gameplay);
+            UIManager.Instance.OpenPreparing();
         };
     }
 }

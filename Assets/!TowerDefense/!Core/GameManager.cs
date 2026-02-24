@@ -8,16 +8,14 @@ public class GameManager : MonoBehaviour
     public event Action OnGameVictory;
     public event Action OnGameDefeat;
     public event Action OnGameRestart;
-
-    [Header("Economy")]
-    [HorizontalLine]
-    [SerializeField] private int _startMoney;
+    public event Action OnWaveEnded;
+    public event Action OnWaveStarted;
 
     [HorizontalLine]
     [SerializeField] private Button _startWaveButton;
 
     [HorizontalLine]
-    [SerializeField] private Camera _worldCamera;
+    [SerializeField] private UnityEngine.Camera _worldCamera;
 
     [HorizontalLine]
     [SerializeField] private MapManager _mapManager;
@@ -30,13 +28,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BuildManager _buildManager;
     [SerializeField] private ProductShop _productShop;
     [SerializeField] private ParticlesGenerator _particlesGenerator;
+    [SerializeField] private CameraShaker _cameraShaker;
 
     private PlayerInputController _playerInputController;
 
     public PlayerInputController PlayerInputController => _playerInputController;
     public TowerManager TowerManager => _towerManager;
     public BuildManager BuildManager => _buildManager;
-    public Camera WorldCamera => _worldCamera;
+    public UnityEngine.Camera WorldCamera => _worldCamera;
 
     public static GameManager Instance { get; private set; }
 
@@ -50,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         InitDependencies();
         SetData();
+        StartGame();
     }
 
     private void Update()
@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
         _productShop.Init();
         _cellSelector.Init(_playerInputController, _mapManager);
         _particlesGenerator.Init();
+        _cameraShaker.Init();
 
         _startWaveButton.onClick.AddListener(PlayerStartWave);
 
@@ -112,6 +113,13 @@ public class GameManager : MonoBehaviour
 
     #region Game cycle
 
+    public void StartGame()
+    {
+        _uiManager.CloseAllWindows();
+        _uiManager.OpenWindow(WindowType.Main);
+
+    }
+
     public void RestartGame()
     {
         StopTime();
@@ -123,6 +131,8 @@ public class GameManager : MonoBehaviour
         _particlesGenerator.Restart();
 
         StartTime();
+
+        OnGameRestart?.Invoke();
     }
 
     private void PlayerStartWave()
@@ -140,6 +150,7 @@ public class GameManager : MonoBehaviour
         _productShop.Reroll();
 
         IsBattle = false;
+        OnWaveEnded?.Invoke();
     }
 
     public void AllWavesEnded()
@@ -163,16 +174,15 @@ public class GameManager : MonoBehaviour
     private void GameVictory()
     {
         _enemyManager.WaveController.StopWave();
-        UIManager.Instance.OpenWindow(WindowType.Victory);
 
         IsBattle = false;
+        OnGameVictory?.Invoke();
     }
 
     private void GameDefeat()
     {
-        UIManager.Instance.OpenWindow(WindowType.Defeat);
-
         IsBattle = false;
+        OnGameDefeat?.Invoke();
     }
 
     #endregion
