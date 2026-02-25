@@ -168,7 +168,7 @@ public sealed class PathController
             PathLane.Right => -0.25f,
             _ => 0
         };
-        Debug.Log(offset + lane.ToString());
+
         return OffsetPath(path, offset);
     }
 

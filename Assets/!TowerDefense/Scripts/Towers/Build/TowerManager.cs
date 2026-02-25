@@ -5,6 +5,8 @@ public class TowerManager : MonoBehaviour
 {
     private List<Tower> _builtTowers = new();
 
+    public List<Tower> Towers => _builtTowers;
+
     #region Life cycle
 
     public void Init()
@@ -14,7 +16,13 @@ public class TowerManager : MonoBehaviour
 
     public void Restart()
     {
+        foreach (var tower in _builtTowers)
+        {
+            MapManager.Instance.RemoveMapObject(tower);
+            GameManager.Instance.BuildManager.Return(tower);
+        }
 
+        _builtTowers.Clear();
     }
 
     public void Tick(float dt)

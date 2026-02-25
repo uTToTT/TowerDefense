@@ -7,6 +7,7 @@ using UnityEngine;
 public class Tower : MapObject, IPoolable, IEntityLifecycle
 {
     [SerializeField] protected TowerType _towerType;
+    [SerializeField] private bool _enabled;
     [HorizontalLine]
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
@@ -21,7 +22,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public TowerUpgradeController UpgradeController => _upgradeController;
     public TargetingModule TargetingModule => _targetingModule;
 
-    public bool IsEnabled { get; private set; }
+    public bool IsEnabled { get => _enabled; private set => _enabled = value; }
 
     public void Enable() => IsEnabled = true;
     public void Disable() => IsEnabled = false;
@@ -29,7 +30,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public void ShowRange() => _towerPreview.Enable();
     public void HideRange() => _towerPreview.Disable();
 
-    public void PlayParticle() => _particles.Play();
+    public void PlayParticle() => _particles?.Play();
 
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
@@ -161,13 +162,16 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public override void OnDeactivated()
     {
         base.OnDeactivated();
-
-        ClearModules();
     }
 
     public override void OnReturned()
     {
         base.OnReturned();
+        transform.rotation = new Quaternion();
+        ClearModules();
+        _targetingModule.Restart();
+        _upgradeController.Restart();
+        Disable();
     }
 
     public override void OnDestroyed()

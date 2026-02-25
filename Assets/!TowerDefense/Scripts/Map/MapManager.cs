@@ -43,6 +43,11 @@ public class MapManager : MonoBehaviour
         _mapObjectDragger.EnableDrag();
     }
 
+    public void Restart()
+    {
+        
+    }
+
     #endregion
 
     #region API

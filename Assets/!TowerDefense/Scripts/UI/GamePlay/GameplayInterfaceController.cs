@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GameplayInterfaceController : InterfaceContorller
 {
-    [SerializeField] private ButtonWrapper _buttonRestartGame;
     [SerializeField] private ButtonWrapper _victoryButtonToMain;
     [SerializeField] private ButtonWrapper _defeatButtonToMain;
 
@@ -18,18 +17,13 @@ public class GameplayInterfaceController : InterfaceContorller
 
     private void InitButtons()
     {
-        _buttonRestartGame.OnClick += GameManager.Instance.RestartGame;
-
         _victoryButtonToMain.OnClick += UIManager.Instance.OpenMain;
         _defeatButtonToMain.OnClick += UIManager.Instance.OpenMain;
     }
 
     private void InitActions()
     {
-        GameManager.Instance.OnGameDefeat += OpenDefeat;
-        GameManager.Instance.OnGameVictory += OpenVictory;
-        GameManager.Instance.OnWaveEnded += OpenPreparing;
-        GameManager.Instance.OnWaveStarted += OpenWave;
+      
     }
 
     public void OpenVictory()

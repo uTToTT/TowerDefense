@@ -4,6 +4,11 @@ public class TowerUpgradeState
 {
     private readonly HashSet<UpgradeNodeConfig> _purchased = new();
 
+    public void Restart()
+    {
+        _purchased.Clear();
+    }
+
     public bool IsPurchased(UpgradeNodeConfig node)
         => _purchased.Contains(node);
 

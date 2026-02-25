@@ -6,6 +6,12 @@ public class TowerUpgradeController
     public UpgradeNodeConfig CurrentUpgrade {  get; private set; }
     public TowerUpgradeState State => _state;
 
+    public void Restart()
+    {
+        _state.Restart();
+        CurrentUpgrade = null;
+    }
+
     public TowerUpgradeController(Tower tower)
     {
         _tower = tower;

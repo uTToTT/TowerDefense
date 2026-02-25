@@ -28,9 +28,12 @@ public class EnemyFactoryRegistry : ScriptableObject
         _map[enemy.EnemyType].Return(enemy);
     }
 
-    public void ReturnAll(Enemy enemy)
+    public void ReturnAll()
     {
-        _map[enemy.EnemyType].ReturnAll();
+        foreach (var factory in _map.Values)
+        {
+            factory.ReturnAll();
+        }
     }
 
     public void Dispose(Enemy enemy)

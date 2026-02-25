@@ -39,6 +39,9 @@ public class Enemy : MonoBehaviour,
 
     private float _currArmor;
 
+    private Vector3 _direction;
+    private Vector3 _currTarget;
+
     private PathLane _lane;
 
     private BuffController _buffController;
@@ -68,6 +71,7 @@ public class Enemy : MonoBehaviour,
     {
         if (!IsActive || !IsAlive) return;
         _buffController.Update(dt);
+        Rotate();
         Move(dt);
         TESTSPEED = CurrSpeed;
     }
@@ -95,6 +99,11 @@ public class Enemy : MonoBehaviour,
 
     private void HitPlayer() => Player.Instance.TakeDamage(_config.Damage);
 
+    private void Rotate()
+    {
+        transform.LookAt2D(_currTarget);
+    }
+
     public void Move(float dt)
     {
         if (!IsActive || !IsAlive) return;
@@ -109,9 +118,10 @@ public class Enemy : MonoBehaviour,
             return;
         }
 
-        Vector3 target = _pathController.Peek();
+        _currTarget = _pathController.Peek();
+        _direction = (_currTarget - transform.position).normalized;
 
-        transform.MoveTowards(target, CurrSpeed, dt);
+        transform.MoveTowards(_currTarget, CurrSpeed, dt);
     }
 
     private void OnDrawGizmos()
@@ -160,7 +170,7 @@ public class Enemy : MonoBehaviour,
             Death();
             return;
         }
-        Debug.Log("Hit enemy");
+
         _hitVFX.Play();
 
         //ParticlesGenerator.Instance.PlayParticles(ParticlesType.Blood, transform.position);

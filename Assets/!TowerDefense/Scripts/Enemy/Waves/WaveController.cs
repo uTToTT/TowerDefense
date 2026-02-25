@@ -30,6 +30,20 @@ public class WaveController : MonoBehaviour
     {
         _factories.Init();
         _delayBeforeWave = delayBeforeWave;
+    }
+
+    public void Restart()
+    {
+        _factories.ReturnAll();
+        _currWaveIndex = -1;
+        _spawnedEnemyCount = 0;
+        _waveDelayTimer = 0;
+
+        IsPlayerWaveStarted = false;
+        IsWaveEnded= false;
+        IsAllWavesCompleted = false;
+        _state = WaveSpawnerState.WaitingForNextWave;
+
         PrepareNextWave();
     }
 
@@ -37,7 +51,10 @@ public class WaveController : MonoBehaviour
     {
         if (!IsPlayerWaveStarted ||
             IsWaveEnded ||
-            IsAllWavesCompleted) return;
+            IsAllWavesCompleted)
+        {
+            return;
+        }
 
         switch (_state)
         {

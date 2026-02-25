@@ -18,9 +18,9 @@ public class TowerPreview : MapObject, IPoolable, IEntityLifecycle
             _maxRange == null) return;
 
         _minRange.transform.localScale =
-            new Vector3(_config.MinRange * 2 + 0.5f, _config.MinRange * 2 + 0.5f);
+            new Vector3(_config.MinRange  + 0.5f, _config.MinRange  + 0.5f);
         _maxRange.transform.localScale =
-            new Vector3(_config.MaxRange * 2 + 0.5f, _config.MaxRange * 2 + 0.5f);
+            new Vector3(_config.MaxRange  + 0.5f, _config.MaxRange  + 0.5f);
     }
 
     public void Enable()

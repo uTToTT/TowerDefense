@@ -2,7 +2,6 @@ using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class TargetingModule : MonoBehaviour, ITowerModule
@@ -28,6 +27,13 @@ public class TargetingModule : MonoBehaviour, ITowerModule
     public ModuleType ModuleType => ModuleType.Targeting;
 
     public List<Enemy> Targets => _targets;
+
+    public void Restart()
+    {
+        _targets.Clear();
+        _toAdd.Clear();
+        _toRemove.Clear();
+    }
 
     #region Unity API
 
@@ -59,7 +65,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
             return false;
 
         Config = targetingConfig;
-        _collider.radius = Config.MaxRange * 2 + 0.5f;
+        _collider.radius = Config.MaxRange + 0.5f;
 
         return true;
     }

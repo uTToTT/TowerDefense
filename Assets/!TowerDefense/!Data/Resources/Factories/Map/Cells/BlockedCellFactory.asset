@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a630f43d3d5a1094ca862a7ff4ab8cc5, type: 3}
   m_Name: BlockedCellFactory
   m_EditorClassIdentifier: Assembly-CSharp::CellFactory
-  _prefab: {fileID: -7022367099367389508, guid: 74e2ffc06159e5d419574e40ed93583c, type: 3}
+  _prefab: {fileID: 512029794299953587, guid: 9b25773d930f667418082b6aba77cce1, type: 3}
   _capacity: 10
   _maxCount: 100
-  _totalPreload: 0
-  _totalGet: 0
-  _activeCount: 0
+  _totalPreload: 141
+  _totalGet: 141
+  _activeCount: 141
   _poolCount: 0
-  _totalCount: 0
+  _totalCount: 141

@@ -23,7 +23,10 @@ public class EnemyManager : MonoBehaviour
 
     public void Restart()
     {
-
+        _waveController.Restart();
+        _enemies.Clear();
+        _toAdd.Clear();
+        _toRemove.Clear();
     }
 
     public void Tick(float dt)

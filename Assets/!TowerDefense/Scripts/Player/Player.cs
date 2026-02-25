@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
     public void Restart()
     {
-
+        CurrHP = _maxHP;
     }
 
     public void Heal(int amount) => CurrHP += amount;

@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 0
-  _laneOffset: 0.24
   _config: {fileID: 11400000, guid: ecf8163c91b314e4d94b9681d65a30ec, type: 2}
   _deathExmplosion: {fileID: 301133372147137093, guid: 7c0436961c5f05e478cb3b878ed7fe61, type: 3}
   _hitVFX: {fileID: 454542800072340065}
@@ -204,7 +203,7 @@ SpriteRenderer:
   m_SortingLayerID: 911900139
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 164520215, guid: 8a815608636045d4199f782590773d27, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9baa2779b44723a459b16cdd82693d75, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

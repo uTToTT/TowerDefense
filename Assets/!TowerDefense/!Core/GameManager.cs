@@ -115,20 +115,22 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        _uiManager.CloseAllWindows();
-        _uiManager.OpenWindow(WindowType.Main);
+        RestartGame();
 
+        _uiManager.OpenMain();
     }
 
     public void RestartGame()
     {
         StopTime();
 
+        _mapManager.Restart();
         _towerManager.Restart();
         _economyService.Restart();
         _player.Restart();
         _enemyManager.Restart();
         _particlesGenerator.Restart();
+        _productShop.Restart();
 
         StartTime();
 

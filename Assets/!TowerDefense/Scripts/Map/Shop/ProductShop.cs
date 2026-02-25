@@ -27,20 +27,19 @@ public class ProductShop : MonoBehaviour
         _reroll.onClick.AddListener(() => Reroll(false));
         _totalWeight = CalculateTotalWeight();
 
-        ResetShop();
+        Restart();
 
         foreach (var s in _slots)
         {
             s.OnDragPerformed += OnProductDragPerformed;
             s.OnDragCanceled += OnProductDragCanceled;
         }
-
-        Invoke(nameof(Reroll), 0.1f);
     }
 
-    public void ResetShop()
+    public void Restart()
     {
         _currRerollCost = _startRerollCost;
+        Reroll(true);
     }
 
     public void Reroll(bool free = true)
