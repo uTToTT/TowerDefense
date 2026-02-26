@@ -178,7 +178,7 @@ public class WaveController : MonoBehaviour
         EnemyManager.Instance.Unregister(enemy);
     }
 
-    private void UpdateWaveText() => _waveText.text = CurrWave + "\\" + LastWave;
+    private void UpdateWaveText() => _waveText.text = "Wave " + CurrWave + "\\" + LastWave;
 
     public void PlayerStartWave() => IsPlayerWaveStarted = true;
     public void StopWave() => IsPlayerWaveStarted = false;

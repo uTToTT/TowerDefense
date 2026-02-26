@@ -38,6 +38,6 @@ public class EconomyManager : MonoBehaviour
     private void SetBalance(float amount)
     {
         _balance = Mathf.Max(amount, 0);
-        _balanceText.text = "Money: " + _balance.ToString();
+        _balanceText.text = "Money: " + ((int)_balance).ToString();
     }
 }

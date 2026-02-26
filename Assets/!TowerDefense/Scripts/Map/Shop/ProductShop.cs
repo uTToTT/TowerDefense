@@ -6,7 +6,7 @@ public class ProductShop : MonoBehaviour
 {
     [SerializeField] private ProductSlot[] _slots;
     [SerializeField] private ProductConfig[] _products;
-    [SerializeField] private Button _reroll;
+    [SerializeField] private ButtonWrapper _reroll;
     [SerializeField] private MapObjectPreviewFactoryRegistry _previewFactory;
 
     [Header("Reroll economy")]
@@ -24,7 +24,7 @@ public class ProductShop : MonoBehaviour
     public void Init()
     {
         _previewFactory.Init();
-        _reroll.onClick.AddListener(() => Reroll(false));
+        _reroll.OnClick += Reroll;
         _totalWeight = CalculateTotalWeight();
 
         Restart();
@@ -40,6 +40,11 @@ public class ProductShop : MonoBehaviour
     {
         _currRerollCost = _startRerollCost;
         Reroll(true);
+    }
+
+    public void Reroll()
+    {
+        Reroll(false);
     }
 
     public void Reroll(bool free = true)
@@ -142,6 +147,11 @@ public class ProductShop : MonoBehaviour
         MapManager.Instance.PlaceMapObject(mapPos, obj);
 
         EconomyManager.Instance.Spend(_selectedSlot.ProductConfig.Cost);
+
+        _selectedSlot.Clear();
+
+        _selectedProduct = null;
+        _selectedSlot = null;
 
         bool anySlotNotEmpty = _slots.Any(s => !s.IsEmpty);
 

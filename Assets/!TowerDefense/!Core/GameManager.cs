@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public event Action OnWaveStarted;
 
     [HorizontalLine]
-    [SerializeField] private Button _startWaveButton;
+    [SerializeField] private ButtonWrapper _startWaveButton;
 
     [HorizontalLine]
     [SerializeField] private UnityEngine.Camera _worldCamera;
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         _particlesGenerator.Init();
         _cameraShaker.Init();
 
-        _startWaveButton.onClick.AddListener(PlayerStartWave);
+        _startWaveButton.OnClick += PlayerStartWave;
 
         _isInit = true;
     }

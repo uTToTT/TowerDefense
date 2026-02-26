@@ -9,6 +9,7 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public event Action<ProductSlot> OnDragCanceled;
 
     [SerializeField] private TMP_Text _price;
+    [SerializeField] private Transform _productContainer;
 
     public bool IsEmpty => MapObject == null;
 
@@ -35,8 +36,8 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void PositionMapObject()
     {
-        MapObject.transform.position = transform.position;
-        MapObject.transform.parent = transform;
+        MapObject.transform.position = _productContainer.transform.position;
+        MapObject.transform.parent = _productContainer.transform;
 
         MapObject.SetRenderLayer(RenderLayers.UI);
         MapObject.SetRenderOrder(100);
@@ -44,11 +45,15 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (IsEmpty) return;
+
         OnDragPerformed?.Invoke(this);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (IsEmpty) return;
+
         OnDragCanceled?.Invoke(this);
     }
 }
