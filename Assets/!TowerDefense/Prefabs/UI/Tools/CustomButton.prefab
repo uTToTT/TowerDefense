@@ -57,10 +57,10 @@ MonoBehaviour:
   _button: {fileID: 5981450315104568572}
   _popup: {fileID: 8148204831985283038}
   _border: {fileID: 1592258976615752598}
-  _defaultPopupColor: {r: 0.9607844, g: 0.8705883, b: 0.7019608, a: 1}
-  _clickedPopupColor: {r: 0.56700003, g: 0.5137715, b: 0.41425717, a: 1}
-  _defaultBorderColor: {r: 0.624, g: 0.5654204, b: 0.45590204, a: 1}
-  _clickedBorderColor: {r: 0.291, g: 0.26368165, b: 0.21260817, a: 1}
+  _defaultPopupColor: {r: 0.78431374, g: 0.5647059, b: 0.2784314, a: 1}
+  _clickedPopupColor: {r: 0.574, g: 0.34932685, b: 0.18884599, a: 1}
+  _defaultBorderColor: {r: 0.53900003, g: 0.3557159, b: 0.19534229, a: 1}
+  _clickedBorderColor: {r: 0.348, g: 0.225504, b: 0.16425599, a: 1}
   _pressedTime: 0.1
 --- !u!222 &4356767123211606929
 CanvasRenderer:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.78431374, g: 0.5647059, b: 0.2784314, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -286,15 +286,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d7bde13ddfd1cad4f93a3d5665ab9889, type: 2}
+  m_sharedMaterial: {fileID: 8746129637528698149, guid: d7bde13ddfd1cad4f93a3d5665ab9889, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4278923353
+  m_fontColor: {r: 0.34901962, g: 0.1882353, b: 0.043137256, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -311,8 +311,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.53900003, g: 0.3557159, b: 0.19534229, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0

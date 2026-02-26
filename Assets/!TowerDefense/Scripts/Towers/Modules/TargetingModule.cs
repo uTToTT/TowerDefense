@@ -70,6 +70,17 @@ public class TargetingModule : MonoBehaviour, ITowerModule
         return true;
     }
 
+    public bool IsValid(Enemy enemy)
+    {
+        if (enemy == null)
+            return false;
+
+        if (!enemy.IsAlive)
+            return false;
+
+        return true;
+    }
+
     public void SetTargetSortingTypes(
         TypeTargetByCharacteristic byCharacteristic,
         TypeTargetByDistance byDistance)
@@ -163,7 +174,7 @@ public class TargetingModule : MonoBehaviour, ITowerModule
             if (collision.TryGetComponent<Enemy>(out var enemy))
             {
                 _toAdd.Add(enemy);
-                Debug.Log($"Register enemy in range [{gameObject.name}]");
+                //Debug.Log($"Register enemy in range [{gameObject.name}]");
             }
         }
     }

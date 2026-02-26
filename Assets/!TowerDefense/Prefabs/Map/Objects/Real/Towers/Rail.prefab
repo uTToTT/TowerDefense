@@ -138,6 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8755886351465168533}
+  - component: {fileID: 1709886640943999141}
   m_Layer: 0
   m_Name: '[SKIN]'
   m_TagString: Untagged
@@ -161,6 +162,22 @@ Transform:
   - {fileID: 7124042829300331524}
   m_Father: {fileID: 68993924830721766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1709886640943999141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421748445370981849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6100d98db2804164e8c05155513e5fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerRecoil
+  _recoilDistance: 0.3
+  _recoilDuration: 0.5
+  _easeOut: 6
+  _easeBack: 6
 --- !u!1 &3780800776447898610
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +381,7 @@ MonoBehaviour:
   _upgradeTree: {fileID: 11400000, guid: 4bb0df1f3ead7e54c997147d66df29ca, type: 2}
   _towerPreview: {fileID: 4191856935631465270}
   _particles: {fileID: 0}
+  _towerRecoil: {fileID: 1709886640943999141}
 --- !u!114 &5448730927788856528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +491,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5541551073453121075, guid: fcd44d40981eafd449b3e2c3a134b9e7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -565,6 +587,10 @@ PrefabInstance:
     - target: {fileID: 8126044271755837840, guid: 754d3f3c587376c4bbdd0ecb64c4381a, type: 3}
       propertyPath: m_Name
       value: Tower 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8126044271755837840, guid: 754d3f3c587376c4bbdd0ecb64c4381a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

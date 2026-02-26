@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Twiin_AttackModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
   _damage: 25
-  _fireRate: 1
+  _baseFireRate: 1
   _piercing: 0.05
   _rotationSpeed: 360

@@ -13,6 +13,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
     [SerializeField] private TowerPreview _towerPreview;
     [SerializeField] private CustomParticleSystem _particles;
+    [SerializeField] private TowerRecoil _towerRecoil;
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
@@ -21,6 +22,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public UpgradeNodeConfig UpgradeTree => _upgradeTree;
     public TowerUpgradeController UpgradeController => _upgradeController;
     public TargetingModule TargetingModule => _targetingModule;
+    public TowerRecoil TowerRecoil => _towerRecoil;
 
     public bool IsEnabled { get => _enabled; private set => _enabled = value; }
 

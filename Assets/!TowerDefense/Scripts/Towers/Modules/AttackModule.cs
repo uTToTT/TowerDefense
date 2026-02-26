@@ -35,7 +35,11 @@ public sealed class AttackModule : ITowerModule
 
     public void Tick(float dt)
     {
+        UpdateTarget();
         RotateTower(dt);
+
+        if (_target == null)
+            return;
 
         if (_cooldown > 0)
         {
@@ -43,18 +47,20 @@ public sealed class AttackModule : ITowerModule
             return;
         }
 
-        _target = _tower.TargetingModule.GetTarget();
+        Fire();
 
-        if (_target == null)
-        {
-            return;
-        }
+        _cooldown = 1f / _config.FireRate;
+    }
 
+    private void Fire()
+    {
         //Debug.Log($"" +
         //    $"Damage [{_config.Damage}]\n" +
         //    $"Piercing [{_config.Piercing}]\n" +
         //    $"Target [{_target.name}]");
+
         _target.TakeDamage(_config.Damage, _config.Piercing);
+        _tower.TowerRecoil.PlayRecoil();
         _tower.PlayParticle();
 
         var hit = new HitContext
@@ -66,27 +72,21 @@ public sealed class AttackModule : ITowerModule
 
         foreach (var effect in _onHitEffects)
             effect.OnHit(hit);
-
-        _cooldown = 1f / _config.FireRate;
     }
 
     private void RotateTower(float dt)
     {
-        if (_target != null)
+        if (_tower.TargetingModule.IsValid(_target))
         {
-            var dir = _target.transform.position - _tower.transform.position;
-            var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-            var targetRotation =
-                Quaternion.AngleAxis(
-                    angleDirection - 90,
-                    Vector3.forward);
-
-            _tower.transform.rotation =
-                Quaternion.RotateTowards(
-                    _tower.transform.rotation,
-                    targetRotation,
-                    _config.RotationSpeed * dt);
+            _tower.transform.RotateAt2D(_target.transform.position, _config.RotationSpeed);
         }
+    }
+
+    private void UpdateTarget()
+    {
+        if (_tower.TargetingModule.IsValid(_target))
+            return;
+
+        _target = _tower.TargetingModule.GetTarget();
     }
 }

@@ -364,6 +364,7 @@ MonoBehaviour:
   _upgradeTree: {fileID: 11400000, guid: e327b65169cb56c4889d85bbc6752079, type: 2}
   _towerPreview: {fileID: 2681430237472966226}
   _particles: {fileID: 0}
+  _towerRecoil: {fileID: 7190456608061817455}
 --- !u!114 &8200067439836425777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,6 +427,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8253088352901997089}
+  - component: {fileID: 7190456608061817455}
   m_Layer: 0
   m_Name: '[SKIN]'
   m_TagString: Untagged
@@ -449,6 +451,22 @@ Transform:
   - {fileID: 2759797017299817800}
   m_Father: {fileID: 9112609783730870117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7190456608061817455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090194257523848460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6100d98db2804164e8c05155513e5fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerRecoil
+  _recoilDistance: 0.15
+  _recoilDuration: 0.25
+  _easeOut: 6
+  _easeBack: 6
 --- !u!1001 &4242336596876014022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -502,6 +520,10 @@ PrefabInstance:
       value: Twiin_Preview
       objectReference: {fileID: 0}
     - target: {fileID: 4624243942813595066, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686903883467174222, guid: 00f11a8b6993ece46a3717f1cf4b56d3, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

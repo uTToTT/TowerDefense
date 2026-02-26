@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ButtonWrapper : MonoBehaviour
 {
     public event Action OnClick;
+    public event Action OnClickImmidiately;
 
     [SerializeField] private Button _button;
     [HorizontalLine]
@@ -25,6 +26,7 @@ public class ButtonWrapper : MonoBehaviour
     [SerializeField] private float _pressedTime = 0.2f;
 
     private float _elapsedTime;
+    private float _elapsedTime2;
 
     #region Unity API
 
@@ -49,20 +51,32 @@ public class ButtonWrapper : MonoBehaviour
             if (_elapsedTime <= 0)
                 SetDefault();
         }
+
+        if (_elapsedTime2 > 0)
+        {
+            _elapsedTime2 -= Time.deltaTime;
+
+            if (_elapsedTime2 <= 0)
+                Click();
+        }
     }
 
     #endregion
 
     private void Click() => OnClick?.Invoke();
+    private void ClickImmidiately() => OnClickImmidiately?.Invoke();
 
+    [Button]
     private void SetPressed()
     {
         _popup.color = _clickedPopupColor;
         _border.color = _clickedBorderColor;
 
         _elapsedTime = _pressedTime;
+        _elapsedTime2 = _pressedTime;
     }
 
+    [Button]
     private void SetDefault()
     {
         _popup.color = _defaultPopupColor;
@@ -71,9 +85,9 @@ public class ButtonWrapper : MonoBehaviour
 
     private void InitEvents()
     {
-        _button.onClick.AddListener(() => Click());
+        _button.onClick.AddListener(() => ClickImmidiately());
 
-        OnClick += SetPressed;
+        OnClickImmidiately += SetPressed;
     }
 
     private void InitButton()
