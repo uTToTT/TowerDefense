@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     [HorizontalLine]
     [SerializeField] private UnityEngine.Camera _worldCamera;
+
+    [HorizontalLine]
+    [SerializeField, Range(0, 3)] private float _timeModifier = 1f;
 
     [HorizontalLine]
     [SerializeField] private MapManager _mapManager;
@@ -35,14 +37,12 @@ public class GameManager : MonoBehaviour
     public PlayerInputController PlayerInputController => _playerInputController;
     public TowerManager TowerManager => _towerManager;
     public BuildManager BuildManager => _buildManager;
-    public UnityEngine.Camera WorldCamera => _worldCamera;
 
     public static GameManager Instance { get; private set; }
 
     public bool IsBattle { get; private set; }
 
     private bool _isInit = false;
-    private float _timeModifier = 1f;
     private bool _timeFreezed = false;
 
     private void Awake()
