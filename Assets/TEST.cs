@@ -20,7 +20,6 @@ public class TEST : MonoBehaviour
         //PlayerPrefs.SetInt("StarCount", _starCounter);
 
         //Debug.Log(PlayerPrefs.GetInt("StarsForLevel" + 50));
-
         //PlayerPrefs.SetInt("RemoveAds", 0);
     }
 }
