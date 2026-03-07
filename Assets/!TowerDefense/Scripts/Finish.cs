@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Finish : MonoBehaviour
+public class Finish : MonoBehaviour // TODO delete
 {
     [SerializeField] private GameObject _prefabMine;
     private Enemy _tmpEnemy;
