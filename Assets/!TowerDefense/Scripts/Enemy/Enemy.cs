@@ -180,8 +180,6 @@ public class Enemy : MonoBehaviour,
 
     public EnemyType GetEnemyType() => _enemyType;
 
-    public float GetDamage() => _config.Damage;
-
     public void HPMultiply(float multiplier) =>
         _currHP *= multiplier;
 
