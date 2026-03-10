@@ -12687,6 +12687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _startWaveButton: {fileID: 1780934756}
   _worldCamera: {fileID: 626061978}
+  _timeModifier: 1
   _mapManager: {fileID: 1982400813}
   _towerManager: {fileID: 2126351177}
   _cellSelector: {fileID: 756892453}
@@ -13624,7 +13625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1663431592
 RectTransform:
   m_ObjectHideFlags: 0
