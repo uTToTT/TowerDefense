@@ -78,7 +78,7 @@ public sealed class AttackModule : ITowerModule
     {
         if (_tower.TargetingModule.IsValid(_target))
         {
-            _tower.transform.RotateAt2D(_target.transform.position, _config.RotationSpeed);
+            _tower.TowerTransform.RotateAt2D(_target.transform.position, _config.RotationSpeed /** dt*/);
         }
     }
 

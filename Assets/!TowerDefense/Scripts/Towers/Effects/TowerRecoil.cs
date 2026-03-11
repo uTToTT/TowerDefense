@@ -7,29 +7,30 @@ public sealed class TowerRecoil : MonoBehaviour
     [SerializeField] private float _recoilDuration = 0.08f;
     [SerializeField] private Ease _easeOut = Ease.OutQuad;
     [SerializeField] private Ease _easeBack = Ease.OutQuad;
+    [SerializeField] private Transform _towerTransform;
 
     private Vector3 _baseLocalPosition;
     private Tween _recoilTween;
 
     private void Awake()
     {
-        _baseLocalPosition = transform.localPosition;
+        _baseLocalPosition = _towerTransform.localPosition;
     }
 
     public void PlayRecoil()
     {
         _recoilTween?.Kill(false);
 
-        transform.localPosition = _baseLocalPosition;
+        _towerTransform.localPosition = _baseLocalPosition;
 
         Vector3 recoilOffset = -Vector3.up * _recoilDistance;
 
-        _recoilTween = transform
+        _recoilTween = _towerTransform
             .DOLocalMove(_baseLocalPosition + recoilOffset, _recoilDuration)
             .SetEase(_easeOut)
             .OnComplete(() =>
             {
-                transform
+                _towerTransform
                     .DOLocalMove(_baseLocalPosition, _recoilDuration)
                     .SetEase(_easeBack);
             });
