@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Loader<T> : MonoBehaviour where T : MonoBehaviour
+public class Loader<T> : MonoBehaviour where T : MonoBehaviour // legacy
 {
     private static T instance;
 

@@ -137,10 +137,10 @@ public class MapManager : MonoBehaviour
 
     public CellData Raycast()
     {
-        if (GameManager.Instance.PlayerInputController.IsPointerOverUI())
+        if (GameLoop.Instance.PlayerInputController.IsPointerOverUI())
             return null;
 
-        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
         var mapPos = MapUtils.WorldToMap(worldPos, Grid);
 
         return GetCellData(mapPos);

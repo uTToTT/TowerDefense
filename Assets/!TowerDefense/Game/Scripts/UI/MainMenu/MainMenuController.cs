@@ -19,7 +19,7 @@ public class MainMenuController : InterfaceContorller
         _playButton.OnClick += () =>
         {
             UIManager.Instance.OpenPreparing();
-            GameManager.Instance.RestartGame();
+            //GameController.Instance.RestartGame();
         };
     }
 }

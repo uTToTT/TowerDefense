@@ -4,7 +4,7 @@ public static class DragUtils
 {
     public static void SnapToPointer(Transform transform)
     {
-        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
         transform.position = worldPos;
     }
 }

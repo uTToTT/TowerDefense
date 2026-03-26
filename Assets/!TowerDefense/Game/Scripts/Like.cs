@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Like : MonoBehaviour
+public class Like : MonoBehaviour // legacy
 {
     public void OnClick()
     {

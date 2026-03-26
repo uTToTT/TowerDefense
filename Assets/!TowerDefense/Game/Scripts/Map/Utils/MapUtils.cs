@@ -57,7 +57,7 @@ public static class MapUtils
 
     public static void SnapToGridUnderPointer(Transform transform)
     {
-        var worldPos = GameManager.Instance.PlayerInputController.GetPointerPosition();
+        var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
         transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
     }
 

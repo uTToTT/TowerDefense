@@ -46,5 +46,5 @@ public class Player : MonoBehaviour
             Defeat();
     }
 
-    private void Defeat() => GameManager.Instance.PlayerBaseDestroyed();
+    private void Defeat() => GameLoop.Instance.PlayerBaseDestroyed();
 }

@@ -132,7 +132,7 @@ public class ProductShop : MonoBehaviour
         _previewFactory.Return(_selectedProduct);
         var grid = MapManager.Instance.Grid;
         var worldPos = _selectedProduct.transform.position;
-        var obj = GameManager.Instance.BuildManager.Create(_selectedProduct.Type);
+        var obj = GameLoop.Instance.BuildManager.Create(_selectedProduct.Type);
         var mapPos = MapUtils.WorldToMap(worldPos, grid);
         obj.transform.position = MapUtils.SnapToGrid(worldPos, grid);
         obj.MapPos = mapPos;
@@ -141,7 +141,7 @@ public class ProductShop : MonoBehaviour
         {
             tower.HideRange();
             tower.Enable();
-            GameManager.Instance.TowerManager.Register(tower);
+            GameLoop.Instance.TowerManager.Register(tower);
         }
 
         MapManager.Instance.PlaceMapObject(mapPos, obj);

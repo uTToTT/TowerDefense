@@ -53,12 +53,12 @@ public class EnemyManager : MonoBehaviour
             if (_waveController.IsAllWavesCompleted)
             {
                 _waveController.IsAllWavesCompleted = false;
-                GameManager.Instance.AllWavesEnded();
+                GameLoop.Instance.AllWavesEnded();
             }
             else if (_waveController.IsWaveEnded)
             {
                 _waveController.IsWaveEnded = false;
-                GameManager.Instance.WaveEnded();
+                GameLoop.Instance.WaveEnded();
             }
         }
     }

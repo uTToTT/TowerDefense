@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class TowerManager : MonoBehaviour
+public class TowerManager 
 {
     private List<Tower> _builtTowers = new();
 
@@ -9,17 +8,12 @@ public class TowerManager : MonoBehaviour
 
     #region Life cycle
 
-    public void Init()
-    {
-        
-    }
-
     public void Restart()
     {
         foreach (var tower in _builtTowers)
         {
             MapManager.Instance.RemoveMapObject(tower);
-            GameManager.Instance.BuildManager.Return(tower);
+            GameLoop.Instance.BuildManager.Return(tower);
         }
 
         _builtTowers.Clear();

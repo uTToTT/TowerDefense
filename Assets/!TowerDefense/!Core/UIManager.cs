@@ -35,10 +35,10 @@ public class UIManager : MonoBehaviour
 
     private void InitActions()
     {
-        GameManager.Instance.OnGameDefeat += OpenDefeat;
-        GameManager.Instance.OnGameVictory += OpenVictory;
-        GameManager.Instance.OnWaveEnded += OpenPreparing;
-        GameManager.Instance.OnWaveStarted += OpenWave;
+        GameLoop.Instance.OnGameDefeat += OpenDefeat;
+        GameLoop.Instance.OnGameVictory += OpenVictory;
+        GameLoop.Instance.OnWaveEnded += OpenPreparing;
+        GameLoop.Instance.OnWaveStarted += OpenWave;
     }
 
     #region Windows
