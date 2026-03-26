@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class TowerManager 
+public class TowerManager
 {
     private List<Tower> _builtTowers = new();
 
@@ -10,13 +10,8 @@ public class TowerManager
 
     public void Restart()
     {
-        foreach (var tower in _builtTowers)
-        {
-            MapManager.Instance.RemoveMapObject(tower);
-            GameLoop.Instance.BuildManager.Return(tower);
-        }
-
-        _builtTowers.Clear();
+        //MapManager.Instance.RemoveMapObject(tower); // MapManager must remove on restart
+        //GameLoop.Instance.BuildManager.Return(tower); // BuildManager must return on restart
     }
 
     public void Tick(float dt)
@@ -29,8 +24,8 @@ public class TowerManager
 
     #region Registering
 
-    public void Register(Tower tower) => _builtTowers.Add(tower); 
-    public void Unregister(Tower tower) => _builtTowers.Remove(tower); 
+    public void Register(Tower tower) => _builtTowers.Add(tower);
+    public void Unregister(Tower tower) => _builtTowers.Remove(tower);
 
     #endregion
 }

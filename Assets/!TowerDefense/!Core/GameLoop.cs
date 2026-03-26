@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System;
+using TToTT.TowerDefense.UI;
 using UnityEngine;
 
 public class GameLoop // TODO: separate
@@ -20,7 +21,7 @@ public class GameLoop // TODO: separate
     private readonly TowerManager _towerManager;
     private readonly ObjectSelector _cellSelector;
     private readonly EconomyManager _economyService;
-    private readonly UIManager _uiManager;
+    private readonly UIFlowController _uiManager;
     private readonly Player _player;
     private readonly EnemyManager _enemyManager;
     private readonly BuildManager _buildManager;
@@ -73,7 +74,7 @@ public class GameLoop // TODO: separate
     private void PlayerStartWave()
     {
         _enemyManager.WaveController.PlayerStartWave();
-        UIManager.Instance.CloseWindow(WindowType.Gameplay); // ref
+        UIFlowController.Instance.CloseWindow(WindowType.Gameplay); // ref
 
         IsBattle = true;
     }
@@ -81,7 +82,7 @@ public class GameLoop // TODO: separate
     public void WaveEnded()
     {
         _enemyManager.WaveController.StopWave();
-        UIManager.Instance.OpenWindow(WindowType.Gameplay); // ref
+        UIFlowController.Instance.OpenWindow(WindowType.Gameplay); // ref
         _productShop.Reroll();
 
         IsBattle = false;

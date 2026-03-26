@@ -1,3 +1,4 @@
+using TToTT.TowerDefense.UI;
 using UnityEngine;
 
 public class UnityEntryPoint : MonoBehaviour
@@ -6,7 +7,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private ObjectSelector _cellSelector;
     [SerializeField] private EconomyManager _economyManager;
-    [SerializeField] private UIManager _uiManager;
+    [SerializeField] private UIFlowController _uiManager;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private BuildManager _buildManager;

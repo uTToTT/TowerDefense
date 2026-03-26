@@ -1,12 +1,13 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.UI;
 
 public class GameBootstrap
 {
     private DIContainer _container;
 
     public void Initialize(
-        UIManager uIManager,
+        UIFlowController uIManager,
         TowerManager towerManager,
         MapManager mapManager,
         EconomyManager economyManager,
@@ -32,6 +33,7 @@ public class GameBootstrap
 
         new CoreInstaller().Install(_container);
         gameInstaller.Install(_container);
+        new UIInstaller().Install(_container);
     }
 
     public T Resolve<T>() => _container.Resolve<T>();

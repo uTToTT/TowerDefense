@@ -1,10 +1,11 @@
 using TToTT.Core.DI;
+using TToTT.TowerDefense.UI;
 
 namespace TToTT.Core.Installers
 {
     public class GameInstaller : IInstaller
     {
-        private readonly UIManager _uiManager;
+        private readonly UIFlowController _uiManager;
         private readonly TowerManager _towerManager;
         private readonly MapManager _mapManager;
         private readonly EconomyManager _economyManager;
@@ -16,7 +17,7 @@ namespace TToTT.Core.Installers
         private readonly CameraShaker _cameraShaker;
 
         public GameInstaller(
-            UIManager uIManager,
+            UIFlowController uIManager,
             TowerManager towerManager,
             MapManager mapManager,
             EconomyManager economyManager,
