@@ -17,6 +17,7 @@ public abstract class FactoryBase<T> : ScriptableObject,
     [SerializeField] public int _totalCount;
 
     private ObjectPool<T> _pool;
+    private bool _initialized;
 
     protected T Prefab => _prefab;
 
@@ -33,17 +34,35 @@ public abstract class FactoryBase<T> : ScriptableObject,
 
     public void Init()
     {
+        if (_initialized) return;
         if (_pool != null) return;
 
         var poolParam = new ObjectPoolParameters(_capacity, _maxCount);
         _pool = new ObjectPool<T>(poolParam, OnPreload, OnGet, OnReturn);
+        _initialized = true;
     }
 
-    public T Create() => _pool.Get();
-    public void Return(T item) => _pool.Return(item);
-    public void ReturnAll() => _pool.ReturnAll();
+    public T Create()
+    {
+        Init();
+        return _pool.Get();
+    }
+
+    public void Return(T item)
+    {
+        Init();
+        _pool.Return(item);
+    }
+
+    public void ReturnAll()
+    {
+        Init();
+        _pool.ReturnAll();
+    }
+
     public void Dispose()
     {
+        Init();
         foreach (var entity in _pool.AllObjects)
             entity.OnDestroyed();
 

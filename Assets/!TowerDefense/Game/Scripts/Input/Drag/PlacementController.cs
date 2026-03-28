@@ -1,14 +1,32 @@
 using System;
+using TToTT.TowerDefense.Map;
+using UnityEngine;
 
-public sealed class PlacementController
+public sealed class PlacementController : IDisposable
 {
     public event Action OnPlaced;
     public event Action OnCanceled;
+
+    private readonly GridController _gridController;
 
     private bool _isDragging;
     private bool _enabled;
 
     private MapObject _draggedObject;
+
+    #region Init
+
+    public PlacementController(GridController gridController)
+    {
+        _gridController = gridController;
+    }
+
+    public void Dispose()
+    {
+
+    }
+
+    #endregion
 
     public void Tick(float dt)
     {
@@ -77,15 +95,27 @@ public sealed class PlacementController
         if (_draggedObject == null) return;
 
         var mapPos = _draggedObject.MapPos;
-        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid);
+        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, _gridController.Grid);
 
         MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
         MapManager.Instance.ClearSellection();
         OnCanceled?.Invoke();
     }
 
-    private bool IsValidPlacement(MapObject mapObject)
+    public bool IsValidPlacement(MapObject mapObject)
     {
-        return MapManager.Instance.IsValidPlacement(mapObject);
+        Vector2Int mapPos = MapUtils.WorldToMap(mapObject.transform.position, _gridController.Grid);
+
+        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, mapObject.Shape))
+        {
+            if (!IsInside(cell))
+                return false;
+            if (IsCellBusy(cell))
+                return false;
+        }
+
+        return true;
     }
+
+    
 }

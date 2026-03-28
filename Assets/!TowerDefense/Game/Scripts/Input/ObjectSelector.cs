@@ -1,24 +1,41 @@
 using System;
+using System.Collections.Generic;
+using TToTT.TowerDefense.Map;
 using UnityEngine;
 
-public class ObjectSelector : MonoBehaviour
+public class ObjectSelector : IDisposable
 {
-    [SerializeField] private CellSelectionFactory _selectionFactory;
-
     public event Action<MapObject> OnObjectSelected;
 
-    private MapManager _mapManager;
+    private readonly MapManager _mapManager;
+    private readonly CellSelectionFactory _selectionFactory; // relocate to ObjectSelectorView
+    private readonly PlayerInputController _playerInputController; // change to interface
+
     private MapObject _selectedObject;
 
-    public void Init(PlayerInputController playerInputController, MapManager mapManager)
+    private readonly List<CellSelection> _selections = new(); 
+
+    #region Init
+
+    public ObjectSelector(
+        PlayerInputController playerInputController,
+        MapManager mapManager,
+        CellSelectionFactory selectionFactory)
     {
         _mapManager = mapManager;
+        _playerInputController = playerInputController;
+        _selectionFactory = selectionFactory;
 
-        playerInputController.OnTapPerformed += OnTapPerformed;
-        playerInputController.OnTapCanceled += OnTapCanceled;
-
-        MapManager.Instance.ClearSellection();
+        _playerInputController.OnTapPerformed += OnTapPerformed;
+        _playerInputController.OnTapCanceled += OnTapCanceled;
     }
+
+    public void Dispose()
+    {
+        Unsubscride();
+    }
+
+    #endregion
 
     public void Tick(float dt)
     {
@@ -41,6 +58,18 @@ public class ObjectSelector : MonoBehaviour
         UnselectObject();
     }
 
+    public void ClearSellection()
+    {
+        if (_selections.Count < 0) return;
+
+        for (int i = _selections.Count - 1; i >= 0; i--)
+        {
+            _selectionFactory.Return(_selections[i]);
+        }
+
+        _selections.Clear();
+    }
+
     private void TrySelectObject(CellData cell)
     {
         if (_mapManager.TryGetObject(cell, out var mapObject))
@@ -61,5 +90,38 @@ public class ObjectSelector : MonoBehaviour
         MapManager.Instance.PlacementController.EndDrag(_selectedObject);
 
         _selectedObject = null;
+    }
+
+    private void Subscribe()
+    {
+        _playerInputController.OnTapPerformed += OnTapPerformed;
+        _playerInputController.OnTapCanceled += OnTapCanceled;
+    }
+
+    private void Unsubscride()
+    {
+        _playerInputController.OnTapPerformed -= OnTapPerformed;
+        _playerInputController.OnTapCanceled -= OnTapCanceled;
+    }
+
+    public void DrawBorderMapObject(MapObject mapObject)
+    {
+        var worldPos = mapObject.transform.position;
+        var mapPos = MapUtils.WorldToMap(worldPos, _grid);
+        var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
+
+        for (int i = 0; i < occupiedCells.Count; i++)
+        {
+            var seleciton = _selectionFactory.Create();
+            seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
+
+            if (IsCellBusy(occupiedCells[i]))
+                seleciton.SetBusyColor();
+            else
+                seleciton.SetFreeColor();
+
+            seleciton.transform.rotation = Quaternion.identity;
+            _selections.Add(seleciton);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TToTT.TowerDefense.Map;
 using UnityEngine;
 
 public static class MapUtils
@@ -12,8 +13,8 @@ public static class MapUtils
 
     /* =========================
      * MAP <-> WORLD
-     * (логика карты)
-     * (0,0 Ч левый нижний угол)
+     * (map logic)
+     * (0,0 Ч left down corner)
      * ========================= */
 
     public static Vector2Int WorldToMap(Vector3 worldPos, Grid grid)

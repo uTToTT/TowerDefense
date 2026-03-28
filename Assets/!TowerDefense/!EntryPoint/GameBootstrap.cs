@@ -1,5 +1,6 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.UI;
 
 public class GameBootstrap

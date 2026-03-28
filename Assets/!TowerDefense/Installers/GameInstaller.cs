@@ -1,11 +1,11 @@
 using TToTT.Core.DI;
+using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.UI;
 
 namespace TToTT.Core.Installers
 {
     public class GameInstaller : IInstaller
     {
-        private readonly UIFlowController _uiManager;
         private readonly TowerManager _towerManager;
         private readonly MapManager _mapManager;
         private readonly EconomyManager _economyManager;
@@ -17,7 +17,6 @@ namespace TToTT.Core.Installers
         private readonly CameraShaker _cameraShaker;
 
         public GameInstaller(
-            UIFlowController uIManager,
             TowerManager towerManager,
             MapManager mapManager,
             EconomyManager economyManager,
@@ -28,7 +27,6 @@ namespace TToTT.Core.Installers
             ParticlesGenerator particlesGenerator,
             CameraShaker cameraShaker)
         {
-            _uiManager = uIManager;
             _towerManager = towerManager;
             _mapManager = mapManager;
             _economyManager = economyManager;
@@ -46,7 +44,6 @@ namespace TToTT.Core.Installers
 
             /// 
 
-            _uiManager.Init();
 
             _towerManager.Init();
             _mapManager.Init();
@@ -60,7 +57,6 @@ namespace TToTT.Core.Installers
 
             ///
 
-            container.BindInstance(_uiManager);
             container.BindInstance(_towerManager);
             container.BindInstance(_mapManager);
             container.BindInstance(_economyManager);

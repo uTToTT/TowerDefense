@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using TMPro;
+using TToTT.TowerDefense.Map;
 using UnityEngine;
 
 public class WaveController : MonoBehaviour

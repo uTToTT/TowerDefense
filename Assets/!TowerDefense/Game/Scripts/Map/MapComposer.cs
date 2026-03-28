@@ -1,39 +1,51 @@
 using UnityEngine;
 
-public class MapComposer : MonoBehaviour
+namespace TToTT.TowerDefense.Map
 {
-    [SerializeField] private CellFactoryRegistry _factories;
-    [SerializeField] private Transform _cellContainer;
-
-    private void Awake()
+    public class MapComposer
     {
-        _factories.Init();
-    }
+        private readonly CellFactoryRegistry _factories;
+        private readonly Transform _cellContainer;
 
-    public void Build(MapData map, CellData[,] cellDatas, Grid grid)
-    {
-        for (int y = 0; y < map.height; y++)
+        private readonly MapDataService _dataService;
+
+        public MapComposer(
+            CellFactoryRegistry factories,
+            Transform cellContainer,
+            MapDataService dataService)
         {
-            for (int x = 0; x < map.width; x++)
+            _factories = factories;
+            _cellContainer = cellContainer;
+            _dataService = dataService;
+        }
+
+        public void Build(MapData map, Grid grid)
+        {
+            for (int y = 0; y < map.height; y++)
             {
-                var type = map.Get(x, y);
-                if (type == CellType.Empty)
-                    continue;
-
-                var cell = _factories.Create(type);
-                cell.transform.SetParent(_cellContainer);
-
-                Vector3Int cellPos = new Vector3Int(x, y, 0);
-                cell.transform.position = grid.GetCellCenterWorld(cellPos);
-
-                cellDatas[x, y] = new CellData();
-                cellDatas[x, y].CellType = cell.CellType;
-                if (cell.CellType == CellType.Path ||
-                    cell.CellType == CellType.Entrance ||
-                    cell.CellType == CellType.Exit ||
-                    cell.CellType == CellType.Blocked)
+                for (int x = 0; x < map.width; x++)
                 {
-                    cellDatas[x, y].IsBusy = true;
+                    var type = map.Get(x, y);
+                    if (type == CellType.Empty)
+                        continue;
+
+                    var cell = _factories.Create(type);
+                    cell.transform.SetParent(_cellContainer);
+
+                    Vector3Int cellPos = new Vector3Int(x, y, 0);
+                    cell.transform.position = grid.GetCellCenterWorld(cellPos);
+
+                    _dataService.SetCellType(x, y, cell.CellType);
+
+                    if (cell.CellType == CellType.Path ||
+                        cell.CellType == CellType.Entrance ||
+                        cell.CellType == CellType.Exit ||
+                        cell.CellType == CellType.Blocked)
+                    {
+                        _dataService.SetCellBusyState(x, y, true);
+                    }
+
+                    _dataService.SetCellBusyState(x, y, false);
                 }
             }
         }
