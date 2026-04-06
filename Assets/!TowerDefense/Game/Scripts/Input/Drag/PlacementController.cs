@@ -1,6 +1,5 @@
 using System;
 using TToTT.TowerDefense.Map;
-using UnityEngine;
 
 public sealed class PlacementController : IDisposable
 {
@@ -8,6 +7,7 @@ public sealed class PlacementController : IDisposable
     public event Action OnCanceled;
 
     private readonly GridController _gridController;
+    private readonly MapController _mapController;
 
     private bool _isDragging;
     private bool _enabled;
@@ -16,9 +16,12 @@ public sealed class PlacementController : IDisposable
 
     #region Init
 
-    public PlacementController(GridController gridController)
+    public PlacementController(
+        GridController gridController,
+        MapController mapController)
     {
         _gridController = gridController;
+        _mapController = mapController;
     }
 
     public void Dispose()
@@ -36,8 +39,6 @@ public sealed class PlacementController : IDisposable
         if (_draggedObject != null)
         {
             DragUtils.SnapToPointer(_draggedObject.transform);
-            MapManager.Instance.ClearSellection();
-            MapManager.Instance.DrawBorderMapObject(_draggedObject);
         }
     }
 
@@ -54,19 +55,29 @@ public sealed class PlacementController : IDisposable
             tower.ShowRange();
         }
 
-        MapManager.Instance.RemoveMapObject(_draggedObject);
+        _mapController.RemoveMapObject(_draggedObject);
 
         _isDragging = true;
     }
 
     public void EndDrag(MapObject mapObject)
     {
-        if (IsValidPlacement(mapObject))
-            Place();
-        else
-            Cancele();
+        var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, _gridController.Grid);
+        bool success = _mapController.TryPlaceObject(mapPos, mapObject);
 
-        if (mapObject is Tower tower)
+        if (success)
+        {
+            _draggedObject.MapPos = mapPos;
+            _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, _gridController.Grid);
+
+            OnPlaced?.Invoke();
+        }
+        else
+        {
+            OnCanceled?.Invoke();
+        }
+
+        if (mapObject is Tower tower) // refactor
         {
             tower.Enable();
             tower.HideRange();
@@ -76,46 +87,4 @@ public sealed class PlacementController : IDisposable
 
         _isDragging = false;
     }
-
-    private void Place()
-    {
-        if (_draggedObject == null) return;
-
-        var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, MapManager.Instance.Grid);
-        MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
-        _draggedObject.MapPos = mapPos;
-        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, MapManager.Instance.Grid);
-
-        MapManager.Instance.ClearSellection();
-        OnPlaced?.Invoke();
-    }
-
-    private void Cancele()
-    {
-        if (_draggedObject == null) return;
-
-        var mapPos = _draggedObject.MapPos;
-        _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, _gridController.Grid);
-
-        MapManager.Instance.PlaceMapObject(mapPos, _draggedObject);
-        MapManager.Instance.ClearSellection();
-        OnCanceled?.Invoke();
-    }
-
-    public bool IsValidPlacement(MapObject mapObject)
-    {
-        Vector2Int mapPos = MapUtils.WorldToMap(mapObject.transform.position, _gridController.Grid);
-
-        foreach (var cell in MapUtils.GetOccupiedCells(mapPos, mapObject.Shape))
-        {
-            if (!IsInside(cell))
-                return false;
-            if (IsCellBusy(cell))
-                return false;
-        }
-
-        return true;
-    }
-
-    
 }

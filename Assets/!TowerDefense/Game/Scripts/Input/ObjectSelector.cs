@@ -86,8 +86,8 @@ public class ObjectSelector : IDisposable
     {
         if (_selectedObject == null) return;
 
-        MapManager.Instance.ClearSellection();
-        MapManager.Instance.PlacementController.EndDrag(_selectedObject);
+        //MapManager.Instance.ClearSellection();
+        //MapManager.Instance.PlacementController.EndDrag(_selectedObject);
 
         _selectedObject = null;
     }
@@ -123,5 +123,16 @@ public class ObjectSelector : IDisposable
             seleciton.transform.rotation = Quaternion.identity;
             _selections.Add(seleciton);
         }
+    }
+
+    public CellData Raycast()
+    {
+        if (_playerInputController.IsPointerOverUI())
+            return null;
+
+        var worldPos = _playerInputController.GetPointerPosition();
+        var mapPos = MapUtils.WorldToMap(worldPos, Grid);
+
+        return GetCellData(mapPos);
     }
 }

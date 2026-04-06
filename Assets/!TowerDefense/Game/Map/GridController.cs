@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace TToTT.TowerDefense.Map
 {
-    public class GridController
+    public class GridController : IDisposable
     {
         private readonly Grid _grid;
 
@@ -28,6 +29,11 @@ namespace TToTT.TowerDefense.Map
                     _grid.cellSize.y * 0.5f,
                     0f
                 );
+        }
+
+        public void Dispose()
+        {
+
         }
     }
 }

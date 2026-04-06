@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace TToTT.TowerDefense.Map
 {
@@ -6,9 +7,9 @@ namespace TToTT.TowerDefense.Map
     /// 
     /// TODO:
     /// - Route Controller/Provider
-    /// - MapValidator
-    /// - MapDataController
-    /// - Dispose()
+    /// - MapValidator                  done
+    /// - MapDataController             done
+    /// - Dispose()                     done
     /// 
     /// </summary>
 
@@ -16,42 +17,52 @@ namespace TToTT.TowerDefense.Map
     {
         private readonly PlacementController _placementController;
         private readonly GridController _gridController;
-        private readonly MapComposer _mapComposer;
-        private readonly MapValidator _mapValidator;
-        private readonly MapDataService _mapDataService;
+        private readonly MapValidator _validator;
+        private readonly MapDataService _dataService;
 
         #region Init
 
         public MapController(
             PlacementController placementController,
             GridController gridController,
-            MapComposer mapComposer,
             MapValidator mapValidator,
             MapDataService dataService)
         {
             _placementController = placementController;
             _gridController = gridController;
-            _mapComposer = mapComposer;
-            _mapValidator = mapValidator;
-            _mapDataService = dataService;
+            _validator = mapValidator;
+            _dataService = dataService;
         }
 
         public void Dispose()
         {
             _placementController.Dispose();
             _gridController.Dispose();
-            _mapComposer.Dispose();
-            _mapValidator.Dispose();
-            _mapDataService.Dispose();
+            _validator.Dispose();
+            _dataService.Dispose();
         }
 
         #endregion
 
-        public void BuildMap(MapData mapData)
+        public void SetMap(MapData mapData)
         {
-            _mapDataService.SetMapData(mapData);
+            _dataService.SetMapData(mapData);
             _gridController.CenterGrid(mapData.width, mapData.height);
-            _mapComposer.Build(mapData, _gridController.Grid);
+        }
+
+        public bool TryPlaceObject(Vector2Int pos, MapObject mapObject)
+        {
+            if (_validator.IsCellBusy(pos))
+                return false;
+
+            _dataService.RegisterMapObject(pos, mapObject);
+
+            return true;
+        }
+
+        public void RemoveMapObject(MapObject mapObject)
+        {
+            _dataService.UnregisterMapObject(mapObject);
         }
     }
 }

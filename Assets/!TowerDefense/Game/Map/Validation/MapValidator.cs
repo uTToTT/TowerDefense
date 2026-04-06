@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 namespace TToTT.TowerDefense.Map
 {
-    public class MapValidator
+    public class MapValidator : IDisposable
     {
         private readonly MapDataService _dataService;
 
@@ -21,6 +21,10 @@ namespace TToTT.TowerDefense.Map
         {
             var cell = _dataService.GetCellData(pos);
             return cell != null && cell.IsBusy;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
