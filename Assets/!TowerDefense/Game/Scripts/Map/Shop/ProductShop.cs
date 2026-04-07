@@ -52,13 +52,13 @@ public class ProductShop : MonoBehaviour
     {
         if (!free)
         {
-            if (!EconomyManager.Instance.CanSpend(_currRerollCost))
+            if (!EconomyController.Instance.CanSpend(_currRerollCost))
             {
                 Debug.Log("Not enough money!");
                 return;
             }
 
-            EconomyManager.Instance.Spend(_currRerollCost);
+            EconomyController.Instance.Spend(_currRerollCost);
             _currRerollCost += _rerollDelta;
         }
 
@@ -93,7 +93,7 @@ public class ProductShop : MonoBehaviour
 
     private void OnProductDragPerformed(ProductSlot slot)
     {
-        if (!EconomyManager.Instance.CanSpend(slot.ProductConfig.Cost))
+        if (!EconomyController.Instance.CanSpend(slot.ProductConfig.Cost))
         {
             Debug.Log("Not enough money!");
             return;
@@ -147,7 +147,7 @@ public class ProductShop : MonoBehaviour
 
         MapManager.Instance.PlaceMapObject(mapPos, obj);
 
-        EconomyManager.Instance.Spend(_selectedSlot.ProductConfig.Cost);
+        EconomyController.Instance.Spend(_selectedSlot.ProductConfig.Cost);
 
         _selectedSlot.Clear();
 

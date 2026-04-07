@@ -8,7 +8,7 @@ namespace TToTT.TowerDefense.Map
         private readonly CellFactoryRegistry _factories;
         private readonly Transform _cellContainer;
         private readonly GridController _gridController;
-        private readonly MapDataService _dataService;
+        private readonly MapDataService _dataService; // TODO: remove
 
         public MapComposer(
             CellFactoryRegistry factories,

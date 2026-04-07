@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilemapToMapDataExporter
+public class TilemapToMapDataExporter // TODO: refactor to data-driven approach configuration
 {
     private const string ROUTE_A = "Route_A_TMap";
     private const string ROUTE_B = "Route_B_TMap";
@@ -15,7 +15,7 @@ public class TilemapToMapDataExporter
     private const string ENTRANCE = "Entrance_TMap";
     private const string EXIT = "Exit_TMap";
 
-    public const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Resources/Maps/Map_{0}.asset";
+    public const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Resources/Maps/Map_{0}.asset"; 
     public const string MAP_FOLDER_PATH = "Assets/!TowerDefense/!Data/Resources/Maps";
 
     public static string GetFullPath(int index) => string.Format(MAP_DATA_PATH, index);

@@ -143,7 +143,7 @@ public class Enemy : MonoBehaviour,
     }
 
     private void DropMoney() =>
-        EconomyManager.Instance.AddMoney(CurrMoneyDrop);
+        EconomyController.Instance.AddMoney(CurrMoneyDrop);
 
     private void Death()
     {

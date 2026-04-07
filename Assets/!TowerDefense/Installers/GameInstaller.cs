@@ -8,7 +8,7 @@ namespace TToTT.Core.Installers
     {
         private readonly TowerManager _towerManager;
         private readonly MapManager _mapManager;
-        private readonly EconomyManager _economyManager;
+        private readonly EconomyController _economyManager;
         private readonly EnemyManager _enemyManager;
         private readonly BuildManager _buildManager;
         private readonly ProductShop _productShop;
@@ -19,7 +19,7 @@ namespace TToTT.Core.Installers
         public GameInstaller(
             TowerManager towerManager,
             MapManager mapManager,
-            EconomyManager economyManager,
+            EconomyController economyManager,
             EnemyManager enemyManager,
             BuildManager buildManager,
             ProductShop productShop,

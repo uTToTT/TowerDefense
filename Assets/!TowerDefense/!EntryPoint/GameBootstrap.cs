@@ -11,7 +11,7 @@ public class GameBootstrap
         UIFlowController uIManager,
         TowerManager towerManager,
         MapManager mapManager,
-        EconomyManager economyManager,
+        EconomyController economyManager,
         EnemyManager enemyManager,
         BuildManager buildManager,
         ProductShop productShop,

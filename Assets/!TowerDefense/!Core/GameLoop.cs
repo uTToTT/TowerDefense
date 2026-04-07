@@ -21,7 +21,7 @@ public class GameLoop // TODO: separate
     private readonly MapManager _mapManager;
     private readonly TowerManager _towerManager;
     private readonly ObjectSelector _cellSelector;
-    private readonly EconomyManager _economyService;
+    private readonly EconomyController _economyService;
     private readonly UIFlowController _uiManager;
     private readonly Player _player;
     private readonly EnemyManager _enemyManager;

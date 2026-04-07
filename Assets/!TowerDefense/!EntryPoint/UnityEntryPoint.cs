@@ -7,7 +7,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private MapManager _mapManager;
     [SerializeField] private TowerManager _towerManager;
     [SerializeField] private ObjectSelector _cellSelector;
-    [SerializeField] private EconomyManager _economyManager;
+    [SerializeField] private EconomyController _economyManager;
     [SerializeField] private UIFlowController _uiManager;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
