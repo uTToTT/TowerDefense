@@ -1,13 +1,12 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
-using TMPro;
 using TToTT.TowerDefense.Map;
 using UnityEngine;
 
-public class WaveController : MonoBehaviour
+public class WaveController 
 {
-    [HorizontalLine]
-    [SerializeField] private TextMeshProUGUI _waveText;
+    private readonly IWaveView _waveView;
+
     [SerializeField] private WavesData _wavesInfo;
 
     [HorizontalLine]
@@ -27,10 +26,10 @@ public class WaveController : MonoBehaviour
     public int CurrWave => _currWaveIndex + 1;
     public int LastWave => _wavesInfo.Waves.Length;
 
-    public void Init(float delayBeforeWave)
+    public WaveController()
     {
         _factories.Init();
-        _delayBeforeWave = delayBeforeWave;
+        _delayBeforeWave = 3;
     }
 
     public void Restart()

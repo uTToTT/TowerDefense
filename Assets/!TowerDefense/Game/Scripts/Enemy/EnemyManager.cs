@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager 
 {
-    [SerializeField, Range(0, 10)] private float _delayBeforeWave = 3;
-    [SerializeField] private WaveController _waveController;
+    private readonly WaveController _waveController;
 
     private readonly List<Enemy> _enemies = new();
     private readonly List<Enemy> _toAdd = new();
@@ -12,13 +10,11 @@ public class EnemyManager : MonoBehaviour
 
     public int AliveCount => _enemies.Count;
 
-    public static EnemyManager Instance { get; private set; }
     public WaveController WaveController => _waveController;
 
-    public void Init()
+    public EnemyManager(WaveController waveController)
     {
-        Instance = this;
-        _waveController.Init(_delayBeforeWave);
+        _waveController = waveController;
     }
 
     public void Restart()
@@ -53,12 +49,12 @@ public class EnemyManager : MonoBehaviour
             if (_waveController.IsAllWavesCompleted)
             {
                 _waveController.IsAllWavesCompleted = false;
-                GameLoop.Instance.AllWavesEnded();
+                //GameLoop.Instance.AllWavesEnded();
             }
             else if (_waveController.IsWaveEnded)
             {
                 _waveController.IsWaveEnded = false;
-                GameLoop.Instance.WaveEnded();
+                //GameLoop.Instance.WaveEnded();
             }
         }
     }
