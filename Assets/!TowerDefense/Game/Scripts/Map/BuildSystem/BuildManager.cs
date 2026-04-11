@@ -1,11 +1,10 @@
-using UnityEngine;
-
-public class BuildManager : MonoBehaviour
+public class BuildManager 
 {
-    [SerializeField] private MapObjectFactoryRegistry _factory;
+    private readonly MapObjectFactoryRegistry _factory;
 
-    public void Init()
+    public BuildManager(MapObjectFactoryRegistry factoryRegistry)
     {
+        _factory = factoryRegistry;
         _factory.Init();
     }
 

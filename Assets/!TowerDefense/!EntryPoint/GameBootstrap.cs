@@ -14,7 +14,7 @@ public class GameBootstrap
         EconomyController economyManager,
         EnemyManager enemyManager,
         BuildManager buildManager,
-        ProductShop productShop,
+        ProductShopController productShop,
         ObjectSelector objectSelector,
         ParticlesGenerator particlesGenerator,
         CameraShaker cameraShaker)

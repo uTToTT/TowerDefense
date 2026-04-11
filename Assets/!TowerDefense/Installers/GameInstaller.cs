@@ -1,6 +1,5 @@
 using TToTT.Core.DI;
 using TToTT.TowerDefense.Map;
-using TToTT.TowerDefense.UI;
 
 namespace TToTT.Core.Installers
 {
@@ -11,7 +10,7 @@ namespace TToTT.Core.Installers
         private readonly EconomyController _economyManager;
         private readonly EnemyManager _enemyManager;
         private readonly BuildManager _buildManager;
-        private readonly ProductShop _productShop;
+        private readonly ProductShopController _productShop;
         private readonly ObjectSelector _objectSelector;
         private readonly ParticlesGenerator _particlesGenerator;
         private readonly CameraShaker _cameraShaker;
@@ -22,7 +21,7 @@ namespace TToTT.Core.Installers
             EconomyController economyManager,
             EnemyManager enemyManager,
             BuildManager buildManager,
-            ProductShop productShop,
+            ProductShopController productShop,
             ObjectSelector objectSelector,
             ParticlesGenerator particlesGenerator,
             CameraShaker cameraShaker)

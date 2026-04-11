@@ -1,18 +1,20 @@
-using System.Linq;
-using TToTT.TowerDefense.Map;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ProductShop : MonoBehaviour
+public class ProductShopController
 {
-    [SerializeField] private ProductSlot[] _slots;
-    [SerializeField] private ProductConfig[] _products;
-    [SerializeField] private ButtonWrapper _reroll;
-    [SerializeField] private MapObjectPreviewFactoryRegistry _previewFactory;
+    private ProductSlot[] _slots;
+    private ProductConfig[] _products;
+    private ButtonWrapper _reroll;
+    private MapObjectPreviewFactoryRegistry _previewFactory;
 
-    [Header("Reroll economy")]
-    [SerializeField] private int _startRerollCost = 5;
-    [SerializeField] private int _rerollDelta;
+    private readonly EconomyController _economy;
+    private readonly IProductShopView _productShopView;
+
+    /// <summary>
+    ///  TODO: outroot to config
+    /// </summary>
+    private int _startRerollCost = 5;
+    private int _rerollDelta;
 
     private MapObject _selectedProduct;
     private ProductSlot _selectedSlot;
@@ -20,7 +22,10 @@ public class ProductShop : MonoBehaviour
     private float _totalWeight;
     private int _currRerollCost;
 
-    private PlacementController PlacementController => MapManager.Instance.PlacementController;
+    public ProductShopController(EconomyController economyController)
+    {
+        _economy = economyController;
+    }
 
     public void Init()
     {
@@ -52,13 +57,13 @@ public class ProductShop : MonoBehaviour
     {
         if (!free)
         {
-            if (!EconomyController.Instance.CanSpend(_currRerollCost))
+            if (!_economy.CanSpend(_currRerollCost))
             {
                 Debug.Log("Not enough money!");
                 return;
             }
 
-            EconomyController.Instance.Spend(_currRerollCost);
+            _economy.Spend(_currRerollCost);
             _currRerollCost += _rerollDelta;
         }
 
@@ -93,13 +98,13 @@ public class ProductShop : MonoBehaviour
 
     private void OnProductDragPerformed(ProductSlot slot)
     {
-        if (!EconomyController.Instance.CanSpend(slot.ProductConfig.Cost))
+        if (!_economy.CanSpend(slot.ProductConfig.Cost))
         {
             Debug.Log("Not enough money!");
             return;
         }
 
-        PlacementController.BeginDrag(slot.MapObject);
+        //PlacementController.BeginDrag(slot.MapObject);
         _selectedProduct = slot.MapObject;
         _selectedSlot = slot;
 
@@ -108,13 +113,13 @@ public class ProductShop : MonoBehaviour
             towerPrev.Enable();
         }
 
-        PlacementController.OnPlaced += OnProductPlacePerformed;
-        PlacementController.OnCanceled += OnProductPlaceCanceled;
+        //PlacementController.OnPlaced += OnProductPlacePerformed;
+        //PlacementController.OnCanceled += OnProductPlaceCanceled;
     }
 
     private void OnProductDragCanceled(ProductSlot slot)
     {
-        PlacementController.EndDrag(slot.MapObject);
+        //PlacementController.EndDrag(slot.MapObject);
 
         if (_selectedProduct is TowerPreview towerPrev)
         {
@@ -124,42 +129,42 @@ public class ProductShop : MonoBehaviour
         _selectedProduct = null;
         _selectedSlot = null;
 
-        PlacementController.OnPlaced -= OnProductPlacePerformed;
-        PlacementController.OnCanceled -= OnProductPlaceCanceled;
+        //PlacementController.OnPlaced -= OnProductPlacePerformed;
+        //PlacementController.OnCanceled -= OnProductPlaceCanceled;
     }
 
     private void OnProductPlacePerformed()
     {
-        _previewFactory.Return(_selectedProduct);
-        var grid = MapManager.Instance.Grid;
-        var worldPos = _selectedProduct.transform.position;
-        var obj = GameLoop.Instance.BuildManager.Create(_selectedProduct.Type);
-        var mapPos = MapUtils.WorldToMap(worldPos, grid);
-        obj.transform.position = MapUtils.SnapToGrid(worldPos, grid);
-        obj.MapPos = mapPos;
+        //_previewFactory.Return(_selectedProduct);
+        //var grid = MapManager.Instance.Grid;
+        //var worldPos = _selectedProduct.transform.position;
+        //var obj = GameLoop.Instance.BuildManager.Create(_selectedProduct.Type);
+        //var mapPos = MapUtils.WorldToMap(worldPos, grid);
+        //obj.transform.position = MapUtils.SnapToGrid(worldPos, grid);
+        //obj.MapPos = mapPos;
 
-        if (obj is Tower tower)
-        {
-            tower.HideRange();
-            tower.Enable();
-            GameLoop.Instance.TowerManager.Register(tower);
-        }
+        //if (obj is Tower tower)
+        //{
+        //    tower.HideRange();
+        //    tower.Enable();
+        //    GameLoop.Instance.TowerManager.Register(tower);
+        //}
 
-        MapManager.Instance.PlaceMapObject(mapPos, obj);
+        //MapManager.Instance.PlaceMapObject(mapPos, obj);
 
-        EconomyController.Instance.Spend(_selectedSlot.ProductConfig.Cost);
+        //_economy.Spend(_selectedSlot.ProductConfig.Cost);
 
-        _selectedSlot.Clear();
+        //_selectedSlot.Clear();
 
-        _selectedProduct = null;
-        _selectedSlot = null;
+        //_selectedProduct = null;
+        //_selectedSlot = null;
 
-        bool anySlotNotEmpty = _slots.Any(s => !s.IsEmpty);
+        //bool anySlotNotEmpty = _slots.Any(s => !s.IsEmpty);
 
-        if (!anySlotNotEmpty)
-        {
-            Reroll();
-        }
+        //if (!anySlotNotEmpty)
+        //{
+        //    Reroll();
+        //}
     }
 
     private void OnProductPlaceCanceled()

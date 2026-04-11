@@ -12,7 +12,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private BuildManager _buildManager;
-    [SerializeField] private ProductShop _productShop;
+    [SerializeField] private ProductShopController _productShop;
     [SerializeField] private ParticlesGenerator _particlesGenerator;
     [SerializeField] private CameraShaker _cameraShaker;
 

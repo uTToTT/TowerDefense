@@ -26,7 +26,7 @@ public class GameLoop // TODO: separate
     private readonly Player _player;
     private readonly EnemyManager _enemyManager;
     private readonly BuildManager _buildManager;
-    private readonly ProductShop _productShop;
+    private readonly ProductShopController _productShop;
     private readonly ParticlesGenerator _particlesGenerator;
 
     public TowerManager TowerManager => _towerManager;

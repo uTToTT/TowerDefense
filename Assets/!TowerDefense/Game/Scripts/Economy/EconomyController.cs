@@ -1,12 +1,7 @@
 using System;
-using TMPro;
-using UnityEngine;
 
 public class EconomyController : IDisposable
 {
-    [SerializeField] private TMP_Text _balanceText;
-    [SerializeField] private int _startMoney;
-
     private readonly IWalletView _walletView;
     private readonly Wallet _wallet;
 
@@ -20,6 +15,7 @@ public class EconomyController : IDisposable
 
     public void Restart()
     {
+        _wallet.Spend(_wallet.Money);
     }
 
     public bool CanSpend(double amount) => _wallet.CanSpend(amount);
