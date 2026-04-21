@@ -1,22 +1,15 @@
 using UnityEngine;
 
-public class ParticlesGenerator : MonoBehaviour
+public class ParticlesGenerator
 {
-    [SerializeField] private ParticlesFactoryRegistry _factory;
-
-    public static ParticlesGenerator Instance { get; private set; }
+    private readonly ParticlesFactoryRegistry _factory;
 
     #region Init
 
-    public void Init()
+    public ParticlesGenerator(ParticlesFactoryRegistry factory)
     {
-        Instance = this;
+        _factory = factory;
         _factory.Init();
-    }
-
-    public void Restart()
-    {
-        _factory.ReturnAll();
     }
 
     public void Dispose()
@@ -26,17 +19,26 @@ public class ParticlesGenerator : MonoBehaviour
 
     #endregion
 
-    public void PlayParticles(ParticlesType type, Vector2 pos)
+    #region Game loop
+
+    public void Restart()
     {
-        var cusPS = _factory.Create(type);
-        cusPS.transform.position = pos;
-        cusPS.OnCompleted += ReturnParticles;
-        cusPS.Play();
+        _factory.ReturnAll();
     }
 
-    private void ReturnParticles(CustomParticleSystem cusPS)
+    #endregion
+
+    public void PlayParticles(ParticlesType type, Vector2 pos)
     {
-        cusPS.OnCompleted -= ReturnParticles;
-        _factory.Return(cusPS);
+        var ps = _factory.Create(type);
+        ps.transform.position = pos;
+        ps.OnCompleted += ReturnParticles;
+        ps.Play();
+    }
+
+    private void ReturnParticles(CustomParticleSystem ps)
+    {
+        ps.OnCompleted -= ReturnParticles;
+        _factory.Return(ps);
     }
 }
