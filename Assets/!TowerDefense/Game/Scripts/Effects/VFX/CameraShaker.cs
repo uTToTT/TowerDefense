@@ -1,29 +1,31 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class CameraShaker : MonoBehaviour
+public class CameraShaker
 {
-    [SerializeField] private float _duration = 0.3f;
-    [SerializeField] private float _strength = 0.5f;
-    [SerializeField] private int _vibrato = 20;
-    [SerializeField] private float _randomness = 90f;
-    [SerializeField] private bool _fadeOut = true;
+    private float _duration = 0.3f;
+    private float _strength = 0.5f;
+    private int _vibrato = 20;
+    private float _randomness = 90f;
+    private bool _fadeOut = true;
 
     private Tween _currentTween;
     private Vector3 _initialLocalPos;
+    private readonly Camera _camera;
 
-    public void Init()
+    public CameraShaker(Camera camera)
     {
-        _initialLocalPos = transform.localPosition;
+        _camera = camera;
+        _initialLocalPos = _camera.transform.localPosition;
     }
 
     public void Shake()
     {
         _currentTween?.Kill(false);
 
-        transform.localPosition = _initialLocalPos;
+        _camera.transform.localPosition = _initialLocalPos;
 
-        _currentTween = transform
+        _currentTween = _camera.transform
             .DOShakePosition(
                 _duration,
                 _strength,
@@ -31,10 +33,10 @@ public class CameraShaker : MonoBehaviour
                 _randomness,
                 false,
                 _fadeOut)
-            .SetUpdate(true) 
+            .SetUpdate(true)
             .OnKill(() =>
             {
-                transform.localPosition = _initialLocalPos;
+                _camera.transform.localPosition = _initialLocalPos;
             });
     }
 }
