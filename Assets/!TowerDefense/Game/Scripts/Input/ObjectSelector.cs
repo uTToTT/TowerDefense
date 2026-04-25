@@ -48,9 +48,9 @@ public class ObjectSelector : IDisposable
 
     private void OnTapPerformed()
     {
-        var cell = _mapManager.Raycast();
+        //var cell = _mapManager.Raycast();
 
-        TrySelectObject(cell);
+        TrySelectObject(null);
     }
 
     private void OnTapCanceled()
@@ -72,14 +72,14 @@ public class ObjectSelector : IDisposable
 
     private void TrySelectObject(CellData cell)
     {
-        if (_mapManager.TryGetObject(cell, out var mapObject))
-        {
-            _selectedObject = mapObject;
+        //if (_mapManager.TryGetObject(cell, out var mapObject))
+        //{
+        //    _selectedObject = mapObject;
 
-            //MapManager.Instance.ClearSellection();
-            //MapManager.Instance.DrawBorderMapObject(_selectedObject);
-            MapManager.Instance.PlacementController.BeginDrag(_selectedObject);
-        }
+        //    //MapManager.Instance.ClearSellection();
+        //    //MapManager.Instance.DrawBorderMapObject(_selectedObject);
+        //    MapManager.Instance.PlacementController.BeginDrag(_selectedObject);
+        //}
     }
 
     private void UnselectObject()
@@ -106,33 +106,34 @@ public class ObjectSelector : IDisposable
 
     public void DrawBorderMapObject(MapObject mapObject)
     {
-        var worldPos = mapObject.transform.position;
-        var mapPos = MapUtils.WorldToMap(worldPos, _grid);
-        var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
+        //var worldPos = mapObject.transform.position;
+        //var mapPos = MapUtils.WorldToMap(worldPos, _grid);
+        //var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
 
-        for (int i = 0; i < occupiedCells.Count; i++)
-        {
-            var seleciton = _selectionFactory.Create();
-            seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
+        //for (int i = 0; i < occupiedCells.Count; i++)
+        //{
+        //    var seleciton = _selectionFactory.Create();
+        //    seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
 
-            if (IsCellBusy(occupiedCells[i]))
-                seleciton.SetBusyColor();
-            else
-                seleciton.SetFreeColor();
+        //    if (IsCellBusy(occupiedCells[i]))
+        //        seleciton.SetBusyColor();
+        //    else
+        //        seleciton.SetFreeColor();
 
-            seleciton.transform.rotation = Quaternion.identity;
-            _selections.Add(seleciton);
-        }
+        //    seleciton.transform.rotation = Quaternion.identity;
+        //    _selections.Add(seleciton);
+        //}
     }
 
     public CellData Raycast()
     {
-        if (_playerInputController.IsPointerOverUI())
-            return null;
+        //if (_playerInputController.IsPointerOverUI())
+        //    return null;
 
-        var worldPos = _playerInputController.GetPointerPosition();
-        var mapPos = MapUtils.WorldToMap(worldPos, Grid);
+        //var worldPos = _playerInputController.GetPointerPosition();
+        //var mapPos = MapUtils.WorldToMap(worldPos, Grid);
 
-        return GetCellData(mapPos);
+        //return GetCellData(mapPos);
+        return null;
     }
 }

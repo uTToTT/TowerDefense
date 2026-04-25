@@ -142,8 +142,8 @@ public class Enemy : MonoBehaviour,
         }
     }
 
-    private void DropMoney() =>
-        EconomyController.Instance.AddMoney(CurrMoneyDrop);
+    private void DropMoney() => throw new NotImplementedException();
+        //EconomyController.Instance.AddMoney(CurrMoneyDrop);
 
     private void Death()
     {

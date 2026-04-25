@@ -44,7 +44,7 @@ namespace TToTT.TowerDefense.Map
                         cell.CellType == CellType.Path ||
                         cell.CellType == CellType.Entrance ||
                         cell.CellType == CellType.Exit ||
-                        cell.CellType == CellType.Blocked;
+                        cell.CellType == CellType.Blocked; // TODO: refactor
 
                     _dataService.SetCellBusyState(x, y, isBlocked);
                 }

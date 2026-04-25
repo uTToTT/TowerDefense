@@ -16,7 +16,7 @@ namespace TToTT.TowerDefense.UI
         {
             container.BindInstance(_windowsController);
 
-            container.Bind<UIFlowController, UIFlowController>(Lifetime.Singleton);
+            container.Bind<UIFlowController>(Lifetime.Singleton);
         }
     }
 }

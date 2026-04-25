@@ -118,8 +118,6 @@ public class WaveController
         _waveDelayTimer = _delayBeforeWave;
         _state = WaveSpawnerState.WaitingForNextWave;
 
-        UpdateWaveText();
-
         Debug.Log($"Wave {_currWaveIndex + 1} will start in {_delayBeforeWave} sec");
     }
 
@@ -142,43 +140,41 @@ public class WaveController
 
     private void SpawnEnemy(Group group)
     {
-        Enemy enemy = _factories.Create(group.EnemyType);
-        enemy.transform.position =
-            MapUtils.GridToWorld(
-                MapManager.Instance.GetRoute(group.Route).entrance,
-                MapManager.Instance.Grid);
-        enemy.HPMultiply(group.HpMultiplier);
-        enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
+        //Enemy enemy = _factories.Create(group.EnemyType);
+        //enemy.transform.position =
+        //    MapUtils.GridToWorld(
+        //        MapManager.Instance.GetRoute(group.Route).entrance,
+        //        MapManager.Instance.Grid);
+        //enemy.HPMultiply(group.HpMultiplier);
+        //enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
 
-        PathLane lane;
+        //PathLane lane;
 
-        if (group.Lane == PathLane.LeftRight)
-            lane = _spawnedEnemyCount % 2 == 0 ? PathLane.Left : PathLane.Right;
-        else
-            lane = group.Lane;
+        //if (group.Lane == PathLane.LeftRight)
+        //    lane = _spawnedEnemyCount % 2 == 0 ? PathLane.Left : PathLane.Right;
+        //else
+        //    lane = group.Lane;
 
-        enemy.SetLane(lane);
-        enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
+        //enemy.SetLane(lane);
+        //enemy.BuildRoute(MapManager.Instance.GetRoutePoints(group.Route));
 
-        enemy.OnDeath += OnEnemyDeath;
+        //enemy.OnDeath += OnEnemyDeath;
 
-        EnemyManager.Instance.Register(enemy);
+        //EnemyManager.Instance.Register(enemy);
 
-        _spawnedEnemyCount++;
+        //_spawnedEnemyCount++;
 
-        // Debug.Log(
-        //    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
-        //);
+        //// Debug.Log(
+        ////    $"Spawn {group.EnemyType} | Route: {group.Route} | Lane: {group.Lane}"
+        ////);
     }
 
     private void OnEnemyDeath(Enemy enemy)
     {
-        enemy.OnDeath -= OnEnemyDeath;
-        _factories.Return(enemy);
-        EnemyManager.Instance.Unregister(enemy);
+        //enemy.OnDeath -= OnEnemyDeath;
+        //_factories.Return(enemy);
+        //EnemyManager.Instance.Unregister(enemy);
     }
-
-    private void UpdateWaveText() => _waveText.text = "Wave " + CurrWave + "\\" + LastWave;
 
     public void PlayerStartWave() => IsPlayerWaveStarted = true;
     public void StopWave() => IsPlayerWaveStarted = false;

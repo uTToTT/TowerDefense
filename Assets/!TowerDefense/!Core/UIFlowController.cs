@@ -11,23 +11,11 @@ namespace TToTT.TowerDefense.UI
         {
             _windowsController = windowsController;
             _gameLoop = gameLoop;
-
-            InitActions();
-        }
-
-        private void InitActions()
-        {
-            _gameLoop.OnGameDefeat += OpenDefeat;
-            _gameLoop.OnGameVictory += OpenVictory;
-            _gameLoop.OnWaveEnded += OpenPreparing;
-            _gameLoop.OnWaveStarted += OpenWave;
         }
 
         #endregion
 
         #region Windows
-
-        // Gameplay
 
         public void OpenGameplay()
         {
@@ -50,7 +38,6 @@ namespace TToTT.TowerDefense.UI
         {
         }
 
-        //--------
         public void OpenMain()
         {
             _windowsController.OpenWindow(WindowType.Main);

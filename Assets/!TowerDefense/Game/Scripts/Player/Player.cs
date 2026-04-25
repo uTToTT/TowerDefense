@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -46,5 +47,6 @@ public class Player : MonoBehaviour
             Defeat();
     }
 
-    private void Defeat() => GameLoop.Instance.PlayerBaseDestroyed();
+    private void Defeat() => throw new NotImplementedException();
+    //GameLoop.Instance.PlayerBaseDestroyed();
 }

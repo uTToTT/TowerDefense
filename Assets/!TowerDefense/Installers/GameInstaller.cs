@@ -1,72 +1,34 @@
 using TToTT.Core.DI;
+using TToTT.TowerDefense.Installers;
 using TToTT.TowerDefense.Map;
+using UnityEngine;
 
 namespace TToTT.Core.Installers
 {
     public class GameInstaller : IInstaller
     {
-        private readonly TowerManager _towerManager;
-        private readonly MapManager _mapManager;
-        private readonly EconomyController _economyManager;
-        private readonly EnemyManager _enemyManager;
-        private readonly BuildManager _buildManager;
-        private readonly ProductShopController _productShop;
-        private readonly ObjectSelector _objectSelector;
-        private readonly ParticlesGenerator _particlesGenerator;
-        private readonly CameraShaker _cameraShaker;
+        private readonly CellFactoryRegistry _cellFactoryRegistry;
+        private readonly Grid _grid;
 
-        public GameInstaller(
-            TowerManager towerManager,
-            MapManager mapManager,
-            EconomyController economyManager,
-            EnemyManager enemyManager,
-            BuildManager buildManager,
-            ProductShopController productShop,
-            ObjectSelector objectSelector,
-            ParticlesGenerator particlesGenerator,
-            CameraShaker cameraShaker)
+        public GameInstaller(CellFactoryRegistry cellFactoryRegistry, Grid grid)
         {
-            _towerManager = towerManager;
-            _mapManager = mapManager;
-            _economyManager = economyManager;
-            _enemyManager = enemyManager;
-            _buildManager = buildManager;
-            _productShop = productShop;
-            _objectSelector = objectSelector;
-            _particlesGenerator = particlesGenerator;
-            _cameraShaker = cameraShaker;
+            _cellFactoryRegistry = cellFactoryRegistry;
+            _grid = grid;
         }
 
         public void Install(DIContainer container)
         {
-            container.Bind<PlayerInputController, PlayerInputController>(Lifetime.Singleton);
+            new MapInstaller(_cellFactoryRegistry, _grid).Install(container);
 
-            /// 
-
-
-            _towerManager.Init();
-            _mapManager.Init();
-            _economyManager.Init();
-            _enemyManager.Init();
-            _buildManager.Init();
-            _productShop.Init();
-            _objectSelector.Init(container.Resolve<PlayerInputController>(), _mapManager);
-            _particlesGenerator.Init();
-            _cameraShaker.Init();
-
-            ///
-
-            container.BindInstance(_towerManager);
-            container.BindInstance(_mapManager);
-            container.BindInstance(_economyManager);
-            container.BindInstance(_enemyManager);
-            container.BindInstance(_buildManager);
-            container.BindInstance(_productShop);
-            container.BindInstance(_objectSelector);
-            container.BindInstance(_particlesGenerator);
-            container.BindInstance(_cameraShaker);
-
-            container.Bind<GameLoop, GameLoop>();
+            container.Bind<PlayerInputController>(Lifetime.Singleton);
+            container.Bind<TowerManager>(Lifetime.Singleton);
+            container.Bind<EconomyController>(Lifetime.Singleton);
+            container.Bind<EnemyManager>(Lifetime.Singleton);
+            container.Bind<ProductShopController>(Lifetime.Singleton);
+            container.Bind<ObjectSelector>(Lifetime.Singleton);
+            container.Bind<ParticlesGenerator>(Lifetime.Singleton);
+            container.Bind<CameraShaker>(Lifetime.Singleton);
+            container.Bind<GameLoop>(Lifetime.Singleton);
         }
     }
 }

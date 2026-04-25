@@ -11,6 +11,8 @@ namespace TToTT.Core.DI
         // =========================
         // Bind
         // =========================
+        public void Bind<T>(Lifetime lifetime = Lifetime.Transient) => Bind<T, T>(lifetime);
+
         public void Bind<TInterface, TImplementation>(Lifetime lifetime = Lifetime.Transient)
         {
             _bindings[typeof(TInterface)] = new Binding

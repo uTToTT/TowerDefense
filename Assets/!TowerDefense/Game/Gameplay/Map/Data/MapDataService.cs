@@ -5,6 +5,7 @@ namespace TToTT.TowerDefense.Map
 {
     public class MapDataService : IDisposable
     {
+        private readonly MapBounds _bounds;
         private readonly MapValidator _validator;
 
         private MapData _data;
@@ -16,9 +17,10 @@ namespace TToTT.TowerDefense.Map
 
         #region Init
 
-        public MapDataService(MapValidator validator)
+        public MapDataService(MapValidator validator, MapBounds bounds)
         {
             _validator = validator;
+            _bounds = bounds;
         }
 
         public void Dispose()
@@ -30,6 +32,7 @@ namespace TToTT.TowerDefense.Map
         public void SetMapData(MapData data)
         {
             _data = data;
+            _bounds.SetSize(_data.width, _data.height);
             _mapCell = new CellData[data.width, data.height];
         }
 
@@ -37,29 +40,31 @@ namespace TToTT.TowerDefense.Map
 
         public void SetCellType(int x, int y, CellType type)
         {
-            var data = GetCellData(x, y);
+            var data = TryGetCellData(x, y);
             data.CellType = type;
         }
 
         public void SetCellBusyState(int x, int y, bool state)
         {
-            var data = GetCellData(x, y);
+            var data = TryGetCellData(x, y);
             data.IsBusy = state;
         }
 
-        public CellData GetCellData(int x, int y)
+        public bool TryGetCellData(Vector2Int v2Int, out CellData cell) =>
+            TryGetCellData(v2Int.x, v2Int.y, out cell);
+
+        public bool TryGetCellData(int x, int y, out CellData cell)
         {
-            if (!_validator.IsInside(x, y))
-                return null;
+            if (_bounds.IsInside(x, y))
+            {
+                cell = null;
+                return false;
+            }
 
-            if (_mapCell[x, y] == null) 
-                _mapCell[x, y] = new CellData();
-
-            return _mapCell[x, y];
+            _mapCell[x, y] ??= new CellData();
+            cell = _mapCell[x, y];
+            return true;
         }
-
-        public CellData GetCellData(Vector2Int v2Int) =>
-            GetCellData(v2Int.x, v2Int.y);
 
         public void RegisterMapObject(Vector2Int pos, MapObject mapObject)
         {
@@ -67,12 +72,9 @@ namespace TToTT.TowerDefense.Map
 
             foreach (var p in occupiedPoss)
             {
-                var cell = GetCellData(p);
-                if (cell != null && mapObject != null)
-                {
-                    cell.MapObject = mapObject;
-                    cell.IsBusy = true;
-                }
+                if (!TryGetCellData(p, out var cell)) continue;
+                cell.MapObject = mapObject;
+                cell.IsBusy = true;
             }
         }
 
@@ -82,20 +84,17 @@ namespace TToTT.TowerDefense.Map
 
             foreach (var p in occupiedPoss)
             {
-                var cell = GetCellData(p);
-                if (cell != null)
-                {
-                    cell.MapObject = null;
-                    cell.IsBusy = false;
-                }
+                if (!TryGetCellData(p, out var cell)) continue;
+                cell.MapObject = null;
+                cell.IsBusy = false;
             }
         }
 
         public bool HasObject(CellData cell) => cell != null && cell.MapObject != null;
-        public bool HasObject(Vector2Int pos) => HasObject(GetCellData(pos));
+        public bool HasObject(Vector2Int pos) => HasObject(TryGetCellData(pos));
 
         public bool TryGetObject(Vector2Int mapPos, out MapObject mapObject) =>
-            TryGetObject(GetCellData(mapPos), out mapObject);
+            TryGetObject(TryGetCellData(mapPos), out mapObject);
         public bool TryGetObject(CellData cellData, out MapObject mapObject)
         {
             if (!HasObject(cellData))

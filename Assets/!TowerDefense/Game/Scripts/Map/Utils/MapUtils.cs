@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TToTT.TowerDefense.Map;
 using UnityEngine;
@@ -58,8 +59,9 @@ public static class MapUtils
 
     public static void SnapToGridUnderPointer(Transform transform)
     {
-        var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
-        transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
+        throw new NotImplementedException();
+        //var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
+        //transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
     }
 
 
@@ -105,27 +107,29 @@ public static class MapUtils
     
     public static void ResolveConnections(MapObject placedObject)
     {
+        throw new NotImplementedException();
+
         var ports = GetWorldPorts(placedObject);
 
-        foreach (var port in ports)
-        {
-            var targetCell = port.Cell + port.Direction.ToOffset();
+        //foreach (var port in ports)
+        //{
+        //    var targetCell = port.Cell + port.Direction.ToOffset();
 
-            var cellData = MapManager.Instance.GetCellData(targetCell);
-            if (cellData?.MapObject == null)
-                continue;
+        //    var cellData = MapManager.Instance.GetCellData(targetCell);
+        //    if (cellData?.MapObject == null)
+        //        continue;
 
-            var otherObject = cellData.MapObject;
-            var otherPorts = GetWorldPorts(otherObject);
+        //    var otherObject = cellData.MapObject;
+        //    var otherPorts = GetWorldPorts(otherObject);
 
-            foreach (var otherPort in otherPorts)
-            {
-                if (ArePortsConnected(port, otherPort))
-                {
-                    //ApplyBuff(port, otherPort);
-                }
-            }
-        }
+        //    foreach (var otherPort in otherPorts)
+        //    {
+        //        if (ArePortsConnected(port, otherPort))
+        //        {
+        //            //ApplyBuff(port, otherPort);
+        //        }
+        //    }
+        //}
     }
 
     /* =========================

@@ -1,3 +1,4 @@
+using System;
 using TToTT.TowerDefense.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +18,10 @@ public class MainMenuController : InterfaceContorller
 
     private void InitButtons()
     {
+        throw new NotImplementedException();
         _playButton.OnClick += () =>
         {
-            UIFlowController.Instance.OpenPreparing();
+            //UIFlowController.Instance.OpenPreparing();
             //GameController.Instance.RestartGame();
         };
     }

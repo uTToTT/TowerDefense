@@ -1,3 +1,4 @@
+using System;
 using TToTT.TowerDefense.UI;
 using UnityEngine;
 
@@ -18,8 +19,9 @@ public class GameplayInterfaceController : InterfaceContorller
 
     private void InitButtons()
     {
-        _victoryButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
-        _defeatButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
+        throw new NotImplementedException();
+        //_victoryButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
+        //_defeatButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
     }
 
     private void InitActions()

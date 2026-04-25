@@ -52,8 +52,7 @@ namespace TToTT.TowerDefense.Map
 
         public bool TryPlaceObject(Vector2Int pos, MapObject mapObject)
         {
-            if (_validator.IsCellBusy(pos))
-                return false;
+            if (!_validator.IsCellAvailable(pos)) return false;
 
             _dataService.RegisterMapObject(pos, mapObject);
 

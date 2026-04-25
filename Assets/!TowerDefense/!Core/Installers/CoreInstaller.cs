@@ -6,7 +6,7 @@ namespace TToTT.Core.Installers
     {
         public void Install(DIContainer container)
         {
-
+            container.Bind<TickController>(Lifetime.Singleton);
         }
     }
 }

@@ -25,10 +25,7 @@ public class ProductShopController
     public ProductShopController(EconomyController economyController)
     {
         _economy = economyController;
-    }
 
-    public void Init()
-    {
         _previewFactory.Init();
         _reroll.OnClick += Reroll;
         _totalWeight = CalculateTotalWeight();

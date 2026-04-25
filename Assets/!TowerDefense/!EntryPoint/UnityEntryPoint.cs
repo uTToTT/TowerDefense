@@ -1,45 +1,29 @@
-using TToTT.TowerDefense.Map;
+using TToTT.Core.DI;
+using TToTT.Core.Installers;
 using TToTT.TowerDefense.UI;
 using UnityEngine;
 
 public class UnityEntryPoint : MonoBehaviour
 {
-    [SerializeField] private MapManager _mapManager;
-    [SerializeField] private TowerManager _towerManager;
-    [SerializeField] private ObjectSelector _cellSelector;
-    [SerializeField] private EconomyController _economyManager;
-    [SerializeField] private UIFlowController _uiManager;
-    [SerializeField] private Player _player;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private BuildManager _buildManager;
-    [SerializeField] private ProductShopController _productShop;
-    [SerializeField] private ParticlesGenerator _particlesGenerator;
-    [SerializeField] private CameraShaker _cameraShaker;
+    [SerializeField] private UIWindowsController _uiWindowController;
+    [SerializeField] private CellFactoryRegistry _cellFactoryRegistry;
+    [SerializeField] private Grid _grid;
 
-    private GameBootstrap _bootstrap;
-
+    private GameLoop _gameLoop;
 
     private void Awake()
     {
-        _bootstrap = new GameBootstrap();
+        var container = new DIContainer();
 
-        _bootstrap.Initialize(
-            _uiManager,
-            _towerManager,
-            _mapManager,
-            _economyManager,
-            _enemyManager,
-            _buildManager,
-            _productShop,
-            _cellSelector,
-            _particlesGenerator,
-            _cameraShaker);
+        new CoreInstaller().Install(container);
+        new GameInstaller(_cellFactoryRegistry, _grid).Install(container);
+        new UIInstaller(_uiWindowController).Install(container);
 
-        StartGame();
+        _gameLoop = container.Resolve<GameLoop>();
     }
 
-    private void StartGame()
+    private void Update()
     {
-
+        _gameLoop.Tick(Time.deltaTime);
     }
 }
