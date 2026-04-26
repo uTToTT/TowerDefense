@@ -1,9 +1,8 @@
 using TToTT.Core.DI;
-using TToTT.TowerDefense.Installers;
-using TToTT.TowerDefense.Map;
+using TToTT.Core.Installers;
 using UnityEngine;
 
-namespace TToTT.Core.Installers
+namespace TToTT.TowerDefense.Installers
 {
     public class GameInstaller : IInstaller
     {

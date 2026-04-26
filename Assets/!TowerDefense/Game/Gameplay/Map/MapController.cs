@@ -63,5 +63,20 @@ namespace TToTT.TowerDefense.Map
         {
             _dataService.UnregisterMapObject(mapObject);
         }
+
+        public void InitCellStates(MapData map)
+        {
+            for (int y = 0; y < map.height; y++)
+            {
+                for (int x = 0; x < map.width; x++)
+                {
+                    var type = map.Get(x, y);
+                    if (type == CellType.Empty) continue;
+
+                    bool isBlocked = type.IsBlocked();
+                    _dataService.SetCellBusyState(x, y, isBlocked);
+                }
+            }
+        }
     }
 }

@@ -6,20 +6,16 @@ namespace TToTT.TowerDefense.Map
     public class MapDataService : IDisposable
     {
         private readonly MapBounds _bounds;
-        private readonly MapValidator _validator;
 
         private MapData _data;
         private CellData[,] _mapCell;
 
         public float CellSize => _data.cellSize;
-        public int Width => _data.width;
-        public int Height => _data.height;
 
         #region Init
 
-        public MapDataService(MapValidator validator, MapBounds bounds)
+        public MapDataService(MapBounds bounds)
         {
-            _validator = validator;
             _bounds = bounds;
         }
 
@@ -40,14 +36,14 @@ namespace TToTT.TowerDefense.Map
 
         public void SetCellType(int x, int y, CellType type)
         {
-            var data = TryGetCellData(x, y);
-            data.CellType = type;
+            if (!TryGetCellData(x, y, out var cell)) return;
+            cell.CellType = type;
         }
 
         public void SetCellBusyState(int x, int y, bool state)
         {
-            var data = TryGetCellData(x, y);
-            data.IsBusy = state;
+            if (!TryGetCellData(x, y, out var cell)) return;
+            cell.IsBusy = state;
         }
 
         public bool TryGetCellData(Vector2Int v2Int, out CellData cell) =>
@@ -55,7 +51,7 @@ namespace TToTT.TowerDefense.Map
 
         public bool TryGetCellData(int x, int y, out CellData cell)
         {
-            if (_bounds.IsInside(x, y))
+            if (!_bounds.IsInside(x, y))
             {
                 cell = null;
                 return false;
@@ -91,10 +87,19 @@ namespace TToTT.TowerDefense.Map
         }
 
         public bool HasObject(CellData cell) => cell != null && cell.MapObject != null;
-        public bool HasObject(Vector2Int pos) => HasObject(TryGetCellData(pos));
+        public bool HasObject(Vector2Int pos)
+        {
+            if (!TryGetCellData(pos, out var cell)) return false;
+            return HasObject(cell);
+        }
 
-        public bool TryGetObject(Vector2Int mapPos, out MapObject mapObject) =>
-            TryGetObject(TryGetCellData(mapPos), out mapObject);
+        public bool TryGetObject(Vector2Int mapPos, out MapObject mapObject)
+        {
+            mapObject = null;
+            if (!TryGetCellData(mapPos, out var cell)) return false;
+            return TryGetObject(cell, out mapObject);
+        }
+
         public bool TryGetObject(CellData cellData, out MapObject mapObject)
         {
             if (!HasObject(cellData))

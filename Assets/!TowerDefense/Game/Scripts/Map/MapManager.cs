@@ -1,5 +1,3 @@
-using UnityEngine;
-
 /// <summary> 
 /// 
 /// TODO:
@@ -20,23 +18,12 @@ namespace TToTT.TowerDefense.Map
 
         public MapManager(
             MapController mapController,
-            MapLoader mapLoader)
+            MapLoader mapLoader,
+            MapComposer mapComposer)
         {
             _controller = mapController;
             _loader = mapLoader;
-        }
-
-        #endregion
-
-        #region GameLoop
-
-        public void Tick(float dt)
-        {
-        }
-
-        public void Restart()
-        {
-
+            _composer = mapComposer;
         }
 
         #endregion
@@ -46,6 +33,7 @@ namespace TToTT.TowerDefense.Map
             var mapData = _loader.Load(index);
             _controller.SetMap(mapData);
             _composer.Build(mapData);
+            _controller.InitCellStates(mapData);
         }
     }
 }
