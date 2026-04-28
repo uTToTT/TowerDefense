@@ -1,68 +1,71 @@
 using System.Collections.Generic;
 
-public class EnemyManager 
+namespace TToTT.TowerDefense.Enemies
 {
-    private readonly WaveController _waveController;
-
-    private readonly List<Enemy> _enemies = new();
-    private readonly List<Enemy> _toAdd = new();
-    private readonly List<Enemy> _toRemove = new();
-
-    public int AliveCount => _enemies.Count;
-
-    #region Init
-
-    public EnemyManager(WaveController waveController)
+    public class EnemyManager
     {
-        _waveController = waveController;
-    }
+        private readonly WaveController _waveController;
 
-    #endregion
+        private readonly List<Enemy> _enemies = new();
+        private readonly List<Enemy> _toAdd = new();
+        private readonly List<Enemy> _toRemove = new();
 
-    #region Game loop
+        public int AliveCount => _enemies.Count;
 
-    public void Restart()
-    {
-        _waveController.Restart();
-        _enemies.Clear();
-        _toAdd.Clear();
-        _toRemove.Clear();
-    }
+        #region Init
 
-    public void Tick(float dt)
-    {
-        UpdateColleciton();
-
-        foreach (var enemy in _enemies)
+        public EnemyManager(WaveController waveController)
         {
-            if (enemy != null && enemy.IsAlive)
-                enemy.Tick(dt);
+            _waveController = waveController;
         }
 
-        _waveController.Tick(dt);
-    }
+        #endregion
 
-    #endregion
+        #region Game loop
 
-    public void Register(Enemy enemy) => _toAdd.Add(enemy);
-    public void Unregister(Enemy enemy) => _toRemove.Add(enemy);
-
-    private void UpdateColleciton()
-    {
-        if (_toRemove.Count > 0)
+        public void Restart()
         {
-            foreach (var item in _toRemove)
-                _enemies.Remove(item);
-
+            _waveController.Restart();
+            _enemies.Clear();
+            _toAdd.Clear();
             _toRemove.Clear();
         }
 
-        if (_toAdd.Count > 0)
+        public void Tick(float dt)
         {
-            foreach (var item in _toAdd)
-                _enemies.Add(item);
+            UpdateColleciton();
 
-            _toAdd.Clear();
+            foreach (var enemy in _enemies)
+            {
+                if (enemy != null && enemy.IsAlive)
+                    enemy.Tick(dt);
+            }
+
+            _waveController.Tick(dt);
+        }
+
+        #endregion
+
+        public void Register(Enemy enemy) => _toAdd.Add(enemy);
+        public void Unregister(Enemy enemy) => _toRemove.Add(enemy);
+
+        private void UpdateColleciton()
+        {
+            if (_toRemove.Count > 0)
+            {
+                foreach (var item in _toRemove)
+                    _enemies.Remove(item);
+
+                _toRemove.Clear();
+            }
+
+            if (_toAdd.Count > 0)
+            {
+                foreach (var item in _toAdd)
+                    _enemies.Add(item);
+
+                _toAdd.Clear();
+            }
         }
     }
 }

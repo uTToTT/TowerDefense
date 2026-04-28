@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TToTT.TowerDefense.Enemies;
 using UnityEngine;
 
 public sealed class AttackModule : ITowerModule

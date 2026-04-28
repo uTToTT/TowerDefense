@@ -27,12 +27,14 @@ namespace TToTT.TowerDefense.Map
             PlacementController placementController,
             GridController gridController,
             MapValidator mapValidator,
-            MapDataService dataService)
+            MapDataService dataService,
+            RouteController routeController)
         {
             _placementController = placementController;
             _gridController = gridController;
             _validator = mapValidator;
             _dataService = dataService;
+            _routeController = routeController;
         }
 
         public void Dispose()
@@ -48,6 +50,7 @@ namespace TToTT.TowerDefense.Map
         public void SetMap(MapData mapData)
         {
             _dataService.SetMapData(mapData);
+            _routeController.SetRoutes(mapData);
             _gridController.CenterGrid(mapData.width, mapData.height);
         }
 

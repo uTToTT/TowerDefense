@@ -3,208 +3,209 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour,
-    IPoolable, IEntityLifecycle, IMovable, IBuffable
+namespace TToTT.TowerDefense.Enemies
 {
-    public event Action<Enemy> OnDeath;
-
-    [HorizontalLine]
-    [SerializeField] private EnemyType _enemyType;
-
-    [HorizontalLine]
-    [Expandable]
-    [SerializeField] private EnemyConfig _config;
-
-
-    [Space]
-    [SerializeField] private ParticleSystem _deathExmplosion;
-    [SerializeField] private CustomParticleSystem _hitVFX;
-
-    private float _currHP;
-    private float _currDropMoney;
-
-    [Space]
-    [Header("Test")]
-    [SerializeField] private float _remainingDistance;
-    [SerializeField] private float TESTSPEED;
-    [SerializeField] private float TESTARMOR;
-    [SerializeField] private float TESTFREEZESTACK;
-    [SerializeField] private float TESTFREEZEDEBUFF;
-    [SerializeField] private float TESTHP;
-    [SerializeField] private float TESTMONEY;
-    [SerializeField] private float TESTDISTANCE;
-    [Space]
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [Space]
-
-    private float _currArmor;
-
-    private Vector3 _direction;
-    private Vector3 _currTarget;
-
-    private PathLane _lane;
-
-    private BuffController _buffController;
-    private PathController _pathController;
-    public EnemyType EnemyType => _enemyType;
-    public float CurrHP => _currHP;
-    public float MaxHp => _currHP;
-    public float CurrSpeed =>
-        BuffController.Calculate(Characteristics.SPEED, _config.Speed);
-    public float CurrArmor => _currArmor;
-    public bool IsActive { get; set; }
-    public bool IsAlive { get; private set; }
-    public float CurrMoneyDrop => _config.DropMoney;
-    public BuffController BuffController => _buffController;
-
-    private List<Vector3> _points;
-    public float RemainingDistance => _pathController.RemainingDistance;
-    public void Init()
+    public class Enemy : MonoBehaviour,
+        IPoolable, IEntityLifecycle, IMovable, IBuffable
     {
-        _buffController = new BuffController();
-        _pathController = new PathController();
-        _currArmor = _config.Armor;
-        _currHP = _config.HP;
-    }
+        public event Action<Enemy> OnDeath;
 
-    public void Tick(float dt)
-    {
-        if (!IsActive || !IsAlive) return;
-        _buffController.Update(dt);
-        Rotate();
-        Move(dt);
-        TESTSPEED = CurrSpeed;
-    }
+        [HorizontalLine]
+        [SerializeField] private EnemyType _enemyType;
 
-    private void OnValidate()
-    {
-        if (!Application.isPlaying) return;
-
-        TESTARMOR = _currArmor;
-        TESTHP = CurrHP;
-        TESTMONEY = _currDropMoney;
-    }
-
-    public void SetLane(PathLane lane) => _lane = lane;
-
-    public void BuildRoute(List<Vector3> points)
-    {
-        _points = PathController.OffsetPath(points, _lane);
-        _pathController.SetPath(_points, transform.position);
-        _pathController.OnFinishReached += () => HitPlayer();
-
-        MoveManager.Instance.Register(this);
-    }
+        [HorizontalLine]
+        [Expandable]
+        [SerializeField] private EnemyConfig _config;
 
 
-    private void HitPlayer() => Player.Instance.TakeDamage(_config.Damage);
+        [Space]
+        [SerializeField] private ParticleSystem _deathExmplosion;
+        [SerializeField] private CustomParticleSystem _hitVFX;
 
-    private void Rotate()
-    {
-        transform.LookAt2D(_currTarget);
-    }
+        private float _currHP;
+        private float _currDropMoney;
 
-    public void Move(float dt)
-    {
-        if (!IsActive || !IsAlive) return;
+        [Space]
+        [Header("Test")]
+        [SerializeField] private float _remainingDistance;
+        [SerializeField] private float TESTSPEED;
+        [SerializeField] private float TESTARMOR;
+        [SerializeField] private float TESTFREEZESTACK;
+        [SerializeField] private float TESTFREEZEDEBUFF;
+        [SerializeField] private float TESTHP;
+        [SerializeField] private float TESTMONEY;
+        [SerializeField] private float TESTDISTANCE;
+        [Space]
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [Space]
 
-        _remainingDistance = _pathController.RemainingDistance;
-        _pathController.Advance(transform.position);
+        private float _currArmor;
 
-        if (!_pathController.HasPath)
+        private Vector3 _direction;
+        private Vector3 _currTarget;
+
+        private PathLane _lane;
+
+        private BuffController _buffController;
+        private PathController _pathController;
+        public EnemyType EnemyType => _enemyType;
+        public float CurrHP => _currHP;
+        public float MaxHp => _currHP;
+        public float CurrSpeed =>
+            BuffController.Calculate(Characteristics.SPEED, _config.Speed);
+        public float CurrArmor => _currArmor;
+        public bool IsActive { get; set; }
+        public bool IsAlive { get; private set; }
+        public float CurrMoneyDrop => _config.DropMoney;
+        public BuffController BuffController => _buffController;
+
+        private List<Vector3> _points;
+        public float RemainingDistance => _pathController.RemainingDistance;
+        public void Init()
         {
-            MoveManager.Instance.Unregister(this);
-            Death();
-            return;
+            _buffController = new BuffController();
+            _pathController = new PathController();
+            _currArmor = _config.Armor;
+            _currHP = _config.HP;
         }
 
-        _currTarget = _pathController.Peek();
-        _direction = (_currTarget - transform.position).normalized;
-
-        transform.MoveTowards(_currTarget, CurrSpeed, dt);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (_points == null || _points.Count == 0)
-            return;
-
-        Gizmos.color = Color.red;
-
-        for (int i = 0; i < _points.Count; i++)
+        public void Tick(float dt)
         {
-            Gizmos.DrawSphere(_points[i], 0.1f);
+            if (!IsActive || !IsAlive) return;
+            _buffController.Update(dt);
+            Rotate();
+            Move(dt);
+            TESTSPEED = CurrSpeed;
+        }
 
-            if (i < _points.Count - 1)
+        private void OnValidate()
+        {
+            if (!Application.isPlaying) return;
+
+            TESTARMOR = _currArmor;
+            TESTHP = CurrHP;
+            TESTMONEY = _currDropMoney;
+        }
+
+        public void SetLane(PathLane lane) => _lane = lane;
+
+        public void BuildRoute(List<Vector3> points)
+        {
+            _points = PathController.OffsetPath(points, _lane);
+            _pathController.SetPath(_points, transform.position);
+            _pathController.OnFinishReached += () => HitPlayer();
+
+            MoveManager.Instance.Register(this);
+        }
+
+
+
+        private void HitPlayer() => Player.Instance.TakeDamage(_config.Damage);
+
+        private void Rotate()
+        {
+            transform.LookAt2D(_currTarget);
+        }
+
+        public void Move(float dt)
+        {
+            if (!IsActive || !IsAlive) return;
+
+            _remainingDistance = _pathController.RemainingDistance;
+            _pathController.Advance(transform.position);
+
+            if (!_pathController.HasPath)
             {
-                Gizmos.DrawLine(_points[i], _points[i + 1]);
+                MoveManager.Instance.Unregister(this);
+                Death();
+                return;
+            }
+
+            _currTarget = _pathController.Peek();
+            _direction = (_currTarget - transform.position).normalized;
+
+            transform.MoveTowards(_currTarget, CurrSpeed, dt);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_points == null || _points.Count == 0)
+                return;
+
+            Gizmos.color = Color.red;
+
+            for (int i = 0; i < _points.Count; i++)
+            {
+                Gizmos.DrawSphere(_points[i], 0.1f);
+
+                if (i < _points.Count - 1)
+                {
+                    Gizmos.DrawLine(_points[i], _points[i + 1]);
+                }
             }
         }
-    }
 
-    private void DropMoney() => throw new NotImplementedException();
+        private void DropMoney() => throw new NotImplementedException();
         //EconomyController.Instance.AddMoney(CurrMoneyDrop);
 
-    private void Death()
-    {
-        MoveManager.Instance.Unregister(this);
-        OnDeath?.Invoke(this);
-    }
-
-    public void TakeDamageToArmor(float damageArmor) =>
-        _currArmor = Mathf.Max(0, _currArmor - damageArmor);
-
-    public void TakeDamage(float damage, float armorPiercing)
-    {
-        var tmpArmor = _currArmor;
-
-        _currArmor = Mathf.Max(0, _currArmor - armorPiercing);
-
-        damage *= (1 - CurrArmor);
-
-        _currHP = Mathf.Max(_currHP - damage, 0);
-
-        if (_currHP <= 0)
+        private void Death()
         {
-            DropMoney();
-            Death();
-            return;
+            MoveManager.Instance.Unregister(this);
+            OnDeath?.Invoke(this);
         }
 
-        _hitVFX.Play();
+        public void TakeDamageToArmor(float damageArmor) =>
+            _currArmor = Mathf.Max(0, _currArmor - damageArmor);
 
-        //ParticlesGenerator.Instance.PlayParticles(ParticlesType.Blood, transform.position);
+        public void TakeDamage(float damage, float armorPiercing)
+        {
+            var tmpArmor = _currArmor;
 
-        _currArmor = tmpArmor;
+            _currArmor = Mathf.Max(0, _currArmor - armorPiercing);
+
+            damage *= 1 - CurrArmor;
+
+            _currHP = Mathf.Max(_currHP - damage, 0);
+
+            if (_currHP <= 0)
+            {
+                DropMoney();
+                Death();
+                return;
+            }
+
+            _hitVFX.Play();
+
+            //ParticlesGenerator.Instance.PlayParticles(ParticlesType.Blood, transform.position);
+
+            _currArmor = tmpArmor;
+        }
+
+        public EnemyType GetEnemyType() => _enemyType;
+
+        public void HPMultiply(float multiplier) =>
+            _currHP *= multiplier;
+
+        public void MoneyDropMultiply(float multipier) =>
+            _currDropMoney *= multipier;
+
+        public void Dispose() { }
+        public void OnPreload() { }
+
+        public void OnActivated()
+        {
+            Init();
+            IsAlive = true;
+        }
+
+        public void OnDeactivated() { }
+
+        public void OnReturned()
+        {
+            IsAlive = false;
+            _pathController.Clear();
+        }
+
+        public void OnDestroyed() { }
     }
-
-    public EnemyType GetEnemyType() => _enemyType;
-
-    public void HPMultiply(float multiplier) =>
-        _currHP *= multiplier;
-
-    public void MoneyDropMultiply(float multipier) =>
-        _currDropMoney *= multipier;
-
-    public void Dispose() { }
-    public void OnPreload() { }
-
-    public void OnActivated()
-    {
-        Init();
-        IsAlive = true;
-    }
-
-    public void OnDeactivated() { }
-
-    public void OnReturned()
-    {
-        IsAlive = false;
-        _pathController.Clear();
-    }
-
-    public void OnDestroyed() { }
 }
-
-
-

@@ -6,18 +6,11 @@ public class MapRoutes
 
     public void SetRoutes(List<Route> routes)
     {
-        foreach (Route route in routes)
-        {
-            _routesMap.Add(route.routeId, route);
-        }
+        _routesMap.Clear();
+        foreach (var route in routes)
+            _routesMap[route.routeId] = route;
     }
 
-    public bool TryGetRoute(RouteId id, out Route route)
-    {
-        route = new Route();
-        if (!_routesMap.ContainsKey(id)) return false;
-        route = _routesMap[id];
-
-        return true;
-    }
+    public bool TryGetRoute(RouteId id, out Route route) =>
+        _routesMap.TryGetValue(id, out route);
 }

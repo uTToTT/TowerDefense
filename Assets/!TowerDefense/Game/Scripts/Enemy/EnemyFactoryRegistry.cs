@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TToTT.TowerDefense.Enemies;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyFactoryRegistry", menuName = "TD/Enemy/Enemy Factory Registry")]

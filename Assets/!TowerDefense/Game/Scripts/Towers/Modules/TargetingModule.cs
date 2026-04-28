@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using TToTT.TowerDefense.Enemies;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
