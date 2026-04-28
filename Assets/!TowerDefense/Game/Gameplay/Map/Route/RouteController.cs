@@ -6,17 +6,16 @@ namespace TToTT.TowerDefense.Map
 {
     public class RouteController : IDisposable
     {
-        private readonly MapDataService _mapDataService;
         private readonly GridController _gridController;
+        private readonly MapRoutes _routes;
 
         #region Init
 
-        public RouteController(
-            MapDataService mapDataService,
-            GridController gridController)
+        public RouteController(           
+            GridController gridController, MapRoutes routes)
         {
-            _mapDataService = mapDataService;
             _gridController = gridController;
+            _routes = routes;
         }
 
         public void Dispose()
@@ -26,20 +25,24 @@ namespace TToTT.TowerDefense.Map
 
         #endregion
 
-        public Route GetRoute(RouteId routeId) =>
-           _mapDataService.GetRoute(routeId);
+        public void SetRoutes(MapData map) => 
+            _routes.SetRoutes(map.routes);
 
-        public List<Vector3> GetRoutePoints(RouteId routeId)
+        public bool TryGetRoute(RouteId id, out Route route) =>
+            _routes.TryGetRoute(id, out route);
+
+        public bool TryGetRoutePoints(RouteId id, out List<Vector3> points)
         {
-            var points = new List<Vector3>();
-            var route = GetRoute(routeId);
+            points = null;
+            if (!TryGetRoute(id, out var route)) return false;
 
+            points = new List<Vector3>();
             foreach (var point in route.points)
             {
                 points.Add(MapUtils.GridToWorld(point, _gridController.Grid));
             }
 
-            return points;
+            return true;
         }
     }
 }

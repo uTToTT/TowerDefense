@@ -1,156 +1,76 @@
-using System;
 using System.Collections.Generic;
-using TToTT.TowerDefense.Map;
 using UnityEngine;
 
-public static class MapUtils
+namespace TToTT.TowerDefense.Map
 {
-    public static Vector3 SnapToGrid(Vector3 worldPos, Grid grid)
+    public static class MapUtils
     {
-        var mapPos = WorldToMap(worldPos, grid);
-        var snapped = MapToWorld(mapPos, grid);
-        return snapped;
-    }
-
-    /* =========================
-     * MAP <-> WORLD
-     * (map logic)
-     * (0,0 — left down corner)
-     * ========================= */
-
-    public static Vector2Int WorldToMap(Vector3 worldPos, Grid grid)
-    {
-        Vector3 local = worldPos - grid.transform.position;
-
-        int x = Mathf.FloorToInt(local.x / grid.cellSize.x);
-        int y = Mathf.FloorToInt(local.y / grid.cellSize.y);
-
-        return new Vector2Int(x, y);
-    }
-
-    public static Vector3 MapToWorld(Vector2Int mapPos, Grid grid)
-    {
-        return grid.transform.position +
-               new Vector3(
-                   (mapPos.x + 0.5f) * grid.cellSize.x,
-                   (mapPos.y + 0.5f) * grid.cellSize.y,
-                   0f
-               );
-    }
-
-    /* =========================
-     * GRID <-> WORLD
-     * (Unity Grid)
-     * ========================= */
-
-    public static Vector3 GridToWorld(Vector2Int cell, Grid grid) =>
-        grid.GetCellCenterWorld(new Vector3Int(cell.x, cell.y, 0));
-
-    public static Vector3 GridToWorld(int x, int y, Grid grid) =>
-        grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-
-    public static Vector3Int WorldToGrid(Vector3 worldPos, Grid grid) =>
-        grid.WorldToCell(worldPos);
-
-
-    /* =========================
-     * Moving with snap to grid
-     * ========================= */
-
-    public static void SnapToGridUnderPointer(Transform transform)
-    {
-        throw new NotImplementedException();
-        //var worldPos = GameLoop.Instance.PlayerInputController.GetPointerPosition();
-        //transform.position = SnapToGrid(worldPos, MapManager.Instance.Grid);
-    }
-
-
-    /* =========================
-     * Ports
-     * ========================= */
-    public static List<WorldPort> GetWorldPorts(MapObject obj)
-    {
-        var result = new List<WorldPort>();
-
-        foreach (var port in obj.Shape.Ports)
+        public static Vector3 SnapToGrid(Vector3 worldPos, Grid grid)
         {
-            var worldCell = new Vector2Int(
-                obj.MapPos.x + port.Cell.X,
-                obj.MapPos.y + port.Cell.Y
-            );
+            var mapPos = WorldToMap(worldPos, grid);
+            var snapped = MapToWorld(mapPos, grid);
+            return snapped;
+        }
 
-            result.Add(new WorldPort
+        /* =========================
+         * MAP <-> WORLD
+         * (map logic)
+         * (0,0 — left down corner)
+         * ========================= */
+
+        public static Vector2Int WorldToMap(Vector3 worldPos, Grid grid)
+        {
+            Vector3 local = worldPos - grid.transform.position;
+
+            int x = Mathf.FloorToInt(local.x / grid.cellSize.x);
+            int y = Mathf.FloorToInt(local.y / grid.cellSize.y);
+
+            return new Vector2Int(x, y);
+        }
+
+        public static Vector3 MapToWorld(Vector2Int mapPos, Grid grid)
+        {
+            return grid.transform.position +
+                   new Vector3(
+                       (mapPos.x + 0.5f) * grid.cellSize.x,
+                       (mapPos.y + 0.5f) * grid.cellSize.y,
+                       0f
+                   );
+        }
+
+        /* =========================
+         * GRID <-> WORLD
+         * (Unity Grid)
+         * ========================= */
+
+        public static Vector3 GridToWorld(Vector2Int cell, Grid grid) =>
+            grid.GetCellCenterWorld(new Vector3Int(cell.x, cell.y, 0));
+
+        public static Vector3 GridToWorld(int x, int y, Grid grid) =>
+            grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+
+        public static Vector3Int WorldToGrid(Vector3 worldPos, Grid grid) =>
+            grid.WorldToCell(worldPos);
+
+        /* =========================
+         * Cells
+         * ========================= */
+
+        public static List<Vector2Int> GetOccupiedCells(
+           Vector2Int anchor,
+           MapObjectShape shape)
+        {
+            var result = new List<Vector2Int>();
+
+            foreach (var offset in shape.OccupiedCells)
             {
-                Owner = obj,
-                Cell = worldCell,
-                Direction = port.Direction,
-                Type = port.Type
-            });
+                result.Add(new Vector2Int(
+                    anchor.x + offset.X,
+                    anchor.y + offset.Y
+                ));
+            }
+
+            return result;
         }
-
-        return result;
-    }
-
-    public static bool ArePortsConnected(WorldPort a, WorldPort b)
-    {
-        if (a.Owner == b.Owner)
-            return false;
-
-        if (a.Type != b.Type)
-            return false;
-
-        if (a.Direction.Opposite() != b.Direction)
-            return false;
-
-        return a.Cell + a.Direction.ToOffset() == b.Cell;
-    }
-    
-    public static void ResolveConnections(MapObject placedObject)
-    {
-        throw new NotImplementedException();
-
-        var ports = GetWorldPorts(placedObject);
-
-        //foreach (var port in ports)
-        //{
-        //    var targetCell = port.Cell + port.Direction.ToOffset();
-
-        //    var cellData = MapManager.Instance.GetCellData(targetCell);
-        //    if (cellData?.MapObject == null)
-        //        continue;
-
-        //    var otherObject = cellData.MapObject;
-        //    var otherPorts = GetWorldPorts(otherObject);
-
-        //    foreach (var otherPort in otherPorts)
-        //    {
-        //        if (ArePortsConnected(port, otherPort))
-        //        {
-        //            //ApplyBuff(port, otherPort);
-        //        }
-        //    }
-        //}
-    }
-
-    /* =========================
-     * Cells
-     * ========================= */
-
-    public static List<Vector2Int> GetOccupiedCells(
-       Vector2Int anchor,
-       MapObjectShape shape)
-    {
-        var result = new List<Vector2Int>();
-
-        foreach (var offset in shape.OccupiedCells)
-        {
-            result.Add(new Vector2Int(
-                anchor.x + offset.X,
-                anchor.y + offset.Y
-            ));
-        }
-
-        return result;
     }
 }
-

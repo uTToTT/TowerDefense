@@ -14,7 +14,8 @@ namespace TToTT.TowerDefense.Map
 
         #region Init
 
-        public MapDataService(MapBounds bounds)
+        public MapDataService(
+            MapBounds bounds)
         {
             _bounds = bounds;
         }
@@ -111,7 +112,5 @@ namespace TToTT.TowerDefense.Map
             mapObject = cellData.MapObject;
             return true;
         }
-
-        public Route GetRoute(RouteId id) => _data.GetRoute(id);
     }
 }

@@ -19,6 +19,7 @@ namespace TToTT.TowerDefense.Map
         private readonly GridController _gridController;
         private readonly MapValidator _validator;
         private readonly MapDataService _dataService;
+        private readonly RouteController _routeController;
 
         #region Init
 

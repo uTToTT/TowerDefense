@@ -1,5 +1,6 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.Installers;
 using TToTT.TowerDefense.UI;
 using UnityEngine;
 

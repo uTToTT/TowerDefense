@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class MapData : ScriptableObject
@@ -26,5 +25,4 @@ public class MapData : ScriptableObject
         x < width && y < height;
 
     public bool IsInside(Vector2Int v) => IsInside(v.x, v.y);
-    public Route GetRoute(RouteId id) => routes.FirstOrDefault(r => r.routeId == id);
 }

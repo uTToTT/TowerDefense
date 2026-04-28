@@ -17,7 +17,7 @@ public class Group
     [SerializeField, Min(0.1f)] private float _hpMultiplier = 1;
     [SerializeField, Min(1)] private float _moneyDropMultiplier = 1;
 
-    public RouteId Route => _route;
+    public RouteId RouteId => _route;
     public PathLane Lane => _lane;
     public EnemyType EnemyType => _enemyType;
     public int EnemyCount => _enemyCount;

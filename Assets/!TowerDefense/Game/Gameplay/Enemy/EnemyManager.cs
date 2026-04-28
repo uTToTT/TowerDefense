@@ -10,12 +10,16 @@ public class EnemyManager
 
     public int AliveCount => _enemies.Count;
 
-    public WaveController WaveController => _waveController;
+    #region Init
 
     public EnemyManager(WaveController waveController)
     {
         _waveController = waveController;
     }
+
+    #endregion
+
+    #region Game loop
 
     public void Restart()
     {
@@ -28,7 +32,6 @@ public class EnemyManager
     public void Tick(float dt)
     {
         UpdateColleciton();
-        UpdateWaveState();
 
         foreach (var enemy in _enemies)
         {
@@ -39,25 +42,10 @@ public class EnemyManager
         _waveController.Tick(dt);
     }
 
+    #endregion
+
     public void Register(Enemy enemy) => _toAdd.Add(enemy);
     public void Unregister(Enemy enemy) => _toRemove.Add(enemy);
-
-    private void UpdateWaveState()
-    {
-        if (AliveCount <= 0)
-        {
-            if (_waveController.IsAllWavesCompleted)
-            {
-                _waveController.IsAllWavesCompleted = false;
-                //GameLoop.Instance.AllWavesEnded();
-            }
-            else if (_waveController.IsWaveEnded)
-            {
-                _waveController.IsWaveEnded = false;
-                //GameLoop.Instance.WaveEnded();
-            }
-        }
-    }
 
     private void UpdateColleciton()
     {
