@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class BuffController
+public class BuffController : IDisposable
 {
     private readonly Dictionary<string, Dictionary<string, Buff>> _buffs = new();
 
@@ -58,7 +58,7 @@ public class BuffController
         _buffs.Remove(characteristic);
     }
 
-    public void ClearAll()
+    public void Reset()
     {
         _buffs.Clear();
     }
@@ -86,5 +86,10 @@ public class BuffController
         }
 
         return (baseValue + flatAdd) * (1f + percentAdd);
+    }
+
+    public void Dispose()
+    {
+        _buffs.Clear();
     }
 }

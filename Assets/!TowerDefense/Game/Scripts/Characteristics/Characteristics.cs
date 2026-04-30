@@ -4,4 +4,5 @@ public static class Characteristics
     public const string HP = "hp";   
     public const string SPEED = "speed";   
     public const string DAMAGE = "damage";   
+    public const string ARMOR = "armor";   
 }

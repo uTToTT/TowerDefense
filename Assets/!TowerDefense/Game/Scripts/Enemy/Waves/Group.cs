@@ -10,18 +10,18 @@ public class Group
 
     [HorizontalLine]
     [SerializeField] private EnemyType _enemyType;
-    [SerializeField, Min(0)] private int _enemyCount;
+    [SerializeField, Range(0, 200)] private int _enemyCount;
     [SerializeField, Range(0.1f, 10)] private float _timeBtwSpawn = 1;
 
     [HorizontalLine]
-    [SerializeField, Min(0.1f)] private float _hpMultiplier = 1;
-    [SerializeField, Min(1)] private float _moneyDropMultiplier = 1;
+    [SerializeField, Range(-500, 500)] private float _hpAdditionalPercent = 0;
+    [SerializeField, Range(-500, 500)] private float _moneyDropAdditionalPercent = 0;
 
     public RouteId RouteId => _route;
     public PathLane Lane => _lane;
     public EnemyType EnemyType => _enemyType;
     public int EnemyCount => _enemyCount;
     public float TimeBtwSpawn => _timeBtwSpawn;
-    public float HpMultiplier => _hpMultiplier;
-    public float MoneyDropMultiplier => _moneyDropMultiplier;
+    public float HpAdditionalPercent => _hpAdditionalPercent;
+    public float MoneyDropAdditionalPercent => _moneyDropAdditionalPercent;
 }

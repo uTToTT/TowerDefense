@@ -41,7 +41,7 @@ public class RailProjectile : Projectile
             else if (_projectileType == RailProjetileType.ArmorBreak)
             {
                 //Debug.Log("_armorBreak: " + _armorBreak);
-                enemy.TakeDamageToArmor(_armorBreak);
+                //enemy.TakeDamageToArmor(_armorBreak);
                 enemy.TakeDamage(_damage, _armorPiercing);
             }
             else if (_projectileType == RailProjetileType.Crit)

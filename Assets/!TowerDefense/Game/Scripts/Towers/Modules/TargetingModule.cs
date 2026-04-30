@@ -121,8 +121,8 @@ public class TargetingModule : MonoBehaviour, ITowerModule
             float characteristic = _targetCharacteristic switch
             {
                 TypeTargetByCharacteristic.MaxHP => enemy.MaxHp,
-                TypeTargetByCharacteristic.Speed => enemy.CurrSpeed,
-                TypeTargetByCharacteristic.Armor => enemy.CurrArmor,
+                TypeTargetByCharacteristic.Speed => enemy.Speed,
+                TypeTargetByCharacteristic.Armor => enemy.Armor,
                 _ => 0f
             };
 

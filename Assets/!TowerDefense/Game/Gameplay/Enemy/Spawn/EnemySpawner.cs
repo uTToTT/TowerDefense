@@ -8,6 +8,8 @@ namespace TToTT.TowerDefense.Enemies
         private readonly RouteController _routes;
         private readonly EnemyManager _enemyManager;
         private readonly GridController _grid;
+        private readonly EconomyController _economyController;
+        private readonly IPlayerTarget _playerTarget;
 
         private int _spawnedCount = 0;
 
@@ -17,13 +19,17 @@ namespace TToTT.TowerDefense.Enemies
             EnemyFactoryRegistry factory,
             RouteController routes,
             EnemyManager enemyManager,
-            GridController grid)
+            GridController grid,
+            EconomyController economyController,
+            IPlayerTarget playerTarget)
         {
             _factory = factory;
             _factory.Init();
             _routes = routes;
             _enemyManager = enemyManager;
             _grid = grid;
+            _economyController = economyController;
+            _playerTarget = playerTarget;
         }
 
         #endregion
@@ -73,6 +79,18 @@ namespace TToTT.TowerDefense.Enemies
 
             PathLane lane;
 
+            var hpBuff = new Buff
+                (Tags.ENEMY_SPAWNER,
+                Characteristics.HP,
+                BuffType.Percent,
+                group.HpAdditionalPercent);
+
+            var moneyBuff = new Buff
+                (Tags.ENEMY_SPAWNER,
+                Characteristics.MONEY_DROP,
+                BuffType.Percent,
+                group.MoneyDropAdditionalPercent);
+
             if (group.Lane == PathLane.LeftRight)
                 lane = _spawnedCount % 2 == 0 ? PathLane.Left : PathLane.Right;
             else
@@ -81,19 +99,24 @@ namespace TToTT.TowerDefense.Enemies
             var spawnPos = MapUtils.GridToWorld(route.entrance, _grid.Grid);
 
             enemy.transform.position = spawnPos;
-            enemy.HPMultiply(group.HpMultiplier);
-            enemy.MoneyDropMultiply(group.MoneyDropMultiplier);
+
+            enemy.BuffController.AddOrReplace(hpBuff);
+            enemy.BuffController.AddOrReplace(moneyBuff);
             enemy.SetLane(lane);
             enemy.BuildRoute(routePoints);
 
+            enemy.OnReachedFinish += _playerTarget.TakeDamage;
             enemy.OnDeath += OnDeath;
         }
 
         private void OnDeath(Enemy enemy)
         {
+            enemy.OnReachedFinish -= _playerTarget.TakeDamage;
             enemy.OnDeath -= OnDeath;
+
             _factory.Return(enemy);
             _enemyManager.Unregister(enemy);
+            _economyController.AddMoney(enemy.MoneyDrop);
         }
     }
 }

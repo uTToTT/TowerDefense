@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class PathController
+public sealed class PathController : IDisposable
 {
     public event Action OnFinishReached;
 
@@ -14,15 +14,11 @@ public sealed class PathController
 
     private const float ReachEpsilon = 0.01f;
 
-    #region ==== Properties ====
-
     public bool HasPath => _waypoints.Count > 0;
     public Vector3 Current => _waypoints.Peek();
     public float RemainingDistance => _remainingDistance;
 
-    #endregion =================
-
-    #region ==== Initialization ====
+    #region Init
 
     public void SetPath(IReadOnlyList<Vector3> path, Vector3 startPosition)
     {
@@ -48,9 +44,15 @@ public sealed class PathController
         }
     }
 
-    #endregion =====================
+    public void Dispose()
+    {
+        _waypoints.Clear();
+        _segmentLengths.Clear();
+    }
 
-    #region ==== Runtime Update ====
+    #endregion 
+
+    #region Update
 
     public void Advance(Vector3 currentPosition)
     {
@@ -89,7 +91,7 @@ public sealed class PathController
 
     #endregion =====================
 
-    #region ==== Queue API ====
+    #region Queue API
 
     public void Enqueue(Vector3 point)
     {
@@ -133,9 +135,9 @@ public sealed class PathController
         return last;
     }
 
-    #endregion =====================
+    #endregion
 
-    #region ==== Geometry Helpers ====
+    #region Geometry Helpers
 
     public static Vector2 PerpendicularLeft(Vector2 v)
         => new(-v.y, v.x);
@@ -229,5 +231,5 @@ public sealed class PathController
         return result;
     }
 
-    #endregion =====================
+    #endregion
 }
