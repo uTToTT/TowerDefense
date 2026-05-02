@@ -1,5 +1,6 @@
 using System;
 using TToTT.TowerDefense.Map;
+using UnityEngine;
 
 public sealed class PlacementController : IDisposable
 {
@@ -13,6 +14,8 @@ public sealed class PlacementController : IDisposable
     private bool _enabled;
 
     private MapObject _draggedObject;
+
+    public Grid Grid => _gridController.Grid;
 
     #region Init
 

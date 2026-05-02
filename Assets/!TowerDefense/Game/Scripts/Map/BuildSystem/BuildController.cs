@@ -22,6 +22,8 @@ namespace TToTT.TowerDefense.Map
 
             if (!_mapController.TryPlaceObject(pos, obj)) return false;
 
+            obj.SetPosition(pos);
+
             return true;
         }
 

@@ -25,7 +25,7 @@ namespace TToTT.TowerDefense.Installers
             container.Bind<TowerManager>(Lifetime.Singleton);
             container.Bind<EconomyController>(Lifetime.Singleton);
             container.Bind<EnemyManager>(Lifetime.Singleton);
-            container.Bind<ProductShopController>(Lifetime.Singleton);
+            container.Bind<ShopController>(Lifetime.Singleton);
             container.Bind<ObjectSelector>(Lifetime.Singleton);
             container.Bind<ParticlesGenerator>(Lifetime.Singleton);
             container.Bind<CameraShaker>(Lifetime.Singleton);
