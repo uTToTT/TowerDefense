@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TToTT.TowerDefense.Map;
 
 namespace TToTT.TowerDefense.Towers
 {
@@ -9,15 +10,35 @@ namespace TToTT.TowerDefense.Towers
         private readonly List<Tower> _toAdd = new();
         private readonly List<Tower> _toRemove = new();
 
+        private readonly BuildController _buildController;
+
         public List<Tower> Towers => _builtTowers;
+
+        #region Init
+
+        public TowerManager(
+            BuildController buildController)
+        {
+            _buildController = buildController;
+        }
+
+        #endregion
 
 
         #region Life cycle
 
         public void Restart()
         {
-            //MapManager.Instance.RemoveMapObject(tower); // MapManager must remove on restart
-            //GameLoop.Instance.BuildManager.Return(tower); // BuildManager must return on restart
+            UpdateColleciton();
+
+            foreach (var tower in _builtTowers)
+            {
+                _buildController.TearDown(tower);
+            }
+
+            _builtTowers.Clear();
+            _toAdd.Clear();
+            _toRemove.Clear();
         }
 
         public void Tick(float dt)

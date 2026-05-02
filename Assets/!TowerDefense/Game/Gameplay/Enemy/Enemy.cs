@@ -74,6 +74,7 @@ namespace TToTT.TowerDefense.Enemies
         {
             _points = PathController.OffsetPath(points, _lane);
             _pathController.SetPath(_points, transform.position);
+            _movement.Reset();
         }
 
         #endregion

@@ -888,7 +888,7 @@ public class GameControl : Loader<GameControl>
 
                     int tmp = _uniqueIndexes.Count;
 
-                    _tmpTowerObj.GetComponent<Tower>().SetUniqueTowerIndex(tmp);
+                    //_tmpTowerObj.GetComponent<Tower>().SetUniqueTowerIndex(tmp);
                     _uniqueIndexes.Add(tmp);
 
                     _cell.SetTower(_tmpTowerObj);
@@ -979,8 +979,8 @@ public class GameControl : Loader<GameControl>
 
     public void UpgradeSpec(int index)
     {
-        int tmp = _tmpTower.GetSpecPrice(index);
-
+        //int tmp = _tmpTower.GetSpecPrice(index);
+        int tmp = 0;
         if (_tmpTower.TowerType == TowerType.Minigun)
         {
             _tmpTowerGameObject.GetComponent<Minigun>().SetSpecType(index);

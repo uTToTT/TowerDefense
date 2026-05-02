@@ -1,5 +1,33 @@
 using TToTT.TowerDefense.Enemies;
 using UnityEngine;
+public enum SpecTypeMinigun
+{
+    None,
+    Explosion,
+    Freeze,
+}
+
+public enum SpecTypeTwiin
+{
+    None,
+    TwoToOneAtack,
+    Shard,
+}
+
+public enum SpecTypeGravity
+{
+    None,
+    MoneyMultyplier,
+    HpDivisor,
+}
+
+public enum SpecTypeRail
+{
+    None,
+    Critical,
+    BreakArmor,
+}
+
 
 public class AtackTower : Tower
 {

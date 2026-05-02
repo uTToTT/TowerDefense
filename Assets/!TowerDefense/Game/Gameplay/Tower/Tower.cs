@@ -26,19 +26,32 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public TowerRecoil TowerRecoil => _towerRecoil;
     public Transform TowerTransform => _towerTransform;
 
-    public bool IsEnabled { get => _enabled; private set => _enabled = value; }
+    public bool IsEnabled=> _enabled; 
+    public Transform Transform => transform;
+    public TowerType TowerType => _towerType;
 
-    public void Enable() => IsEnabled = true;
-    public void Disable() => IsEnabled = false;
+    public void Enable() => _enabled = true;
+    public void Disable() => _enabled = false;
 
     public void ShowRange() => _towerPreview.Enable();
     public void HideRange() => _towerPreview.Disable();
 
     public void PlayParticle() => _particles?.Play();
 
+    #region Init
+
+    private void Awake()
+    {
+        _targetingModule = GetComponent<TargetingModule>();
+        _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
+
+        _upgradeController = new TowerUpgradeController(this);
+    }
+
+    #endregion
+
     public void ApplyUpgrade(UpgradeNodeConfig config)
     {
-        Debug.Log($"Applied upgrade [{config.name}]");
         bool modulesChanged = false;
 
         foreach (var moduleConfig in config.AddModuleConfigs)
@@ -54,26 +67,12 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         foreach (var moduleConfig in config.ModifyModuleConfigs)
         {
             ApplyConfig(moduleConfig);
-            Debug.Log($"Apply {moduleConfig.GetType()}");
         }
 
         if (modulesChanged)
         {
             BindOnHitEffects();
         }
-    }
-
-    public bool HasModule(ModuleType moduleType)
-    {
-        return _modules.ContainsKey(moduleType);
-    }
-
-    public T GetModule<T>(ModuleType moduleType) where T : class, ITowerModule
-    {
-        if (_modules.TryGetValue(moduleType, out var module))
-            return module as T;
-
-        return null;
     }
 
     private void BindOnHitEffects()
@@ -91,19 +90,6 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         }
     }
 
-    private void AddModule(ITowerModule module)
-    {
-        if (_modules.ContainsKey(module.ModuleType))
-        {
-            Debug.Log($"Module already exists [{module.GetType()}]");
-        }
-        else
-        {
-            _modules.Add(module.ModuleType, module);
-            Debug.Log($"Add {module.ModuleType}");
-        }
-    }
-
     private void ApplyConfig(TowerModuleConfig config)
     {
         if (config is TargetingModuleConfig)
@@ -118,10 +104,7 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         }
     }
 
-    private void ClearModules()
-    {
-        _modules.Clear();
-    }
+    #region Game loop
 
     public void Tick(float dt)
     {
@@ -135,47 +118,81 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     }
 
-    public Transform Transform => transform;
-    public TowerType TowerType => _towerType;
+    #endregion
 
-    public int GetSpecPrice(int index) => 0;
-    public void SetUniqueTowerIndex(int index) { }
-    public override void Dispose()
+    #region Modules
+
+    private void AddModule(ITowerModule module)
     {
-        base.Dispose();
+        if (_modules.ContainsKey(module.ModuleType))
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Module already exists [{module.GetType()}]");
+#endif
+        }
+        else
+        {
+            _modules.Add(module.ModuleType, module);
+        }
     }
+
+    public bool HasModule(ModuleType moduleType)
+    {
+        return _modules.ContainsKey(moduleType);
+    }
+
+    public T GetModule<T>(ModuleType moduleType) where T : class, ITowerModule
+    {
+        if (_modules.TryGetValue(moduleType, out var module))
+            return module as T;
+
+        return null;
+    }
+
+    private void ClearModules()
+    {
+        _modules.Clear();
+    }
+
+    #endregion
+
+    #region Lifecycle
 
     public override void OnPreload()
     {
         base.OnPreload();
 
-        IsEnabled = false;
+        _enabled = false;
 
-        _targetingModule = GetComponent<TargetingModule>();
-        _targetingModule.SetTargetSortingTypes(TypeTargetByCharacteristic.Speed, TypeTargetByDistance.ToExit);
-
-        _upgradeController = new TowerUpgradeController(this);
-        _upgradeController.Purchase(UpgradeTree);
+      
     }
 
     public override void OnActivated()
     {
         base.OnActivated();
+        ClearModules();
+        _upgradeController.Restart();
+        _upgradeController.Purchase(UpgradeTree);
+        Enable();
     }
 
     public override void OnDeactivated()
     {
         base.OnDeactivated();
+        Disable();
     }
 
     public override void OnReturned()
     {
         base.OnReturned();
         transform.rotation = new Quaternion();
-        ClearModules();
         _targetingModule.Restart();
-        _upgradeController.Restart();
         Disable();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
     }
 
     public override void OnDestroyed()
@@ -183,37 +200,6 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
         base.OnDestroyed();
     }
 
-    public void SetReceivedEnergy(float amount)
-    {
-        var module = GetModule<EnergyModule>(ModuleType.Energy);
-        module.SetReceivedEnergy(amount);
-    }
+    #endregion
 }
 
-public enum SpecTypeMinigun
-{
-    None,
-    Explosion,
-    Freeze,
-}
-
-public enum SpecTypeTwiin
-{
-    None,
-    TwoToOneAtack,
-    Shard,
-}
-
-public enum SpecTypeGravity
-{
-    None,
-    MoneyMultyplier,
-    HpDivisor,
-}
-
-public enum SpecTypeRail
-{
-    None,
-    Critical,
-    BreakArmor,
-}
