@@ -50,37 +50,51 @@ namespace TToTT.Core.DI
         // =========================
         public T Resolve<T>()
         {
-            return (T)Resolve(typeof(T), new HashSet<Type>());
+            return (T)Resolve(typeof(T), new HashSet<Type>(), new List<Type>());
         }
 
-        private object Resolve(Type type, HashSet<Type> resolvingStack)
+        private object Resolve(Type type, HashSet<Type> resolvingStack, List<Type> resolvingPath)
         {
             if (resolvingStack.Contains(type))
-                throw new Exception($"Cyclic dependency detected: {type}");
+            {
+                var cycleStart = resolvingPath.IndexOf(type);
+                var cyclePath = resolvingPath
+                    .Skip(cycleStart)
+                    .Select(t => t.Name)
+                    .ToList();
+                cyclePath.Add(type.Name); 
+
+                var pathStr = string.Join(" -> ", cyclePath);
+                throw new Exception($"Cyclic dependency:\n{pathStr}");
+            }
 
             resolvingStack.Add(type);
+            resolvingPath.Add(type);
+
+            iobject result;
 
             if (!_bindings.TryGetValue(type, out var binding))
             {
-                return CreateInstance(type, resolvingStack);
+                result = CreateInstance(type, resolvingStack, resolvingPath);
             }
-
-            // Singleton
-            if (binding.Lifetime == Lifetime.Singleton)
+            else if (binding.Lifetime == Lifetime.Singleton)
             {
                 if (binding.Instance == null)
-                {
-                    binding.Instance = CreateBindingInstance(binding, resolvingStack);
-                }
-
-                return binding.Instance;
+                    binding.Instance = CreateBindingInstance(binding, resolvingStack, resolvingPath);
+                result = binding.Instance;
+            }
+            else
+            {
+                result = CreateBindingInstance(binding, resolvingStack, resolvingPath);
             }
 
-            // Transient
-            return CreateBindingInstance(binding, resolvingStack);
+            resolvingStack.Remove(type);
+            resolvingPath.RemoveAt(resolvingPath.Count - 1);
+
+            return result;
         }
 
-        private object CreateBindingInstance(Binding binding, HashSet<Type> resolvingStack)
+        private object CreateBindingInstance(Binding binding, HashSet<Type> resolvingStack, List<Type> resolvingPath)
         {
             // Factory
             if (binding.Instance is Func<DIContainer, object> factory)
@@ -88,10 +102,10 @@ namespace TToTT.Core.DI
                 return factory(this);
             }
 
-            return CreateInstance(binding.ImplementationType, resolvingStack);
+            return CreateInstance(binding.ImplementationType, resolvingStack, resolvingPath);
         }
 
-        private object CreateInstance(Type type, HashSet<Type> resolvingStack)
+        private object CreateInstance(Type type, HashSet<Type> resolvingStack, List<Type> resolvingPath)
         {
             var constructors = type.GetConstructors();
 
@@ -108,14 +122,10 @@ namespace TToTT.Core.DI
 
             for (int i = 0; i < parameters.Length; i++)
             {
-                args[i] = Resolve(parameters[i].ParameterType, resolvingStack);
+                args[i] = Resolve(parameters[i].ParameterType, resolvingStack, resolvingPath);
             }
 
-            var instance = Activator.CreateInstance(type, args);
-
-            resolvingStack.Remove(type);
-
-            return instance;
+            return Activator.CreateInstance(type, args);
         }
     }
 }
