@@ -10581,6 +10581,8 @@ Transform:
   m_Children:
   - {fileID: 1582055105}
   - {fileID: 952929442}
+  - {fileID: 1986337646}
+  - {fileID: 1592763381}
   m_Father: {fileID: 1625364986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720710074
@@ -11162,6 +11164,17 @@ MonoBehaviour:
     _type: 2
   _victoryButtonToMain: {fileID: 1747195492}
   _defeatButtonToMain: {fileID: 995354114}
+--- !u!114 &959805151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4610426424523511373, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
+  m_PrefabInstance: {fileID: 360021552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2174ff85cfcce6043bd86ffa15955764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProductSlot
 --- !u!1 &969387490
 GameObject:
   m_ObjectHideFlags: 0
@@ -11281,9 +11294,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267ac65145267c44bbe474b3a4887c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityEntryPoint
-  _uiWindowController: {fileID: 0}
-  _cellFactoryRegistry: {fileID: 0}
-  _grid: {fileID: 0}
+  _uiWindowController: {fileID: 1986337647}
+  _cellFactoryRegistry: {fileID: 11400000, guid: e6bfcacb05d33f24f95df905372471ea, type: 2}
+  _grid: {fileID: 1448192072}
+  _shopConfig: {fileID: 11400000, guid: 1c8b77a137c3636489fb88f9230e01ac, type: 2}
+  _productSlot:
+  - {fileID: 959805151}
+  - {fileID: 1435939758}
+  - {fileID: 1605502823}
+  _reroll: {fileID: 2143027454}
+  _walletView: {fileID: 1592763382}
+  _mapObjectFactoryRegistry: {fileID: 11400000, guid: 51b1af45e833c784b972084f0a3dcc0d, type: 2}
 --- !u!1001 &995354112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12454,6 +12475,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4209473935899362698, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
   m_PrefabInstance: {fileID: 1435939756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1435939758 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4610426424523511373, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
+  m_PrefabInstance: {fileID: 1435939756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2174ff85cfcce6043bd86ffa15955764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProductSlot
 --- !u!1 &1448192071
 GameObject:
   m_ObjectHideFlags: 0
@@ -12779,6 +12811,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   _frameDatas: []
   _playButton: {fileID: 1208237730}
+--- !u!1 &1592763380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1592763381}
+  - component: {fileID: 1592763382}
+  m_Layer: 0
+  m_Name: WalletView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1592763381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592763380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 659934252}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1592763382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592763380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b10d3f7fc0bc7949999579ad120ab54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WalletView
+  _balance: {fileID: 212971049}
+--- !u!114 &1605502823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4610426424523511373, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
+  m_PrefabInstance: {fileID: 98495139}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2174ff85cfcce6043bd86ffa15955764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProductSlot
 --- !u!1 &1613437935
 GameObject:
   m_ObjectHideFlags: 0
@@ -14047,7 +14135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5346668027447436000, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -216.8
+      value: -216.79999
       objectReference: {fileID: 0}
     - target: {fileID: 5346668027447436000, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14749,6 +14837,51 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1986337645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1986337646}
+  - component: {fileID: 1986337647}
+  m_Layer: 0
+  m_Name: UIWindowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1986337646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986337645}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 659934252}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1986337647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986337645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf7ccff7771e084cbcccbe9766813db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.UI.UIWindowsController
+  _windowDatas: []
 --- !u!1 &2052978198
 GameObject:
   m_ObjectHideFlags: 0
@@ -14924,6 +15057,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096154148}
   m_CullTransparentMesh: 1
+--- !u!114 &2143027454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7497663406936676737, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
+  m_PrefabInstance: {fileID: 167857724}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 702375c5136dd674a8e9d8a661a38dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonWrapper
 --- !u!1 &2144045305
 GameObject:
   m_ObjectHideFlags: 0

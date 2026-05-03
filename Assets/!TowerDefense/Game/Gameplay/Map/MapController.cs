@@ -63,6 +63,8 @@ namespace TToTT.TowerDefense.Map
             return true;
         }
 
+        public bool IsCellAvailable(Vector2Int pos) => _validator.IsCellAvailable(pos);
+
         public void RemoveMapObject(MapObject mapObject)
         {
             _dataService.UnregisterMapObject(mapObject);

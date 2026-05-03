@@ -95,14 +95,9 @@ public class ShopController : IDisposable
         _dragAndDrop.EndDrag();
     }
 
-    private void HandleDropSuccess(MapObject preview, Vector2Int mapPos)
+    private void HandleDropSuccess(MapObject preview, MapObject obj, Vector2Int mapPos)
     {
         _previewFactory.Return(preview);
-
-        if (!_buildController.TryBuild(
-                _activeSlot.ProductConfig.ProductType,
-                mapPos,
-                out var obj)) return;
 
         if (obj is Tower tower)
         {

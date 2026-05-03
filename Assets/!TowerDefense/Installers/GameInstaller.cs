@@ -10,25 +10,36 @@ namespace TToTT.TowerDefense.Installers
     {
         private readonly CellFactoryRegistry _cellFactoryRegistry;
         private readonly Grid _grid;
+        private readonly ShopConfig _shopConfig;
+        private readonly ProductSlot[] _productSlots;
+        private readonly ButtonWrapper _reroll;
+        private readonly MapObjectFactoryRegistry _objectFactoryRegistry;
 
-        public GameInstaller(CellFactoryRegistry cellFactoryRegistry, Grid grid)
+        public GameInstaller(
+            CellFactoryRegistry cellFactoryRegistry,
+            Grid grid,
+            ShopConfig shopConfig,
+            ProductSlot[] productSlots,
+            ButtonWrapper reroll,
+            MapObjectFactoryRegistry objectFactoryRegistry)
         {
             _cellFactoryRegistry = cellFactoryRegistry;
             _grid = grid;
+            _shopConfig = shopConfig;
+            _productSlots = productSlots;
+            _reroll = reroll;
+            _objectFactoryRegistry = objectFactoryRegistry;
         }
 
         public void Install(DIContainer container)
         {
-            new MapInstaller(_cellFactoryRegistry, _grid).Install(container);
+            new InputInstaller().Install(container);
+            new VFXInstaller().Install(container);
+            new MapInstaller(_cellFactoryRegistry, _grid, _objectFactoryRegistry).Install(container);
+            new EconomyInstaller(_shopConfig, _productSlots, _reroll).Install(container);
 
-            container.Bind<PlayerInputController>(Lifetime.Singleton);
             container.Bind<TowerManager>(Lifetime.Singleton);
-            container.Bind<EconomyController>(Lifetime.Singleton);
             container.Bind<EnemyManager>(Lifetime.Singleton);
-            container.Bind<ShopController>(Lifetime.Singleton);
-            container.Bind<ObjectSelector>(Lifetime.Singleton);
-            container.Bind<ParticlesGenerator>(Lifetime.Singleton);
-            container.Bind<CameraShaker>(Lifetime.Singleton);
             container.Bind<GameLoop>(Lifetime.Singleton);
         }
     }

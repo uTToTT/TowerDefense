@@ -4,45 +4,26 @@ using UnityEngine;
 
 public sealed class PlacementController : IDisposable
 {
-    public event Action OnPlaced;
+    public event Action<Vector2Int> OnPlaced;
     public event Action OnCanceled;
 
     private readonly GridController _gridController;
-    private readonly MapController _mapController;
-
     private bool _isDragging;
     private bool _enabled;
-
     private MapObject _draggedObject;
 
     public Grid Grid => _gridController.Grid;
 
-    #region Init
-
-    public PlacementController(
-        GridController gridController,
-        MapController mapController)
+    public PlacementController(GridController gridController)
     {
         _gridController = gridController;
-        _mapController = mapController;
     }
-
-    public void Dispose()
-    {
-
-    }
-
-    #endregion
 
     public void Tick(float dt)
     {
-        if (!_enabled) return;
-        if (!_isDragging) return;
-
+        if (!_enabled || !_isDragging) return;
         if (_draggedObject != null)
-        {
             DragUtils.SnapToPointer(_draggedObject.transform);
-        }
     }
 
     public void EnableDrag() => _enabled = true;
@@ -51,43 +32,41 @@ public sealed class PlacementController : IDisposable
     public void BeginDrag(MapObject mapObject)
     {
         _draggedObject = mapObject;
-
         if (mapObject is Tower tower)
         {
             tower.Disable();
             tower.ShowRange();
         }
-
-        _mapController.RemoveMapObject(_draggedObject);
-
         _isDragging = true;
     }
 
     public void EndDrag(MapObject mapObject)
     {
-        var mapPos = MapUtils.WorldToMap(_draggedObject.transform.position, _gridController.Grid);
-        bool success = _mapController.TryPlaceObject(mapPos, mapObject);
+        var mapPos = MapUtils.WorldToMap(
+            _draggedObject.transform.position,
+            _gridController.Grid);
 
-        if (success)
-        {
-            _draggedObject.MapPos = mapPos;
-            _draggedObject.transform.position = MapUtils.MapToWorld(mapPos, _gridController.Grid);
+        _draggedObject.transform.position =
+            MapUtils.MapToWorld(mapPos, _gridController.Grid);
 
-            OnPlaced?.Invoke();
-        }
-        else
-        {
-            OnCanceled?.Invoke();
-        }
-
-        if (mapObject is Tower tower) // refactor
+        if (mapObject is Tower tower)
         {
             tower.Enable();
             tower.HideRange();
         }
 
         _draggedObject = null;
-
         _isDragging = false;
+
+        OnPlaced?.Invoke(mapPos);
     }
+
+    public void Cancel()
+    {
+        _draggedObject = null;
+        _isDragging = false;
+        OnCanceled?.Invoke();
+    }
+
+    public void Dispose() { }
 }

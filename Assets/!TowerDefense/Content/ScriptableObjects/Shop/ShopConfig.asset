@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834cb59b9bda2d3408f02954d97877a2, type: 3}
+  m_Name: ShopConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ShopConfig
+  _startRerollCost: 5
+  _rerollDelta: 2
+  _products:
+  - {fileID: 11400000, guid: 2340fda1394416747ad82823028a3bc4, type: 2}
+  - {fileID: 11400000, guid: bfbb39fac6a522243a01df0f85f26ac7, type: 2}
+  - {fileID: 11400000, guid: 2b0e6807c7f6c3142afefd45ccad7d8e, type: 2}
+  - {fileID: 11400000, guid: 38df7f42c07691a498a0bd989db3051d, type: 2}

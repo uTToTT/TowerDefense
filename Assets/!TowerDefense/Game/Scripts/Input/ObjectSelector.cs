@@ -5,29 +5,30 @@ using UnityEngine;
 
 public class ObjectSelector : IDisposable
 {
-    public event Action<MapObject> OnObjectSelected;
-
-    private readonly MapManager _mapManager;
-    private readonly CellSelectionFactory _selectionFactory; // relocate to ObjectSelectorView
-    private readonly PlayerInputController _playerInputController; // change to interface
+    private readonly CellSelectionFactory _selectionFactory;
+    private readonly DragAndDropController _dragController;
+    private readonly MapController _mapController;
+    private readonly GridController _gridController;
 
     private MapObject _selectedObject;
 
-    private readonly List<CellSelection> _selections = new(); 
+    private readonly List<CellSelection> _selections = new();
 
     #region Init
 
     public ObjectSelector(
-        PlayerInputController playerInputController,
-        MapManager mapManager,
-        CellSelectionFactory selectionFactory)
+        CellSelectionFactory selectionFactory,
+        DragAndDropController dragAndDropController,
+        MapController mapController,
+        GridController gridController
+        )
     {
-        _mapManager = mapManager;
-        _playerInputController = playerInputController;
         _selectionFactory = selectionFactory;
+        _dragController = dragAndDropController;
+        _mapController = mapController;
+        _gridController = gridController;
 
-        _playerInputController.OnTapPerformed += OnTapPerformed;
-        _playerInputController.OnTapCanceled += OnTapCanceled;
+        Subscribe();
     }
 
     public void Dispose()
@@ -39,23 +40,42 @@ public class ObjectSelector : IDisposable
 
     public void Tick(float dt)
     {
-        //if(_selectedObject != null)
-        //{
-        //    MapManager.Instance.ClearSellection();
-        //    MapManager.Instance.DrawBorderMapObject(_selectedObject);
-        //}
+        if (_selectedObject != null)
+        {
+            ClearSellection();
+            DrawObjectBorder(_selectedObject);
+        }
     }
 
-    private void OnTapPerformed()
+    private void OnDragStarted(MapObject dragged)
     {
-        //var cell = _mapManager.Raycast();
-
-        TrySelectObject(null);
+        TrySelectObject(dragged);
     }
 
-    private void OnTapCanceled()
+    private void OnDragCanceled(MapObject dragged)
     {
-        UnselectObject();
+        UnselectObject(dragged);
+    }
+
+    public void DrawObjectBorder(MapObject mapObject)
+    {
+        var worldPos = mapObject.transform.position;
+        var mapPos = MapUtils.WorldToMap(worldPos, _gridController.Grid);
+        var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
+
+        for (int i = 0; i < occupiedCells.Count; i++)
+        {
+            var seleciton = _selectionFactory.Create();
+            seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], _gridController.Grid);
+
+            if (_mapController.IsCellAvailable(occupiedCells[i]))
+                seleciton.SetBusyColor();
+            else
+                seleciton.SetFreeColor();
+
+            seleciton.transform.rotation = Quaternion.identity;
+            _selections.Add(seleciton);
+        }
     }
 
     public void ClearSellection()
@@ -70,70 +90,28 @@ public class ObjectSelector : IDisposable
         _selections.Clear();
     }
 
-    private void TrySelectObject(CellData cell)
+    private void TrySelectObject(MapObject obj)
     {
-        //if (_mapManager.TryGetObject(cell, out var mapObject))
-        //{
-        //    _selectedObject = mapObject;
-
-        //    //MapManager.Instance.ClearSellection();
-        //    //MapManager.Instance.DrawBorderMapObject(_selectedObject);
-        //    MapManager.Instance.PlacementController.BeginDrag(_selectedObject);
-        //}
+        _selectedObject = obj;
     }
 
-    private void UnselectObject()
+    private void UnselectObject(MapObject obj)
     {
         if (_selectedObject == null) return;
 
-        //MapManager.Instance.ClearSellection();
-        //MapManager.Instance.PlacementController.EndDrag(_selectedObject);
-
+        ClearSellection();
         _selectedObject = null;
     }
 
     private void Subscribe()
     {
-        _playerInputController.OnTapPerformed += OnTapPerformed;
-        _playerInputController.OnTapCanceled += OnTapCanceled;
+        _dragController.OnDragStarted += OnDragStarted;
+        _dragController.OnDragEnded += OnDragCanceled;
     }
 
     private void Unsubscride()
     {
-        _playerInputController.OnTapPerformed -= OnTapPerformed;
-        _playerInputController.OnTapCanceled -= OnTapCanceled;
-    }
-
-    public void DrawBorderMapObject(MapObject mapObject)
-    {
-        //var worldPos = mapObject.transform.position;
-        //var mapPos = MapUtils.WorldToMap(worldPos, _grid);
-        //var occupiedCells = MapUtils.GetOccupiedCells(mapPos, mapObject.Shape);
-
-        //for (int i = 0; i < occupiedCells.Count; i++)
-        //{
-        //    var seleciton = _selectionFactory.Create();
-        //    seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], Grid);
-
-        //    if (IsCellBusy(occupiedCells[i]))
-        //        seleciton.SetBusyColor();
-        //    else
-        //        seleciton.SetFreeColor();
-
-        //    seleciton.transform.rotation = Quaternion.identity;
-        //    _selections.Add(seleciton);
-        //}
-    }
-
-    public CellData Raycast()
-    {
-        //if (_playerInputController.IsPointerOverUI())
-        //    return null;
-
-        //var worldPos = _playerInputController.GetPointerPosition();
-        //var mapPos = MapUtils.WorldToMap(worldPos, Grid);
-
-        //return GetCellData(mapPos);
-        return null;
+        _dragController.OnDragStarted -= OnDragStarted;
+        _dragController.OnDragEnded -= OnDragCanceled;
     }
 }
