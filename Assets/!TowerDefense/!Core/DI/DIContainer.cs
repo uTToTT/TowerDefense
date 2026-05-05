@@ -71,7 +71,7 @@ namespace TToTT.Core.DI
             resolvingStack.Add(type);
             resolvingPath.Add(type);
 
-            iobject result;
+            object result;
 
             if (!_bindings.TryGetValue(type, out var binding))
             {

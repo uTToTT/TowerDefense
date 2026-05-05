@@ -14,6 +14,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private ButtonWrapper _reroll;
     [SerializeField] private WalletView _walletView;
     [SerializeField] private MapObjectFactoryRegistry _mapObjectFactoryRegistry;
+    [SerializeField] private MapObjectPreviewFactoryRegistry _mapObjectPreviewFactoryRegistry;
 
     private GameLoop _gameLoop;
 
@@ -29,7 +30,8 @@ public class UnityEntryPoint : MonoBehaviour
             _shopConfig,
             _productSlot,
             _reroll,
-            _mapObjectFactoryRegistry).Install(container);
+            _mapObjectFactoryRegistry,
+            _mapObjectPreviewFactoryRegistry).Install(container);
 
         _gameLoop = container.Resolve<GameLoop>();
     }

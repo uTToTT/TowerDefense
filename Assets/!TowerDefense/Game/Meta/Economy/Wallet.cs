@@ -15,7 +15,7 @@ public class Wallet
 
     #region API
 
-    public bool CanSpend(double amount) => _money <= amount && amount >= 0;
+    public bool CanSpend(double amount) => _money >= amount && amount >= 0;
 
     public bool Spend(double amount)
     {

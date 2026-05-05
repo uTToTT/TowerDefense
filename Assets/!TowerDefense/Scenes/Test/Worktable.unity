@@ -11305,6 +11305,7 @@ MonoBehaviour:
   _reroll: {fileID: 2143027454}
   _walletView: {fileID: 1592763382}
   _mapObjectFactoryRegistry: {fileID: 11400000, guid: 51b1af45e833c784b972084f0a3dcc0d, type: 2}
+  _mapObjectPreviewFactoryRegistry: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
 --- !u!1001 &995354112
 PrefabInstance:
   m_ObjectHideFlags: 0

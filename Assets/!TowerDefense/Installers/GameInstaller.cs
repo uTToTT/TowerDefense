@@ -14,6 +14,7 @@ namespace TToTT.TowerDefense.Installers
         private readonly ProductSlot[] _productSlots;
         private readonly ButtonWrapper _reroll;
         private readonly MapObjectFactoryRegistry _objectFactoryRegistry;
+        private readonly MapObjectPreviewFactoryRegistry _objectPreviewFactoryRegistry;
 
         public GameInstaller(
             CellFactoryRegistry cellFactoryRegistry,
@@ -21,7 +22,9 @@ namespace TToTT.TowerDefense.Installers
             ShopConfig shopConfig,
             ProductSlot[] productSlots,
             ButtonWrapper reroll,
-            MapObjectFactoryRegistry objectFactoryRegistry)
+            MapObjectFactoryRegistry objectFactoryRegistry,
+            MapObjectPreviewFactoryRegistry objectPreviewFactoryRegistry
+            )
         {
             _cellFactoryRegistry = cellFactoryRegistry;
             _grid = grid;
@@ -29,17 +32,23 @@ namespace TToTT.TowerDefense.Installers
             _productSlots = productSlots;
             _reroll = reroll;
             _objectFactoryRegistry = objectFactoryRegistry;
+            _objectPreviewFactoryRegistry = objectPreviewFactoryRegistry;
         }
 
         public void Install(DIContainer container)
         {
             new InputInstaller().Install(container);
             new VFXInstaller().Install(container);
-            new MapInstaller(_cellFactoryRegistry, _grid, _objectFactoryRegistry).Install(container);
+            new MapInstaller(
+                _cellFactoryRegistry,
+                _grid,
+                _objectFactoryRegistry,
+                _objectPreviewFactoryRegistry).Install(container);
             new EconomyInstaller(_shopConfig, _productSlots, _reroll).Install(container);
 
             container.Bind<TowerManager>(Lifetime.Singleton);
             container.Bind<EnemyManager>(Lifetime.Singleton);
+            container.Bind<GameStateMachine>(Lifetime.Singleton);
             container.Bind<GameLoop>(Lifetime.Singleton);
         }
     }
