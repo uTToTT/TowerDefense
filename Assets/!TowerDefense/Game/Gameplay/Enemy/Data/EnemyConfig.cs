@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemyConfig : ScriptableObject
 {
     [HorizontalLine]
-    [SerializeField] private EnemyType _enemyType;
-    [HorizontalLine]
     [SerializeField, Min(1)] private float _hp;
     [SerializeField, Range(0, 1)] private float _armor;
     [SerializeField, Range(0, 20)] private int _damage;
@@ -21,7 +19,6 @@ public class EnemyConfig : ScriptableObject
     [SerializeField, Range(0, 20)] private float _freezingTime;
 
 
-    public EnemyType EnemyType => _enemyType;
     public float HP => _hp;
     public float Armor => _armor;
     public int Damage => _damage;

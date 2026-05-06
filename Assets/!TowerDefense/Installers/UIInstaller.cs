@@ -1,25 +1,24 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.UI;
 
-namespace TToTT.TowerDefense.UI
+namespace TToTT.TowerDefense.Installers
 {
     public class UIInstaller : IInstaller
     {
-        private readonly UIWindowsController _windowsController;
-        private readonly IWalletView _walletView;
+        private readonly UIContext _ctx;
 
-        public UIInstaller(
-            UIWindowsController windowsController,
-            IWalletView walletView)
+        public UIInstaller(UIContext ctx)
         {
-            _windowsController = windowsController;
-            _walletView = walletView;
+            _ctx = ctx;
         }
 
         public void Install(DIContainer container)
         {
-            container.BindInstance(_windowsController);
-            container.BindInstance<IWalletView>(_walletView);
+            container.BindInstance<MainMenuController>(_ctx.MainMenu);
+            container.BindInstance<GameplayInterfaceController>(_ctx.Gameplay);
+            container.BindInstance<UIWindowsController>(_ctx.WindowsController);
+            container.BindInstance<IWalletView>(_ctx.WalletView);
 
             container.Bind<UIFlowController>(Lifetime.Singleton);
         }

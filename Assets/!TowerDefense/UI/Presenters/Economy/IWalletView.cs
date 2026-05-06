@@ -1,4 +1,7 @@
-public interface IWalletView 
+namespace TToTT.TowerDefense.UI
 {
-    void SetBalance(double amount);
+    public interface IWalletView
+    {
+        void SetBalance(double amount);
+    }
 }

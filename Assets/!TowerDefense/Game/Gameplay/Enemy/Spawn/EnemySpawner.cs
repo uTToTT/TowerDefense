@@ -1,12 +1,15 @@
+using System;
 using TToTT.TowerDefense.Map;
 
 namespace TToTT.TowerDefense.Enemies
 {
     public class EnemySpawner
     {
+        public event Action<Enemy> OnSpawned;
+        public event Action<Enemy> OnDeath;
+
         private readonly EnemyFactoryRegistry _factory;
         private readonly RouteController _routes;
-        private readonly EnemyManager _enemyManager;
         private readonly GridController _grid;
         private readonly EconomyController _economyController;
         private readonly IPlayerTarget _playerTarget;
@@ -18,7 +21,6 @@ namespace TToTT.TowerDefense.Enemies
         public EnemySpawner(
             EnemyFactoryRegistry factory,
             RouteController routes,
-            EnemyManager enemyManager,
             GridController grid,
             EconomyController economyController,
             IPlayerTarget playerTarget)
@@ -26,7 +28,6 @@ namespace TToTT.TowerDefense.Enemies
             _factory = factory;
             _factory.Init();
             _routes = routes;
-            _enemyManager = enemyManager;
             _grid = grid;
             _economyController = economyController;
             _playerTarget = playerTarget;
@@ -50,7 +51,7 @@ namespace TToTT.TowerDefense.Enemies
 
             InitEnemy(group, enemy);
 
-            _enemyManager.Register(enemy);
+            OnSpawned?.Invoke(enemy);
             _spawnedCount++;
 
             // TODO: impement IDebugger
@@ -106,16 +107,16 @@ namespace TToTT.TowerDefense.Enemies
             enemy.BuildRoute(routePoints);
 
             enemy.OnReachedFinish += _playerTarget.TakeDamage;
-            enemy.OnDeath += OnDeath;
+            enemy.OnDeath += Death;
         }
 
-        private void OnDeath(Enemy enemy)
+        private void Death(Enemy enemy)
         {
             enemy.OnReachedFinish -= _playerTarget.TakeDamage;
-            enemy.OnDeath -= OnDeath;
+            enemy.OnDeath -= Death;
 
             _factory.Return(enemy);
-            _enemyManager.Unregister(enemy);
+            OnDeath?.Invoke(enemy);
             _economyController.AddMoney(enemy.MoneyDrop);
         }
     }

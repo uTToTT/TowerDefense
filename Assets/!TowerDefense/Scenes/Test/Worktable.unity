@@ -9500,6 +9500,53 @@ MonoBehaviour:
   _scrollSpeed: 0.1
   _xDirection: 1
   _yDirection: 1
+--- !u!1 &339692080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 339692082}
+  - component: {fileID: 339692081}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &339692081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339692080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5433375f45548db4ab304d08cec6bafe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  _maxHP: 20
+  _currHp: 19
+  _hpText: {fileID: 1925491286}
+--- !u!4 &339692082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339692080}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.73683, y: -4.91311, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &359705976
 GameObject:
   m_ObjectHideFlags: 0
@@ -9995,6 +10042,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -60}
   m_SizeDelta: {x: 850, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &597723085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 597723086}
+  - component: {fileID: 597723087}
+  m_Layer: 0
+  m_Name: UnityEntryPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &597723086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597723085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985328394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &597723087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597723085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267ac65145267c44bbe474b3a4887c83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityEntryPoint
+  _map: {fileID: 1497569892}
+  _shop: {fileID: 866420203}
+  _ui: {fileID: 1667351482}
+  _enemy: {fileID: 1535182196}
+  _player: {fileID: 339692081}
 --- !u!1 &619261878
 GameObject:
   m_ObjectHideFlags: 0
@@ -10898,6 +10994,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855138207}
   m_CullTransparentMesh: 1
+--- !u!1 &866420201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 866420202}
+  - component: {fileID: 866420203}
+  m_Layer: 0
+  m_Name: ShopContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &866420202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866420201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985328394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &866420203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866420201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02fccc2a8670fa344ae898ffa6246972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.Installers.ShopContext
+  Config: {fileID: 11400000, guid: 1c8b77a137c3636489fb88f9230e01ac, type: 2}
+  Slots:
+  - {fileID: 959805151}
+  - {fileID: 1435939758}
+  - {fileID: 1605502823}
+  RerollButton: {fileID: 2143027454}
 --- !u!1 &929783385
 GameObject:
   m_ObjectHideFlags: 0
@@ -11259,7 +11405,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 985328394}
-  - component: {fileID: 985328395}
   m_Layer: 0
   m_Name: '[ENTRY_POINT]'
   m_TagString: Untagged
@@ -11279,33 +11424,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 597723086}
+  - {fileID: 1497569891}
+  - {fileID: 866420202}
+  - {fileID: 1667351481}
+  - {fileID: 1535182195}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &985328395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985328393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 267ac65145267c44bbe474b3a4887c83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnityEntryPoint
-  _uiWindowController: {fileID: 1986337647}
-  _cellFactoryRegistry: {fileID: 11400000, guid: e6bfcacb05d33f24f95df905372471ea, type: 2}
-  _grid: {fileID: 1448192072}
-  _shopConfig: {fileID: 11400000, guid: 1c8b77a137c3636489fb88f9230e01ac, type: 2}
-  _productSlot:
-  - {fileID: 959805151}
-  - {fileID: 1435939758}
-  - {fileID: 1605502823}
-  _reroll: {fileID: 2143027454}
-  _walletView: {fileID: 1592763382}
-  _mapObjectFactoryRegistry: {fileID: 11400000, guid: 51b1af45e833c784b972084f0a3dcc0d, type: 2}
-  _mapObjectPreviewFactoryRegistry: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
 --- !u!1001 &995354112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12766,6 +12892,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476769805}
   m_CullTransparentMesh: 1
+--- !u!1 &1497569890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1497569891}
+  - component: {fileID: 1497569892}
+  m_Layer: 0
+  m_Name: MapContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1497569891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497569890}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985328394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1497569892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497569890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa74460d3350f274083ba97fbc1926fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.Installers.MapContext
+  Grid: {fileID: 1448192072}
+  CellFactory: {fileID: 11400000, guid: e6bfcacb05d33f24f95df905372471ea, type: 2}
+  ObjectFactory: {fileID: 11400000, guid: 51b1af45e833c784b972084f0a3dcc0d, type: 2}
+  PreviewFactory: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
+--- !u!1 &1535182194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1535182195}
+  - component: {fileID: 1535182196}
+  m_Layer: 0
+  m_Name: EnemyContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1535182195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535182194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985328394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1535182196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535182194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ccb472a9e7b6a4c94b88cf6b784785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.Installers.EnemyContext
+  Factory: {fileID: 11400000, guid: a303de85d4eb57148b519fda06a706dd, type: 2}
 --- !u!1 &1582055104
 GameObject:
   m_ObjectHideFlags: 0
@@ -13126,6 +13345,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1667351480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1667351481}
+  - component: {fileID: 1667351482}
+  m_Layer: 0
+  m_Name: UIContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1667351481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667351480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 985328394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1667351482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667351480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534a71e5145bfa64b97a8e13f737898f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.Installers.UIContext
+  WindowsController: {fileID: 1986337647}
+  WalletView: {fileID: 1592763382}
+  MainMenu: {fileID: 1582055106}
+  Gameplay: {fileID: 952929443}
 --- !u!1 &1669110794
 GameObject:
   m_ObjectHideFlags: 0
@@ -14882,7 +15149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf7ccff7771e084cbcccbe9766813db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.UI.UIWindowsController
-  _windowDatas: []
+  _windowDatas:
+  - _type: 2
+    _elements:
+    - {fileID: 1663431591}
+  - _type: 1
+    _elements:
+    - {fileID: 180144520}
 --- !u!1 &2052978198
 GameObject:
   m_ObjectHideFlags: 0
@@ -15319,3 +15592,4 @@ SceneRoots:
   - {fileID: 1448192073}
   - {fileID: 1625364986}
   - {fileID: 1093447683}
+  - {fileID: 339692082}

@@ -1,28 +1,15 @@
 using System;
-using TToTT.TowerDefense.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MainMenuController : InterfaceContorller
+namespace TToTT.TowerDefense.UI
 {
-    [SerializeField] private ButtonWrapper _playButton;
-
-    #region Init
-
-    public void Init()
+    public class MainMenuController : InterfaceContorller
     {
-        InitButtons();
-    }
+        [SerializeField] private ButtonWrapper _playButton;
 
-    #endregion
-
-    private void InitButtons()
-    {
-        throw new NotImplementedException();
-        _playButton.OnClick += () =>
+        public void Init(Action onPlay)
         {
-            //UIFlowController.Instance.OpenPreparing();
-            //GameController.Instance.RestartGame();
-        };
+            _playButton.OnClick += onPlay;
+        }
     }
 }

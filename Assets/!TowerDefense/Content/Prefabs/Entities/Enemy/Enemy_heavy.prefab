@@ -58,19 +58,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f21f688a13b5a4180930afa8163eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 3
-  _laneOffset: 0
-  _config: {fileID: 0}
+  _type: 3
+  _config: {fileID: 11400000, guid: ecf8163c91b314e4d94b9681d65a30ec, type: 2}
   _deathExmplosion: {fileID: 301133372147137093, guid: 7c0436961c5f05e478cb3b878ed7fe61, type: 3}
-  _hitVFX: {fileID: 8894308957241097060}
-  TESTSPEED: 0
-  TESTARMOR: 0
-  TESTFREEZESTACK: 0
-  TESTFREEZEDEBUFF: 0
-  TESTHP: 0
-  TESTMONEY: 0
-  TESTDISTANCE: 0
-  _spriteRenderer: {fileID: 4467077684530474365}
+  _hitVFX: {fileID: 0}
 --- !u!61 &477218754207019544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1162,10 +1153,5 @@ PrefabInstance:
 --- !u!4 &1328719562530942092 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7868833692682202541, guid: 2a5a15df47f171946999de01c5653346, type: 3}
-  m_PrefabInstance: {fileID: 9170236949921153313}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &8894308957241097060 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 301133372147137093, guid: 2a5a15df47f171946999de01c5653346, type: 3}
   m_PrefabInstance: {fileID: 9170236949921153313}
   m_PrefabAsset: {fileID: 0}

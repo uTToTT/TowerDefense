@@ -110,7 +110,13 @@ namespace TToTT.Core.DI
             var constructors = type.GetConstructors();
 
             if (constructors.Length == 0)
-                throw new Exception($"No public constructors for {type}");
+            {
+                var path = string.Join(" -> ", resolvingPath.Select(t => t.Name));
+                throw new Exception(
+                    $"No public constructors for [{type.Name}]\n" +
+                    $"Dependency path: {path} -> {type.Name}\n" +
+                    $"Hint: likely an interface without BindInstance, or a ScriptableObject bound via Bind<T> instead of BindInstance");
+            }
 
             var constructor = constructors
                 .OrderByDescending(c => c.GetParameters().Length)

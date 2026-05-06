@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 
 namespace TToTT.TowerDefense.Enemies
 {
-    public class EnemyManager
+    public class EnemyManager : IDisposable, ITickable
     {
         private readonly WaveController _waveController;
+        private readonly EnemySpawner _enemySpawner;
 
         private readonly List<Enemy> _enemies = new();
         private readonly List<Enemy> _toAdd = new();
@@ -14,9 +16,15 @@ namespace TToTT.TowerDefense.Enemies
 
         #region Init
 
-        public EnemyManager(WaveController waveController)
+        public EnemyManager(
+            WaveController waveController,
+            EnemySpawner enemySpawner)
         {
             _waveController = waveController;
+            _enemySpawner = enemySpawner;
+
+            _enemySpawner.OnSpawned += Register;
+            _enemySpawner.OnDeath += Unregister;
         }
 
         #endregion
@@ -66,6 +74,12 @@ namespace TToTT.TowerDefense.Enemies
 
                 _toAdd.Clear();
             }
+        }
+
+        public void Dispose()
+        {
+            _enemySpawner.OnSpawned -= Register;
+            _enemySpawner.OnDeath -= Unregister;
         }
     }
 }

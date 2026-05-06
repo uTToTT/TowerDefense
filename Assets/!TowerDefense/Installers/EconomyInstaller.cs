@@ -5,29 +5,20 @@ namespace TToTT.TowerDefense.Installers
 {
     public class EconomyInstaller : IInstaller
     {
-        private readonly ShopConfig _shopConfig;
-        private readonly ProductSlot[] _productSlots;
-        private readonly ButtonWrapper _reroll;
+        private readonly ShopContext _ctx;
 
-        public EconomyInstaller(
-            ShopConfig shopConfig,
-            ProductSlot[] productSlots,
-            ButtonWrapper reroll)
+        public EconomyInstaller(ShopContext ctx)
         {
-            _shopConfig = shopConfig;
-            _productSlots = productSlots;
-            _reroll = reroll;
+            _ctx = ctx;
         }
 
         public void Install(DIContainer container)
         {
-            container.BindInstance(_shopConfig);
+            container.BindInstance<ShopConfig>(_ctx.Config);
 
             container.Bind<Wallet>(Lifetime.Singleton);
             container.Bind<EconomyController>(Lifetime.Singleton);
             container.Bind<ShopController>(Lifetime.Singleton);
-
-            container.Resolve<ShopController>().Init(_productSlots, _reroll);
         }
     }
 }

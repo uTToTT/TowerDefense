@@ -1,55 +1,22 @@
 using System;
-using TToTT.TowerDefense.UI;
 using UnityEngine;
 
-public class GameplayInterfaceController : InterfaceContorller
+namespace TToTT.TowerDefense.UI
 {
-    [SerializeField] private ButtonWrapper _victoryButtonToMain;
-    [SerializeField] private ButtonWrapper _defeatButtonToMain;
-
-    #region Init
-
-    public void Init()
+    public class GameplayInterfaceController : InterfaceContorller
     {
-        InitButtons();
-        InitActions();
-    }
+        [SerializeField] private ButtonWrapper _victoryButtonToMain;
+        [SerializeField] private ButtonWrapper _defeatButtonToMain;
 
-    #endregion
+        public void Init(Action onBackToMain)
+        {
+            _victoryButtonToMain.OnClick += onBackToMain;
+            _defeatButtonToMain.OnClick += onBackToMain;
+        }
 
-    private void InitButtons()
-    {
-        throw new NotImplementedException();
-        //_victoryButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
-        //_defeatButtonToMain.OnClick += UIFlowController.Instance.OpenMain;
-    }
-
-    private void InitActions()
-    {
-      
-    }
-
-    public void OpenVictory()
-    {
-        CloseAll();
-        OpenFrame(FrameType.Victory);
-    }
-
-    public void OpenDefeat()
-    {
-        CloseAll();
-        OpenFrame(FrameType.Defeat);
-    }
-
-    public void OpenPreparing()
-    {
-        CloseAll();
-        OpenFrame(FrameType.Preparing);
-    }
-
-    public void OpenWave()
-    {
-        CloseAll();
-        OpenFrame(FrameType.Wave);
+        public void OpenVictory() { CloseAll(); OpenFrame(FrameType.Victory); }
+        public void OpenDefeat() { CloseAll(); OpenFrame(FrameType.Defeat); }
+        public void OpenPreparing() { CloseAll(); OpenFrame(FrameType.Preparing); }
+        public void OpenWave() { CloseAll(); OpenFrame(FrameType.Wave); }
     }
 }

@@ -1,4 +1,5 @@
 using TMPro;
+using TToTT.TowerDefense.UI;
 using UnityEngine;
 
 public class WalletView : MonoBehaviour, IWalletView

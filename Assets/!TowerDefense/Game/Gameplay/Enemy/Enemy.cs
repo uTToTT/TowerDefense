@@ -11,6 +11,7 @@ namespace TToTT.TowerDefense.Enemies
         public event Action<Enemy> OnDeath;
         public event Action<float> OnReachedFinish;
 
+        [SerializeField] private EnemyType _type;
         [Expandable]
         [SerializeField] private EnemyConfig _config;
 
@@ -48,7 +49,7 @@ namespace TToTT.TowerDefense.Enemies
         public float RemainingDistance => _pathController.RemainingDistance;
 
         public BuffController BuffController => _buffController;
-        public EnemyType EnemyType => _config.EnemyType;
+        public EnemyType EnemyType => _type;
 
         #region Init
 

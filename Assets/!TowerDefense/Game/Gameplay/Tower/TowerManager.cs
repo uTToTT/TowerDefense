@@ -4,7 +4,7 @@ using TToTT.TowerDefense.Map;
 
 namespace TToTT.TowerDefense.Towers
 {
-    public class TowerManager : IDisposable
+    public class TowerManager : IDisposable, ITickable
     {
         private readonly List<Tower> _builtTowers = new();
         private readonly List<Tower> _toAdd = new();

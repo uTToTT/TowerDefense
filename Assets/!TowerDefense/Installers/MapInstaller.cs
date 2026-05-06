@@ -5,26 +5,15 @@ using UnityEngine;
 
 namespace TToTT.TowerDefense.Installers
 {
-    // TODO: implement Grid as IGrid to decouple Unity and domain
     public class MapInstaller : IInstaller
     {
         private const string MAP_CONTAINER_NAME = "MapContainer";
 
-        private readonly CellFactoryRegistry _cellFactoryRegistry;
-        private readonly Grid _grid;
-        private readonly MapObjectFactoryRegistry _objFactoryRegistry;
-        private readonly MapObjectPreviewFactoryRegistry _objPreviewFactoryRegistry;
+        private readonly MapContext _ctx;
 
-        public MapInstaller(
-            CellFactoryRegistry cellFactoryRegistry,
-            Grid grid,
-            MapObjectFactoryRegistry objectFactoryRegistry,
-            MapObjectPreviewFactoryRegistry objectPreviewFactoryRegistry)
+        public MapInstaller(MapContext ctx)
         {
-            _cellFactoryRegistry = cellFactoryRegistry;
-            _grid = grid;
-            _objFactoryRegistry = objectFactoryRegistry;
-            _objPreviewFactoryRegistry = objectPreviewFactoryRegistry;
+            _ctx = ctx;
         }
 
         public void Install(DIContainer container)
@@ -32,10 +21,10 @@ namespace TToTT.TowerDefense.Installers
             // Scene objects
             var go = new GameObject(MAP_CONTAINER_NAME);
             container.BindInstance(go.AddComponent<CellContainer>());
-            container.BindInstance(_cellFactoryRegistry);
-            container.BindInstance(_objFactoryRegistry);
-            container.BindInstance(_objPreviewFactoryRegistry);
-            container.BindInstance(_grid);
+            container.BindInstance<CellFactoryRegistry>(_ctx.CellFactory);
+            container.BindInstance<MapObjectFactoryRegistry>(_ctx.ObjectFactory);
+            container.BindInstance<MapObjectPreviewFactoryRegistry>(_ctx.PreviewFactory);
+            container.BindInstance<Grid>(_ctx.Grid);
 
             // Core
             container.Bind<MapBounds>(Lifetime.Singleton);

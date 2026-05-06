@@ -8,46 +8,34 @@ namespace TToTT.TowerDefense.Installers
 {
     public class GameInstaller : IInstaller
     {
-        private readonly CellFactoryRegistry _cellFactoryRegistry;
-        private readonly Grid _grid;
-        private readonly ShopConfig _shopConfig;
-        private readonly ProductSlot[] _productSlots;
-        private readonly ButtonWrapper _reroll;
-        private readonly MapObjectFactoryRegistry _objectFactoryRegistry;
-        private readonly MapObjectPreviewFactoryRegistry _objectPreviewFactoryRegistry;
+        private readonly MapContext _mapCtx;
+        private readonly ShopContext _shopCtx;
+        private readonly Player _player;
+        private readonly EnemyContext _enemyCtx;
 
         public GameInstaller(
-            CellFactoryRegistry cellFactoryRegistry,
-            Grid grid,
-            ShopConfig shopConfig,
-            ProductSlot[] productSlots,
-            ButtonWrapper reroll,
-            MapObjectFactoryRegistry objectFactoryRegistry,
-            MapObjectPreviewFactoryRegistry objectPreviewFactoryRegistry
-            )
+            MapContext mapContext,
+            ShopContext shopCtx,
+            Player player,
+            EnemyContext enemyCtx)
         {
-            _cellFactoryRegistry = cellFactoryRegistry;
-            _grid = grid;
-            _shopConfig = shopConfig;
-            _productSlots = productSlots;
-            _reroll = reroll;
-            _objectFactoryRegistry = objectFactoryRegistry;
-            _objectPreviewFactoryRegistry = objectPreviewFactoryRegistry;
+            _player = player;
+            _mapCtx = mapContext;
+            _shopCtx = shopCtx;
+            _player = player;
+            _enemyCtx = enemyCtx;
         }
 
         public void Install(DIContainer container)
         {
             new InputInstaller().Install(container);
             new VFXInstaller().Install(container);
-            new MapInstaller(
-                _cellFactoryRegistry,
-                _grid,
-                _objectFactoryRegistry,
-                _objectPreviewFactoryRegistry).Install(container);
-            new EconomyInstaller(_shopConfig, _productSlots, _reroll).Install(container);
+            new MapInstaller(_mapCtx).Install(container);
+            new EconomyInstaller(_shopCtx).Install(container);
+            new EnemyInstaller(_enemyCtx).Install(container);
 
+            container.BindInstance<IPlayerTarget>(_player);
             container.Bind<TowerManager>(Lifetime.Singleton);
-            container.Bind<EnemyManager>(Lifetime.Singleton);
             container.Bind<GameStateMachine>(Lifetime.Singleton);
             container.Bind<GameLoop>(Lifetime.Singleton);
         }

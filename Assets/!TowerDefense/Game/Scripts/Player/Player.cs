@@ -3,18 +3,18 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPlayerTarget
 {
     [SerializeField] private CameraShaker _shaker;
 
-    [SerializeField] private int _maxHP;
-    [SerializeField] private int _currHp;
+    [SerializeField] private float _maxHP;
+    [SerializeField] private float _currHp;
     [HorizontalLine]
 
     [SerializeField] private TextMeshProUGUI _hpText;
 
     public static Player Instance { get; private set; }
-    public int CurrHP
+    public float CurrHP
     {
         get => _currHp;
         set
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     public void Heal(int amount) => CurrHP += amount;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         CurrHP -= damage;
         _shaker.Shake();
@@ -48,5 +48,6 @@ public class Player : MonoBehaviour
     }
 
     private void Defeat() => throw new NotImplementedException();
+
     //GameLoop.Instance.PlayerBaseDestroyed();
 }

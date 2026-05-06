@@ -18,11 +18,17 @@ namespace TToTT.TowerDefense.UI
         }
 
         public void OpenWindow(WindowType type) => SetWindowState(type, true);
-        public void CloseWindow(WindowType type) => SetWindowState(type, true);
+        public void CloseWindow(WindowType type) => SetWindowState(type, false);
 
         private void SetWindowState(WindowType type, bool state)
         {
-            if (!_windowMap.ContainsKey(type)) return;
+            if (!_windowMap.ContainsKey(type))
+            {
+#if UNITY_EDITOR
+                Debug.Log($"Not found window [{type}]");
+#endif
+                return;
+            }
 
             foreach (var e in _windowMap[type].Elements)
                 e.SetActive(state);
