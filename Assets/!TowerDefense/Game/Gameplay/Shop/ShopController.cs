@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using TToTT.TowerDefense.Shop;
 using TToTT.TowerDefense.Towers;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class ShopController : IDisposable
         TowerManager towerManager,
         MapObjectPreviewFactoryRegistry previewFactory,
         ShopConfig config,
-        ProductSlot[] slots,
+        ShopSlots slots,
         ButtonWrapper rerollButton,
         ILogger logger)
     {
@@ -34,12 +35,14 @@ public class ShopController : IDisposable
         _dragAndDrop = dragAndDrop;
         _towerManager = towerManager;
         _previewFactory = previewFactory;
-        _previewFactory.Init();
         _config = config;
-        _totalWeight = CalculateTotalWeight();
-        _slots = slots;
+        _slots = slots.Slots;
         _reroll = rerollButton;
         _logger = logger;
+
+        _previewFactory.Init();
+        _totalWeight = CalculateTotalWeight();
+        _economy.AddMoney(_config.StartBalance);
 
         foreach (var slot in _slots)
         {
@@ -77,6 +80,7 @@ public class ShopController : IDisposable
         foreach (var slot in _slots)
         {
             var product = PickWeighted();
+            _logger.Log(product.Cost.ToString());
             var preview = _previewFactory.Create(product.ProductType);
             slot.SetProduct(preview, product);
         }
@@ -97,7 +101,6 @@ public class ShopController : IDisposable
 
     private void HandleDragCanceled(ProductSlot slot)
     {
-        _activeSlot = null;
         _dragAndDrop.EndDrag();
     }
 

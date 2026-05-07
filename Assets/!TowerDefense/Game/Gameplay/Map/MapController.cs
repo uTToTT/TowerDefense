@@ -6,16 +6,15 @@ namespace TToTT.TowerDefense.Map
     /// <summary>
     /// 
     /// TODO:
-    /// - Route Controller/Provider
-    /// - MapValidator                  done
-    /// - MapDataController             done
-    /// - Dispose()                     done
+    /// - Route Controller/Provider     DONE
+    /// - MapValidator                  DONE
+    /// - MapDataController             DONE
+    /// - Dispose()                     DONE
     /// 
     /// </summary>
 
-    public class MapController : IDisposable, ITickable
+    public class MapController : IDisposable
     {
-        private readonly PlacementController _placementController;
         private readonly GridController _gridController;
         private readonly MapValidator _validator;
         private readonly MapDataService _dataService;
@@ -24,13 +23,11 @@ namespace TToTT.TowerDefense.Map
         #region Init
 
         public MapController(
-            PlacementController placementController,
             GridController gridController,
             MapValidator mapValidator,
             MapDataService dataService,
             RouteController routeController)
         {
-            _placementController = placementController;
             _gridController = gridController;
             _validator = mapValidator;
             _dataService = dataService;
@@ -39,19 +36,9 @@ namespace TToTT.TowerDefense.Map
 
         public void Dispose()
         {
-            _placementController.Dispose();
             _gridController.Dispose();
             _validator.Dispose();
             _dataService.Dispose();
-        }
-
-        #endregion
-
-        #region Game loop
-
-        public void Tick(float dt)
-        {
-            _placementController.Tick(dt);
         }
 
         #endregion
@@ -68,6 +55,18 @@ namespace TToTT.TowerDefense.Map
             if (!_validator.IsCellAvailable(pos)) return false;
 
             _dataService.RegisterMapObject(pos, mapObject);
+
+            return true;
+        }
+
+        public bool IsAreaAvailable(Vector2Int pos, MapObjectShape shape)
+        {
+            var occupiedCells = MapUtils.GetOccupiedCells(pos, shape);
+
+            foreach (var cell in occupiedCells)
+            {
+                if (!IsCellAvailable(cell)) return false;
+            }
 
             return true;
         }

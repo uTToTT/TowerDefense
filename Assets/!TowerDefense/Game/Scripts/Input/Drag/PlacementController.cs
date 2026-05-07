@@ -8,26 +8,30 @@ public sealed class PlacementController : IDisposable
     public event Action OnCanceled;
 
     private readonly GridController _gridController;
+    private readonly PlayerInputController _playerInputController;
+    private readonly MapController _mapController;
+
     private bool _isDragging;
-    private bool _enabled;
     private MapObject _draggedObject;
 
     public Grid Grid => _gridController.Grid;
 
-    public PlacementController(GridController gridController)
+    public PlacementController(
+        GridController gridController,
+        PlayerInputController playerInputController,
+        MapController mapController)
     {
         _gridController = gridController;
+        _playerInputController = playerInputController;
+        _mapController = mapController;
     }
 
     public void Tick(float dt)
     {
-        if (!_enabled || !_isDragging) return;
+        if (!_isDragging) return;
         if (_draggedObject != null)
-            DragUtils.SnapToPointer(_draggedObject.transform);
+            SnapToPointer(_draggedObject.transform);
     }
-
-    public void EnableDrag() => _enabled = true;
-    public void DisableDrag() => _enabled = false;
 
     public void BeginDrag(MapObject mapObject)
     {
@@ -45,6 +49,12 @@ public sealed class PlacementController : IDisposable
         var mapPos = MapUtils.WorldToMap(
             _draggedObject.transform.position,
             _gridController.Grid);
+
+        if (!_mapController.IsAreaAvailable(mapPos, mapObject.Shape))
+        {
+            Cancel();
+            return;
+        }
 
         _draggedObject.transform.position =
             MapUtils.MapToWorld(mapPos, _gridController.Grid);
@@ -66,6 +76,12 @@ public sealed class PlacementController : IDisposable
         _draggedObject = null;
         _isDragging = false;
         OnCanceled?.Invoke();
+    }
+
+    private void SnapToPointer(Transform transform)
+    {
+        var worldPos = _playerInputController.GetPointerPosition();
+        transform.position = worldPos;
     }
 
     public void Dispose() { }

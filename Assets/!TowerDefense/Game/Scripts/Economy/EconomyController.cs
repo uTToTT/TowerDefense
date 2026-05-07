@@ -11,7 +11,7 @@ public class EconomyController : IDisposable
         _wallet = wallet;
         _walletView = walletView;
 
-        SubOnEvents();
+        _wallet.OnBalanceChanged += _walletView.SetBalance;
     }
 
     public void Restart()
@@ -23,18 +23,8 @@ public class EconomyController : IDisposable
     public void AddMoney(float amount) => _wallet.Add(amount);
     public bool Spend(int moneyAmount) => _wallet.Spend(moneyAmount);
    
-    private void SubOnEvents()
-    {
-        _wallet.OnBalanceChanged += _walletView.SetBalance;
-    }
-
-    private void UnsubOnEvents()
-    {
-        _wallet.OnBalanceChanged -= _walletView.SetBalance;
-    }
-
     public void Dispose()
     {
-        UnsubOnEvents();
+        _wallet.OnBalanceChanged -= _walletView.SetBalance;
     }
 }

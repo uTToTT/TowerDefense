@@ -10,5 +10,6 @@ namespace TToTT.TowerDefense.Installers
         [SerializeField] public MapObjectFactoryRegistry ObjectFactory;
         [SerializeField] public MapObjectPreviewFactoryRegistry PreviewFactory;
         [SerializeField] public MapRegistry Maps;
+        [SerializeField] public CellSelectionFactory SelectionFactory;
     }
 }

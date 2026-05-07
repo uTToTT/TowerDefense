@@ -1,5 +1,6 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.Shop;
 
 namespace TToTT.TowerDefense.Installers
 {
@@ -15,8 +16,8 @@ namespace TToTT.TowerDefense.Installers
         public void Install(DIContainer container)
         {
             container.BindInstance<ShopConfig>(_ctx.Config);
-            container.BindInstance<ProductSlot[]>(_ctx.Slots);
             container.BindInstance<ButtonWrapper>(_ctx.RerollButton);
+            container.BindInstance(new ShopSlots(_ctx.Slots));
 
             container.Bind<Wallet>(Lifetime.Singleton);
             container.Bind<EconomyController>(Lifetime.Singleton);

@@ -24,6 +24,7 @@ public class ObjectSelector : IDisposable
         )
     {
         _selectionFactory = selectionFactory;
+        _selectionFactory.Init();
         _dragController = dragAndDropController;
         _mapController = mapController;
         _gridController = gridController;
@@ -69,9 +70,9 @@ public class ObjectSelector : IDisposable
             seleciton.transform.position = MapUtils.MapToWorld(occupiedCells[i], _gridController.Grid);
 
             if (_mapController.IsCellAvailable(occupiedCells[i]))
-                seleciton.SetBusyColor();
-            else
                 seleciton.SetFreeColor();
+            else
+                seleciton.SetBusyColor();
 
             seleciton.transform.rotation = Quaternion.identity;
             _selections.Add(seleciton);

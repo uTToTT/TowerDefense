@@ -12,7 +12,7 @@ public class PlayerInputController
 
     public bool IsPointerDown { get; private set; }
 
-    public void Init()
+    public PlayerInputController()
     {
         _input = new InputActions();
         _input.Enable();

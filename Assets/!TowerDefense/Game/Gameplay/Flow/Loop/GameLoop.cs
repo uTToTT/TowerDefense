@@ -30,6 +30,8 @@ public class GameLoop
         _uiFlowController = uiFlowController;
         _mapManager = mapManager;
 
+        _state.SetState(GameState.WaveStarted);
+
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);
         _tick.Register(_mapManager);

@@ -1,3 +1,6 @@
+
+using System;
+
 /// <summary> 
 /// 
 /// TODO:
@@ -5,11 +8,12 @@
 /// - MapDebugger
 /// 
 /// </summary>
-
 namespace TToTT.TowerDefense.Map
 {
-    public class MapManager : ITickable
+    public class MapManager : IDisposable, ITickable
     {
+        private readonly PlacementController _placementController;
+        private readonly ObjectSelector _objectSelector;
         private readonly MapController _controller;
         private readonly MapLoader _loader;
         private readonly MapComposer _composer;
@@ -19,16 +23,27 @@ namespace TToTT.TowerDefense.Map
         public MapManager(
             MapController mapController,
             MapLoader mapLoader,
-            MapComposer mapComposer)
+            MapComposer mapComposer,
+            ObjectSelector objectSelector,
+            PlacementController placementController)
         {
             _controller = mapController;
             _loader = mapLoader;
             _composer = mapComposer;
+            _objectSelector = objectSelector;
+            _placementController = placementController;
 
             // TEMP
 #if UNITY_EDITOR
             TryBuildMap(0);
 #endif
+        }
+
+        public void Dispose()
+        {
+            _controller.Dispose();
+            _composer.Dispose();
+            _placementController.Dispose();
         }
 
         #endregion
@@ -37,7 +52,8 @@ namespace TToTT.TowerDefense.Map
 
         public void Tick(float dt)
         {
-            _controller.Tick(dt);
+            _placementController.Tick(dt);
+            _objectSelector.Tick(dt);
         }
 
         #endregion

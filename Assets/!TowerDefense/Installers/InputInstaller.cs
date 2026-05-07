@@ -14,8 +14,6 @@ namespace TToTT.TowerDefense.Installers
         {
             container.Bind<PlayerInputController>(Lifetime.Singleton);
             container.Bind<DragAndDropController>(Lifetime.Singleton);
-            container.Bind<PlayerInputController>(Lifetime.Singleton);
-            container.Bind<ObjectSelector>(Lifetime.Singleton);
         }
     }
 }

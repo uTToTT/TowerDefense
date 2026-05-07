@@ -46,7 +46,7 @@ namespace TToTT.TowerDefense.Enemies
         public void Tick(float dt)
         {
             if (_state.State == WaveState.Pause) return;
-
+            return;
             switch (_state.State)
             {
                 case WaveState.Start:

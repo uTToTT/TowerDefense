@@ -24,6 +24,8 @@ namespace TToTT.TowerDefense.Map
         public bool IsCellAvailable(Vector2Int pos) =>
             _bounds.IsInside(pos) && !IsCellBusy(pos);
 
+
+
         public void Dispose() { }
     }
 }

@@ -26,6 +26,7 @@ namespace TToTT.TowerDefense.Installers
             container.BindInstance<MapObjectPreviewFactoryRegistry>(_ctx.PreviewFactory);
             container.BindInstance<Grid>(_ctx.Grid);
             container.BindInstance<MapRegistry>(_ctx.Maps);
+            container.BindInstance<CellSelectionFactory>(_ctx.SelectionFactory);
 
             // Core
             container.Bind<MapBounds>(Lifetime.Singleton);

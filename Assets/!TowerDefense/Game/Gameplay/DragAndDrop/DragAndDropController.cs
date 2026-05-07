@@ -35,6 +35,7 @@ public class DragAndDropController : IDisposable
     {
         if (_dragged == null) return;
         _placement.EndDrag(_dragged);
+        OnDragEnded?.Invoke(_dragged);
     }
 
     private void HandlePlaced(Vector2Int mapPos)
@@ -45,6 +46,7 @@ public class DragAndDropController : IDisposable
         if (!_buildController.TryBuild(preview.Type, mapPos, out var obj))
         {
             OnDropFailed?.Invoke(preview);
+            OnDragEnded?.Invoke(_dragged);
             return;
         }
 
@@ -54,6 +56,7 @@ public class DragAndDropController : IDisposable
     private void HandleCanceled()
     {
         OnDropFailed?.Invoke(_dragged);
+        OnDragEnded?.Invoke(_dragged);
         _dragged = null;
     }
 
