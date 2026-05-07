@@ -1,4 +1,5 @@
 using TToTT.TowerDefense.Enemies;
+using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.Towers;
 using TToTT.TowerDefense.UI;
 
@@ -10,6 +11,7 @@ public class GameLoop
     private readonly TowerManager _towerManager;
     private readonly ShopController _shopController;
     private readonly UIFlowController _uiFlowController;
+    private readonly MapManager _mapManager;
 
     public GameLoop(
         GameStateMachine gameStateMachine,
@@ -17,7 +19,8 @@ public class GameLoop
         EnemyManager enemyManager,
         TowerManager towerManager,
         ShopController shopController,
-        UIFlowController uiFlowController)
+        UIFlowController uiFlowController,
+        MapManager mapManager)
     {
         _state = gameStateMachine;
         _tick = tickController;
@@ -25,6 +28,7 @@ public class GameLoop
         _towerManager = towerManager;
         _shopController = shopController;
         _uiFlowController = uiFlowController;
+        _mapManager = mapManager;
 
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -10,14 +11,13 @@ public abstract class FactoryBase<T> : ScriptableObject,
     [SerializeField] private int _maxCount = 100;
 
     [Header("Info")]
-    [SerializeField] public int _totalPreload;
-    [SerializeField] public int _totalGet;
-    [SerializeField] public int _activeCount;
-    [SerializeField] public int _poolCount;
-    [SerializeField] public int _totalCount;
+    [SerializeField, ReadOnly] public int _totalPreload;
+    [SerializeField, ReadOnly] public int _totalGet;
+    [SerializeField, ReadOnly] public int _activeCount;
+    [SerializeField, ReadOnly] public int _poolCount;
+    [SerializeField, ReadOnly] public int _totalCount;
 
     private ObjectPool<T> _pool;
-    private bool _initialized;
 
     protected T Prefab => _prefab;
 
@@ -34,35 +34,29 @@ public abstract class FactoryBase<T> : ScriptableObject,
 
     public void Init()
     {
-        if (_initialized) return;
         if (_pool != null) return;
 
         var poolParam = new ObjectPoolParameters(_capacity, _maxCount);
         _pool = new ObjectPool<T>(poolParam, OnPreload, OnGet, OnReturn);
-        _initialized = true;
     }
 
     public T Create()
     {
-        Init();
         return _pool.Get();
     }
 
     public void Return(T item)
     {
-        Init();
         _pool.Return(item);
     }
 
     public void ReturnAll()
     {
-        Init();
         _pool.ReturnAll();
     }
 
     public void Dispose()
     {
-        Init();
         foreach (var entity in _pool.AllObjects)
             entity.OnDestroyed();
 

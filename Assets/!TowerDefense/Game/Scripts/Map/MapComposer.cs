@@ -15,6 +15,7 @@ namespace TToTT.TowerDefense.Map
             GridController gridController)
         {
             _factories = factories;
+            _factories.Init();
             _cellContainer = cellContainer;
             _gridController = gridController;
         }
@@ -37,6 +38,7 @@ namespace TToTT.TowerDefense.Map
 
         public void Dispose()
         {
+
         }
     }
 }

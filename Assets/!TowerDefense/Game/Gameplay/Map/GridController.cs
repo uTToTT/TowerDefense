@@ -6,19 +6,23 @@ namespace TToTT.TowerDefense.Map
     public class GridController : IDisposable
     {
         private readonly Grid _grid;
+        private readonly MapBounds _bounds;
 
         public Grid Grid => _grid;
 
-        public GridController(Grid grid)
+        public GridController(
+            Grid grid,
+            MapBounds bounds)
         {
             _grid = grid;
+            _bounds = bounds;
         }
 
-        public void CenterGrid(float mapWidth, float mapHeight)
+        public void CenterGrid()
         {
             Vector3 gridSize = new Vector3(
-                mapWidth * _grid.cellSize.x,
-                mapWidth * _grid.cellSize.y,
+                _bounds.Width * _grid.cellSize.x,
+                _bounds.Height * _grid.cellSize.y,
                 0f
             );
 

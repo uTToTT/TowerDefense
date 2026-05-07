@@ -51,7 +51,7 @@ namespace TToTT.TowerDefense.Map
         {
             _dataService.SetMapData(mapData);
             _routeController.SetRoutes(mapData);
-            _gridController.CenterGrid(mapData.width, mapData.height);
+            _gridController.CenterGrid();
         }
 
         public bool TryPlaceObject(Vector2Int pos, MapObject mapObject)

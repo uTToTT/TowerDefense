@@ -1,3 +1,4 @@
+using TToTT.TowerDefense.Map;
 using UnityEngine;
 
 namespace TToTT.TowerDefense.Installers
@@ -8,5 +9,6 @@ namespace TToTT.TowerDefense.Installers
         [SerializeField] public CellFactoryRegistry CellFactory;
         [SerializeField] public MapObjectFactoryRegistry ObjectFactory;
         [SerializeField] public MapObjectPreviewFactoryRegistry PreviewFactory;
+        [SerializeField] public MapRegistry Maps;
     }
 }

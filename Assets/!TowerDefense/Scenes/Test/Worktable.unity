@@ -12940,6 +12940,7 @@ MonoBehaviour:
   CellFactory: {fileID: 11400000, guid: e6bfcacb05d33f24f95df905372471ea, type: 2}
   ObjectFactory: {fileID: 11400000, guid: 51b1af45e833c784b972084f0a3dcc0d, type: 2}
   PreviewFactory: {fileID: 11400000, guid: 88a747e0253c2f9498ef45e98690cf14, type: 2}
+  Maps: {fileID: 11400000, guid: 7c79899301b513a4a854273c76162372, type: 2}
 --- !u!1 &1535182194
 GameObject:
   m_ObjectHideFlags: 0

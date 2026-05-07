@@ -2,9 +2,21 @@ namespace TToTT.TowerDefense.Map
 {
     public class MapLoader
     {
-        public MapData Load(int index)
+        private readonly MapRegistry _registry;
+
+        public MapLoader(MapRegistry registry)
         {
-            return null;
+            _registry = registry;
+        }
+
+        public bool TryLoad(int index, out MapData map)
+        {
+            if (!_registry.TryGetMap(index, out map))
+            {
+                // TODO: IDebugger
+                throw new System.Exception($"Map [{index}] not found in registry");
+            }
+            return true;
         }
     }
 }
