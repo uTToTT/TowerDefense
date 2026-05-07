@@ -13,7 +13,7 @@ namespace TToTT.TowerDefense.Map
     /// 
     /// </summary>
 
-    public class MapController : IDisposable
+    public class MapController : IDisposable, ITickable
     {
         private readonly PlacementController _placementController;
         private readonly GridController _gridController;
@@ -43,6 +43,15 @@ namespace TToTT.TowerDefense.Map
             _gridController.Dispose();
             _validator.Dispose();
             _dataService.Dispose();
+        }
+
+        #endregion
+
+        #region Game loop
+
+        public void Tick(float dt)
+        {
+            _placementController.Tick(dt);
         }
 
         #endregion
@@ -84,5 +93,6 @@ namespace TToTT.TowerDefense.Map
                 }
             }
         }
+
     }
 }

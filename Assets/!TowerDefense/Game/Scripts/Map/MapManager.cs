@@ -8,7 +8,7 @@
 
 namespace TToTT.TowerDefense.Map
 {
-    public class MapManager
+    public class MapManager : ITickable
     {
         private readonly MapController _controller;
         private readonly MapLoader _loader;
@@ -29,6 +29,15 @@ namespace TToTT.TowerDefense.Map
 #if UNITY_EDITOR
             TryBuildMap(0);
 #endif
+        }
+
+        #endregion
+
+        #region Game loop
+
+        public void Tick(float dt)
+        {
+            _controller.Tick(dt);
         }
 
         #endregion

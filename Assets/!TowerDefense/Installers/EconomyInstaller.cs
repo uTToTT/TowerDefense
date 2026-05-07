@@ -15,6 +15,8 @@ namespace TToTT.TowerDefense.Installers
         public void Install(DIContainer container)
         {
             container.BindInstance<ShopConfig>(_ctx.Config);
+            container.BindInstance<ProductSlot[]>(_ctx.Slots);
+            container.BindInstance<ButtonWrapper>(_ctx.RerollButton);
 
             container.Bind<Wallet>(Lifetime.Singleton);
             container.Bind<EconomyController>(Lifetime.Singleton);

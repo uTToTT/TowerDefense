@@ -1,17 +1,18 @@
 using System;
 using System.Linq;
-using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.Towers;
 using UnityEngine;
 
 public class ShopController : IDisposable
 {
+    private readonly ILogger _logger;
+
     private readonly EconomyController _economy;
     private readonly DragAndDropController _dragAndDrop;
-    private readonly BuildController _buildController;
     private readonly TowerManager _towerManager;
     private readonly MapObjectPreviewFactoryRegistry _previewFactory;
-    private readonly ShopConfig _config; 
+    private readonly ShopConfig _config;
+    private readonly ButtonWrapper _reroll;
 
     private ProductSlot[] _slots;
     private ProductSlot _activeSlot;
@@ -22,33 +23,33 @@ public class ShopController : IDisposable
     public ShopController(
         EconomyController economy,
         DragAndDropController dragAndDrop,
-        BuildController buildController,
         TowerManager towerManager,
         MapObjectPreviewFactoryRegistry previewFactory,
-        ShopConfig config)
+        ShopConfig config,
+        ProductSlot[] slots,
+        ButtonWrapper rerollButton,
+        ILogger logger)
     {
         _economy = economy;
         _dragAndDrop = dragAndDrop;
-        _buildController = buildController;
         _towerManager = towerManager;
         _previewFactory = previewFactory;
+        _previewFactory.Init();
         _config = config;
         _totalWeight = CalculateTotalWeight();
-
-        _dragAndDrop.OnDropSuccess += HandleDropSuccess;
-        _dragAndDrop.OnDropFailed += HandleDropFailed;
-    }
-
-    public void Init(ProductSlot[] slots, ButtonWrapper rerollButton)
-    {
         _slots = slots;
-        rerollButton.OnClick += TryReroll;
+        _reroll = rerollButton;
+        _logger = logger;
 
         foreach (var slot in _slots)
         {
             slot.OnDragPerformed += HandleDragStarted;
             slot.OnDragCanceled += HandleDragCanceled;
         }
+
+        _reroll.OnClick += TryReroll;
+        _dragAndDrop.OnDropSuccess += HandleDropSuccess;
+        _dragAndDrop.OnDropFailed += HandleDropFailed;
     }
 
     public void Restart()
@@ -83,8 +84,13 @@ public class ShopController : IDisposable
 
     private void HandleDragStarted(ProductSlot slot)
     {
-        if (!_economy.CanSpend(slot.ProductConfig.Cost)) return;
-
+        if (!_economy.CanSpend(slot.ProductConfig.Cost))
+        {
+#if UNITY_EDITOR
+            _logger.Log("Not enough money!");
+#endif
+            return;
+        }
         _activeSlot = slot;
         _dragAndDrop.BeginDrag(slot.MapObject);
     }
@@ -156,6 +162,13 @@ public class ShopController : IDisposable
 
     public void Dispose()
     {
+        foreach (var slot in _slots)
+        {
+            slot.OnDragPerformed -= HandleDragStarted;
+            slot.OnDragCanceled -= HandleDragCanceled;
+        }
+
+        _reroll.OnClick -= TryReroll;
         _dragAndDrop.OnDropSuccess -= HandleDropSuccess;
         _dragAndDrop.OnDropFailed -= HandleDropFailed;
     }

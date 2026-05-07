@@ -38,6 +38,8 @@ namespace TToTT.TowerDefense.Installers
             container.Bind<TowerManager>(Lifetime.Singleton);
             container.Bind<GameStateMachine>(Lifetime.Singleton);
             container.Bind<GameLoop>(Lifetime.Singleton);
+
+            container.Bind<ILogger, Logger>();
         }
     }
 }

@@ -32,6 +32,7 @@ public class GameLoop
 
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);
+        _tick.Register(_mapManager);
     }
 
     public void Tick(float dt) 
