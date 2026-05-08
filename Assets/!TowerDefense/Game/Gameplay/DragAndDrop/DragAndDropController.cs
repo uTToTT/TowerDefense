@@ -27,6 +27,17 @@ public class DragAndDropController : IDisposable
     public void BeginDrag(MapObject preview)
     {
         _dragged = preview;
+
+        if (_dragged is Tower tower)
+        {
+            tower.ShowRange();
+        }
+
+        if (_dragged is TowerPreview towerPreview)
+        {
+            towerPreview.Enable();
+        }
+
         _placement.BeginDrag(preview);
         OnDragStarted?.Invoke(_dragged);
     }
@@ -34,6 +45,17 @@ public class DragAndDropController : IDisposable
     public void EndDrag()
     {
         if (_dragged == null) return;
+
+        if (_dragged is Tower tower)
+        {
+            tower.HideRange();
+        }
+
+        if (_dragged is TowerPreview towerPreview)
+        {
+            towerPreview.Disable();
+        }
+
         _placement.EndDrag(_dragged);
         OnDragEnded?.Invoke(_dragged);
     }

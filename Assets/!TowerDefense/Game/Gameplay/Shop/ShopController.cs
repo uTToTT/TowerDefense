@@ -82,6 +82,12 @@ public class ShopController : IDisposable
             var product = PickWeighted();
             _logger.Log(product.Cost.ToString());
             var preview = _previewFactory.Create(product.ProductType);
+
+            if (preview is TowerPreview tower)
+            {
+                tower.Disable();
+            }
+
             slot.SetProduct(preview, product);
         }
     }
@@ -95,6 +101,7 @@ public class ShopController : IDisposable
 #endif
             return;
         }
+
         _activeSlot = slot;
         _dragAndDrop.BeginDrag(slot.MapObject);
     }
