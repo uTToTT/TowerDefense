@@ -30,7 +30,8 @@ public class GameLoop
         _uiFlowController = uiFlowController;
         _mapManager = mapManager;
 
-        _state.SetState(GameState.WaveStarted);
+        _state.SetState(GameState.Pause);
+        Restart();
 
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);
@@ -39,8 +40,16 @@ public class GameLoop
 
     public void Tick(float dt) 
     {
-        if (_state.State != GameState.WaveStarted) return;
-
         _tick.Tick(dt);
+    }
+
+    private void Restart()
+    {
+        _state.SetState(GameState.Pause);
+
+        _enemyManager.Restart();
+        _towerManager.Restart();
+        _shopController.Restart();
+        _mapManager.Restart();
     }
 }

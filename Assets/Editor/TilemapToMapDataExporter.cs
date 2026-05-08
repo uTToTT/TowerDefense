@@ -15,8 +15,8 @@ public class TilemapToMapDataExporter // TODO: refactor to data-driven approach 
     private const string ENTRANCE = "Entrance_TMap";
     private const string EXIT = "Exit_TMap";
 
-    public const string MAP_DATA_PATH = "Assets/!TowerDefense/!Data/Resources/Maps/Map_{0}.asset"; 
-    public const string MAP_FOLDER_PATH = "Assets/!TowerDefense/!Data/Resources/Maps";
+    public const string MAP_DATA_PATH = "Assets/!TowerDefense/Content/ScriptableObjects/Maps/Map_{0}.asset"; 
+    public const string MAP_FOLDER_PATH = "Assets/!TowerDefense/Content/ScriptableObjects/Maps";
 
     public static string GetFullPath(int index) => string.Format(MAP_DATA_PATH, index);
 

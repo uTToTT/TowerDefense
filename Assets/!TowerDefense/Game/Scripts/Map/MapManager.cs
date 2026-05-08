@@ -13,7 +13,7 @@ namespace TToTT.TowerDefense.Map
     public class MapManager : IDisposable, ITickable
     {
         private readonly PlacementController _placementController;
-        private readonly ObjectSelector _objectSelector;
+        private readonly SellectionController _objectSelector;
         private readonly MapController _controller;
         private readonly MapLoader _loader;
         private readonly MapComposer _composer;
@@ -24,7 +24,7 @@ namespace TToTT.TowerDefense.Map
             MapController mapController,
             MapLoader mapLoader,
             MapComposer mapComposer,
-            ObjectSelector objectSelector,
+            SellectionController objectSelector,
             PlacementController placementController)
         {
             _controller = mapController;
@@ -54,6 +54,11 @@ namespace TToTT.TowerDefense.Map
         {
             _placementController.Tick(dt);
             _objectSelector.Tick(dt);
+        }
+
+        public void Restart()
+        {
+            _composer.Release();
         }
 
         #endregion

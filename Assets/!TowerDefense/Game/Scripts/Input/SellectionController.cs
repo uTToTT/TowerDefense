@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TToTT.TowerDefense.Map;
 using UnityEngine;
 
-public class ObjectSelector : IDisposable
+public class SellectionController : IDisposable
 {
     private readonly CellSelectionFactory _selectionFactory;
     private readonly DragAndDropController _dragController;
@@ -16,7 +16,7 @@ public class ObjectSelector : IDisposable
 
     #region Init
 
-    public ObjectSelector(
+    public SellectionController(
         CellSelectionFactory selectionFactory,
         DragAndDropController dragAndDropController,
         MapController mapController,

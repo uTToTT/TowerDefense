@@ -35,7 +35,7 @@ namespace TToTT.TowerDefense.Installers
 
             // Grid
             container.Bind<GridController>(Lifetime.Singleton);
-            container.Bind<ObjectSelector>(Lifetime.Singleton);
+            container.Bind<SellectionController>(Lifetime.Singleton);
 
             // Routes  
             container.Bind<MapRoutes>(Lifetime.Singleton);

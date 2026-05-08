@@ -43,9 +43,12 @@ public class CellFactoryRegistry : ScriptableObject
         _map[cell.CellType].Return(cell);
     }
 
-    public void ReturnAll(Cell cell)
+    public void ReturnAll()
     {
-        _map[cell.CellType].ReturnAll();
+        foreach (var factory in _factories)
+        {
+            factory.ReturnAll();
+        }
     }
 
     public void Dispose(Cell cell)

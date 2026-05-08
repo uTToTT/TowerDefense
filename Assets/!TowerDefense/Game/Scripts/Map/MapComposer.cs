@@ -36,9 +36,14 @@ namespace TToTT.TowerDefense.Map
             }
         }
 
+        public void Release()
+        {
+            _factories.ReturnAll();
+        }
+
         public void Dispose()
         {
-
+            Release();
         }
     }
 }
