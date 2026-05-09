@@ -166,8 +166,8 @@ public sealed class PathController : IDisposable
     {
         float offset = lane switch
         {
-            PathLane.Left => 0.25f,
-            PathLane.Right => -0.25f,
+            PathLane.Left => UnityEngine.Random.Range(0.10f, 0.25f),
+            PathLane.Right => UnityEngine.Random.Range(-0.10f, -0.25f),
             _ => 0
         };
 

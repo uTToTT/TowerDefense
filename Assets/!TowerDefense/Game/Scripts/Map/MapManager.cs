@@ -1,5 +1,5 @@
-
 using System;
+using TToTT.TowerDefense.Level;
 
 /// <summary> 
 /// 
@@ -32,11 +32,6 @@ namespace TToTT.TowerDefense.Map
             _composer = mapComposer;
             _objectSelector = objectSelector;
             _placementController = placementController;
-
-            // TEMP
-#if UNITY_EDITOR
-            TryBuildMap(0);
-#endif
         }
 
         public void Dispose()
@@ -63,9 +58,9 @@ namespace TToTT.TowerDefense.Map
 
         #endregion
 
-        public bool TryBuildMap(int index)
+        public bool TryBuildMap(LevelData level)
         {
-            if (!_loader.TryLoad(index, out var mapData))
+            if (!_loader.TryLoad(level, out var mapData))
             {
                 return false;
             }

@@ -29,6 +29,7 @@ namespace TToTT.TowerDefense.Enemies
         public void InitData(WavesData waves)
         {
             _waves = waves;
+            PrepareNextWave();
         }
 
         public void Restart()
@@ -40,7 +41,6 @@ namespace TToTT.TowerDefense.Enemies
 
             _state.SetState(WaveState.Pause);
 
-            PrepareNextWave();
         }
 
         public void Tick(float dt)

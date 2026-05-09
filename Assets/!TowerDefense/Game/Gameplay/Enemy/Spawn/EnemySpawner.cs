@@ -97,7 +97,7 @@ namespace TToTT.TowerDefense.Enemies
             else
                 lane = group.Lane;
 
-            var spawnPos = MapUtils.GridToWorld(route.entrance, _grid.Grid);
+            var spawnPos = MapUtils.MapToWorld(route.entrance, _grid.Grid);
 
             enemy.transform.position = spawnPos;
 

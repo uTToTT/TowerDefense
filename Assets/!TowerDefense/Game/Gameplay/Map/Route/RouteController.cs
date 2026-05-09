@@ -36,10 +36,16 @@ namespace TToTT.TowerDefense.Map
             foreach (var route in map.routes)
             {
                 var points = route.points
-                    .Select(p => MapUtils.GridToWorld(p, _gridController.Grid))
+                    .Select(p => MapUtils.MapToWorld(p, _gridController.Grid))
                     .ToList();
 
                 _cachedPoints[route.routeId] = points;
+            }
+
+            foreach (var route in map.routes)
+            {
+                foreach (var point in route.points)
+                Debug.Log($"[{point.x}][{point.y}]");
             }
         }
 

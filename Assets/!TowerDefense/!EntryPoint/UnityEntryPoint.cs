@@ -10,6 +10,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private ShopContext _shop;
     [SerializeField] private UIContext _ui;
     [SerializeField] private EnemyContext _enemy;
+    [SerializeField] private LevelContext _level;
 
     [HorizontalLine]
     [SerializeField] private Player _player;
@@ -21,7 +22,7 @@ public class UnityEntryPoint : MonoBehaviour
         var container = new DIContainer();
         new CoreInstaller().Install(container);
         new UIInstaller(_ui).Install(container);
-        new GameInstaller(_map, _shop, _player, _enemy).Install(container);
+        new GameInstaller(_map, _shop, _player, _enemy, _level).Install(container);
         _gameLoop = container.Resolve<GameLoop>();
     }
 

@@ -46,8 +46,8 @@ namespace TToTT.TowerDefense.Map
         public void SetMap(MapData mapData)
         {
             _dataService.SetMapData(mapData);
-            _routeController.SetRoutes(mapData);
             _gridController.CenterGrid();
+            _routeController.SetRoutes(mapData);
         }
 
         public bool TryPlaceObject(Vector2Int pos, MapObject mapObject)

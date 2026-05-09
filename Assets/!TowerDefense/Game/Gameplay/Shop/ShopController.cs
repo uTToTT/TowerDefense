@@ -80,7 +80,6 @@ public class ShopController : IDisposable
         foreach (var slot in _slots)
         {
             var product = PickWeighted();
-            _logger.Log(product.Cost.ToString());
             var preview = _previewFactory.Create(product.ProductType);
 
             if (preview is TowerPreview tower)
