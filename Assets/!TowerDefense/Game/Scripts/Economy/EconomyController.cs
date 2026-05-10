@@ -1,30 +1,38 @@
 using System;
-using TToTT.TowerDefense.UI;
+using TToTT.TowerDefense.UI.Label;
 
-public class EconomyController : IDisposable
+namespace TToTT.TowerDefense.Economy
 {
-    private readonly IWalletView _walletView;
-    private readonly Wallet _wallet;
-
-    public EconomyController(Wallet wallet, IWalletView walletView)
+    public class EconomyController : IDisposable
     {
-        _wallet = wallet;
-        _walletView = walletView;
+        private readonly ILabelView _moneyText;
+        private readonly Wallet _wallet;
 
-        _wallet.OnBalanceChanged += _walletView.SetBalance;
-    }
+        public EconomyController(Wallet wallet, LabelRegistry labels)
+        {
+            _wallet = wallet;
+            _moneyText = labels.Get(LabelId.Money);
 
-    public void Restart()
-    {
-        _wallet.Spend(_wallet.Money);
-    }
+            _wallet.OnBalanceChanged += UpdateLabel;
+        }
 
-    public bool CanSpend(double amount) => _wallet.CanSpend(amount);
-    public void AddMoney(float amount) => _wallet.Add(amount);
-    public bool Spend(int moneyAmount) => _wallet.Spend(moneyAmount);
-   
-    public void Dispose()
-    {
-        _wallet.OnBalanceChanged -= _walletView.SetBalance;
+        public void Restart()
+        {
+            _wallet.Spend(_wallet.Money);
+        }
+
+        public bool CanSpend(double amount) => _wallet.CanSpend(amount);
+        public void AddMoney(float amount) => _wallet.Add(amount);
+        public bool Spend(int moneyAmount) => _wallet.Spend(moneyAmount);
+
+        public void Dispose()
+        {
+            _wallet.OnBalanceChanged -= UpdateLabel;
+        }
+
+        private void UpdateLabel(double amount)
+        {
+            _moneyText.SetText(amount, "N0");
+        }
     }
 }

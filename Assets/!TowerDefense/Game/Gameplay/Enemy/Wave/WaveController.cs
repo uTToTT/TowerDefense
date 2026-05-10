@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TToTT.TowerDefense.UI.Label;
 
 namespace TToTT.TowerDefense.Enemies
 {
@@ -6,6 +7,7 @@ namespace TToTT.TowerDefense.Enemies
     {
         private readonly WaveStateMachine _state;
         private readonly EnemySpawner _spawner;
+        private readonly ILabelView _waveText;
 
         private float _delayBeforeWave; // TODO: replace to config
         private float _waveDelayTimer;
@@ -19,11 +21,13 @@ namespace TToTT.TowerDefense.Enemies
 
         public WaveController(
             WaveStateMachine state,
-            EnemySpawner spawner)
+            EnemySpawner spawner,
+            LabelRegistry labels)
         {
             _delayBeforeWave = 3;
             _state = state;
             _spawner = spawner;
+            _waveText = labels.Get(LabelId.Wave);
         }
 
         public void InitData(WavesData waves)
@@ -95,7 +99,7 @@ namespace TToTT.TowerDefense.Enemies
         private void PrepareNextWave()
         {
             _currWaveIndex++;
-
+            _waveText.SetText($"Wave {_currWaveIndex + 1}/{LastWave}");
             if (_currWaveIndex >= _waves.Waves.Length)
             {
                 _state.SetState(WaveState.Completed);

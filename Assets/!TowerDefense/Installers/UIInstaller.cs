@@ -1,6 +1,7 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
 using TToTT.TowerDefense.UI;
+using TToTT.TowerDefense.UI.Label;
 
 namespace TToTT.TowerDefense.Installers
 {
@@ -18,7 +19,7 @@ namespace TToTT.TowerDefense.Installers
             container.BindInstance<MainMenuController>(_ctx.MainMenu);
             container.BindInstance<GameplayInterfaceController>(_ctx.Gameplay);
             container.BindInstance<UIWindowsController>(_ctx.WindowsController);
-            container.BindInstance<IWalletView>(_ctx.WalletView);
+            container.BindInstance<LabelRegistry>(_ctx.Labels);
 
             container.Bind<UIFlowController>(Lifetime.Singleton);
         }

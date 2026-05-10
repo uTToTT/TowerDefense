@@ -1,5 +1,6 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.Economy;
 using TToTT.TowerDefense.Shop;
 
 namespace TToTT.TowerDefense.Installers

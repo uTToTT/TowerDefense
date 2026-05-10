@@ -1,23 +1,26 @@
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(TMP_Text))]
-public class LabelView : MonoBehaviour, ILabelView
+namespace TToTT.TowerDefense.UI.Label
 {
-    [SerializeField] private TMP_Text _text;
-
-    #region Init
-
-    private void Reset()
+    [RequireComponent(typeof(TMP_Text))]
+    public class LabelView : MonoBehaviour, ILabelView
     {
-        if (_text == null)
-            GetComponent<TMP_Text>();
-    }
+        [SerializeField] private TMP_Text _text;
 
-    #endregion
+        #region Init
 
-    public void SetText(string text)
-    {
-        _text.SetText(text);
+        private void Reset()
+        {
+            if (_text == null)
+                _text = GetComponent<TMP_Text>();
+        }
+
+        #endregion
+
+        public void SetText(string text)
+        {
+            _text.SetText(text);
+        }
     }
 }

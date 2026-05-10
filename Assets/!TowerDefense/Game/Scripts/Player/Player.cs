@@ -1,4 +1,5 @@
 using System;
+using TToTT.TowerDefense.UI.Label;
 using UnityEngine;
 
 public class Player : IPlayerTarget
@@ -22,9 +23,10 @@ public class Player : IPlayerTarget
     }
 
     // TODO: replace shaker to VFX layer
-    public Player(CameraShaker cameraShaker)
+    public Player(CameraShaker cameraShaker, LabelRegistry labelRegistry)
     {
         _shaker = cameraShaker;
+        _hpBar = labelRegistry.Get(LabelId.PlayerHP);
         Restart();
     }
 

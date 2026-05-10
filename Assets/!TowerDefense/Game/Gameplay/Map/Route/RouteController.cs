@@ -41,12 +41,6 @@ namespace TToTT.TowerDefense.Map
 
                 _cachedPoints[route.routeId] = points;
             }
-
-            foreach (var route in map.routes)
-            {
-                foreach (var point in route.points)
-                Debug.Log($"[{point.x}][{point.y}]");
-            }
         }
 
         public bool TryGetRoute(RouteId id, out Route route) =>
