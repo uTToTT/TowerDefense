@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// TODO: refactor to pure C# class
 public abstract class InterfaceContorller : MonoBehaviour 
 {
     [SerializeField] private List<FrameData> _frameDatas;

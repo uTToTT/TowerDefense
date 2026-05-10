@@ -1,3 +1,4 @@
+using TToTT.TowerDefense.UI.Button;
 using UnityEngine;
 
 namespace TToTT.TowerDefense.Installers
@@ -6,6 +7,5 @@ namespace TToTT.TowerDefense.Installers
     {
         [SerializeField] public ShopConfig Config;
         [SerializeField] public ProductSlot[] Slots;
-        [SerializeField] public ButtonWrapper RerollButton;
     }
 }

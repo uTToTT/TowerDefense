@@ -1,5 +1,6 @@
 using TToTT.TowerDefense.UI;
 using TToTT.TowerDefense.UI.Label;
+using TToTT.TowerDefense.UI.Button;
 using UnityEngine;
 
 namespace TToTT.TowerDefense.Installers
@@ -10,5 +11,6 @@ namespace TToTT.TowerDefense.Installers
         [SerializeField] public MainMenuController MainMenu;
         [SerializeField] public GameplayInterfaceController Gameplay;
         [SerializeField] public LabelRegistry Labels;
+        [SerializeField] public ButtonRegistry Buttons;
     }
 }

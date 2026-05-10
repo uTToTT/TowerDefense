@@ -1,14 +1,16 @@
 using System;
-using UnityEngine;
+using TToTT.TowerDefense.UI.Button;
 
 namespace TToTT.TowerDefense.UI
 {
     public class MainMenuController : InterfaceContorller
     {
-        [SerializeField] private ButtonWrapper _playButton;
+        private IUIButton _playButton;
 
-        public void Init(Action onPlay)
+        public void Init(Action onPlay, ButtonRegistry buttons)
         {
+            _playButton = buttons.Get(ButtonId.Play);
+
             _playButton.OnClick += onPlay;
         }
     }

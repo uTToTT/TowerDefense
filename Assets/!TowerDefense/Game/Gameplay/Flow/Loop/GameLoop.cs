@@ -18,17 +18,19 @@ public class GameLoop : IDisposable
     private readonly WaveController _waveController;
     private readonly Player _player;
 
+    #region Init
+
     public GameLoop(
-        GameStateMachine gameStateMachine,
-        TickController tickController,
-        TowerManager towerManager,
-        ShopController shopController,
-        UIFlowController uiFlowController,
-        MapManager mapManager,
-        EnemyManager enemyManager,
-        LevelManager levelManager,
-        WaveController waveController,
-        Player player)
+       GameStateMachine gameStateMachine,
+       TickController tickController,
+       TowerManager towerManager,
+       ShopController shopController,
+       UIFlowController uiFlowController,
+       MapManager mapManager,
+       EnemyManager enemyManager,
+       LevelManager levelManager,
+       WaveController waveController,
+       Player player)
     {
         _state = gameStateMachine;
         _tick = tickController;
@@ -47,9 +49,9 @@ public class GameLoop : IDisposable
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);
         _tick.Register(_mapManager);
-
-        StartLevel(0);
     }
+
+    #endregion
 
     public void Tick(float dt)
     {
@@ -58,7 +60,6 @@ public class GameLoop : IDisposable
 
     private void StartLevel(int index)
     {
-        _state.SetState(GameState.Pause);
         _mapManager.Restart();
         _towerManager.Restart();
         _shopController.Restart();
@@ -71,12 +72,17 @@ public class GameLoop : IDisposable
     {
         _mapManager.TryBuildMap(level);
         _waveController.InitData(level.Waves);
-        _state.SetState(GameState.WaveStarted);
+        _state.SetState(GameState.LevelStarted);
     }
 
     private void Defeat()
     {
         _state.SetState(GameState.GameDefeat);
+    }
+
+    private void Victory()
+    {
+        _state.SetState(GameState.GameVictory);
     }
 
     public void Dispose()

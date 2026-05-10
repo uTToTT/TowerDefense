@@ -10008,6 +10008,61 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -60}
   m_SizeDelta: {x: 850, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &538219736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 538219737}
+  - component: {fileID: 538219738}
+  m_Layer: 0
+  m_Name: ButtonRegistry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &538219737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538219736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1667351481}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &538219738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538219736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dec8368cdb7d1743948f8337b7a9cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TToTT.TowerDefense.UI.Button.ButtonRegistry
+  _entries:
+  - Id: 0
+    View: {fileID: 1208237730}
+  - Id: 1
+    View: {fileID: 1780934759}
+  - Id: 2
+    View: {fileID: 2143027454}
+  - Id: 4
+    View: {fileID: 1747195492}
+  - Id: 3
+    View: {fileID: 995354114}
 --- !u!1 &619261878
 GameObject:
   m_ObjectHideFlags: 0
@@ -10884,7 +10939,6 @@ MonoBehaviour:
   - {fileID: 959805151}
   - {fileID: 1435939758}
   - {fileID: 1605502823}
-  RerollButton: {fileID: 2143027454}
 --- !u!1 &929783385
 GameObject:
   m_ObjectHideFlags: 0
@@ -11163,8 +11217,6 @@ MonoBehaviour:
     _type: 1
   - _frame: {fileID: 1669110794}
     _type: 2
-  _victoryButtonToMain: {fileID: 1747195492}
-  _defeatButtonToMain: {fileID: 995354114}
 --- !u!114 &959805151 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4610426424523511373, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
@@ -11402,7 +11454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6219664587882046592, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_Name
-      value: Button_Menu
+      value: FromDefeatToMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12883,7 +12935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   _frameDatas: []
-  _playButton: {fileID: 1208237730}
 --- !u!114 &1605502823 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4610426424523511373, guid: 77ea673ad09723941b08f2aab6fa3a11, type: 3}
@@ -13184,6 +13235,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1481300148}
+  - {fileID: 538219737}
   m_Father: {fileID: 985328394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1667351482
@@ -13202,6 +13254,7 @@ MonoBehaviour:
   MainMenu: {fileID: 1582055106}
   Gameplay: {fileID: 952929443}
   Labels: {fileID: 1481300149}
+  Buttons: {fileID: 538219738}
 --- !u!1 &1669110794
 GameObject:
   m_ObjectHideFlags: 0
@@ -13905,7 +13958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6219664587882046592, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_Name
-      value: Button_Menu
+      value: FromVictoryToMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14106,6 +14159,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5346668027447436000, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
   m_PrefabInstance: {fileID: 1780934754}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1780934759 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7497663406936676737, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
+  m_PrefabInstance: {fileID: 1780934754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 702375c5136dd674a8e9d8a661a38dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonWrapper
 --- !u!1 &1805251108
 GameObject:
   m_ObjectHideFlags: 0
@@ -15223,6 +15287,10 @@ PrefabInstance:
     - target: {fileID: 6219664587882046592, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_Name
       value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219664587882046592, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8148204831985283038, guid: 1cdf0fa254f17dd4c94c5b8b363f6b9b, type: 3}
       propertyPath: m_Color.b

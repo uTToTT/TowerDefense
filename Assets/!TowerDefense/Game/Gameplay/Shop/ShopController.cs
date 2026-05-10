@@ -3,6 +3,7 @@ using System.Linq;
 using TToTT.TowerDefense.Economy;
 using TToTT.TowerDefense.Shop;
 using TToTT.TowerDefense.Towers;
+using TToTT.TowerDefense.UI.Button;
 using UnityEngine;
 
 public class ShopController : IDisposable
@@ -14,7 +15,7 @@ public class ShopController : IDisposable
     private readonly TowerManager _towerManager;
     private readonly MapObjectPreviewFactoryRegistry _previewFactory;
     private readonly ShopConfig _config;
-    private readonly ButtonWrapper _reroll;
+    private readonly IUIButton _reroll;
 
     private ProductSlot[] _slots;
     private ProductSlot _activeSlot;
@@ -29,7 +30,7 @@ public class ShopController : IDisposable
         MapObjectPreviewFactoryRegistry previewFactory,
         ShopConfig config,
         ShopSlots slots,
-        ButtonWrapper rerollButton,
+        ButtonRegistry buttons,
         ILogger logger)
     {
         _economy = economy;
@@ -38,7 +39,7 @@ public class ShopController : IDisposable
         _previewFactory = previewFactory;
         _config = config;
         _slots = slots.Slots;
-        _reroll = rerollButton;
+        _reroll = buttons.Get(ButtonId.Reroll);
         _logger = logger;
 
         _previewFactory.Init();

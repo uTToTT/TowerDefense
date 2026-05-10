@@ -1,17 +1,20 @@
 using System;
-using UnityEngine;
+using TToTT.TowerDefense.UI.Button;
 
 namespace TToTT.TowerDefense.UI
 {
     public class GameplayInterfaceController : InterfaceContorller
     {
-        [SerializeField] private ButtonWrapper _victoryButtonToMain;
-        [SerializeField] private ButtonWrapper _defeatButtonToMain;
+        private IUIButton _fromVictoryToMainButton;
+        private IUIButton _fromDefeatToMainButton;
 
-        public void Init(Action onBackToMain)
+        public void Init(Action onBackToMain, ButtonRegistry buttons)
         {
-            _victoryButtonToMain.OnClick += onBackToMain;
-            _defeatButtonToMain.OnClick += onBackToMain;
+            _fromVictoryToMainButton = buttons.Get(ButtonId.FromVictoryToMain);
+            _fromDefeatToMainButton = buttons.Get(ButtonId.FromDefeatToMain);
+
+            _fromVictoryToMainButton.OnClick += onBackToMain;
+            _fromDefeatToMainButton.OnClick += onBackToMain;
         }
 
         public void OpenVictory() { CloseAll(); OpenFrame(FrameType.Victory); }

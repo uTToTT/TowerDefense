@@ -1,6 +1,7 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
 using TToTT.TowerDefense.UI;
+using TToTT.TowerDefense.UI.Button;
 using TToTT.TowerDefense.UI.Label;
 
 namespace TToTT.TowerDefense.Installers
@@ -20,6 +21,7 @@ namespace TToTT.TowerDefense.Installers
             container.BindInstance<GameplayInterfaceController>(_ctx.Gameplay);
             container.BindInstance<UIWindowsController>(_ctx.WindowsController);
             container.BindInstance<LabelRegistry>(_ctx.Labels);
+            container.BindInstance<ButtonRegistry>(_ctx.Buttons);
 
             container.Bind<UIFlowController>(Lifetime.Singleton);
         }

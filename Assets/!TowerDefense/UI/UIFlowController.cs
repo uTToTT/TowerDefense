@@ -1,3 +1,5 @@
+using TToTT.TowerDefense.UI.Button;
+
 namespace TToTT.TowerDefense.UI
 {
     public class UIFlowController
@@ -6,32 +8,35 @@ namespace TToTT.TowerDefense.UI
         private readonly GameStateMachine _gameState;
         private readonly MainMenuController _mainMenu;
         private readonly GameplayInterfaceController _gameplay;
+        private readonly ButtonRegistry _buttons;
 
         public UIFlowController(
             UIWindowsController windows,
             GameStateMachine gameState,
             MainMenuController mainMenu,
-            GameplayInterfaceController gameplay)
+            GameplayInterfaceController gameplay,
+            ButtonRegistry buttons)
         {
             _windows = windows;
             _gameState = gameState;
             _mainMenu = mainMenu;
             _gameplay = gameplay;
+            _buttons = buttons;
 
-            _mainMenu.Init(OpenGameplay);
-            _gameplay.Init(OpenMain);
+            _mainMenu.Init(OpenGameplay, buttons);
+            _gameplay.Init(OpenMain, buttons);
             _windows.Init();
 
             _gameState.OnStateChanged += HandleGameStateChanged;
 
-            OpenMain(); 
+            OpenMain();
         }
 
         private void HandleGameStateChanged(GameState state)
         {
             switch (state)
             {
-                case GameState.WaveStarted:
+                case GameState.LevelStarted:
                     _gameplay.OpenWave();
                     break;
                 case GameState.WaveEnded:
