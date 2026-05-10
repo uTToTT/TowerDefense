@@ -16,7 +16,6 @@ public class CellFactoryRegistry : ScriptableObject
         {
             factory.Init();
             _map.Add(factory.CellType, factory);
-            Debug.Log($"Init [{factory.CellType}]");
         }
     }
 

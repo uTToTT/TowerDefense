@@ -1,5 +1,6 @@
 using System;
 using TToTT.TowerDefense.Enemies;
+using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.Level;
 using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.Towers;
@@ -43,6 +44,9 @@ public class GameLoop : IDisposable
         _waveController = waveController;
         _player = player;
 
+        InitGameStateHandlers();
+
+        _waveController.OnAllWavesCompleted += Victory;
         _levelManager.OnLevelLoaded += HandleLevelLoaded;
         _player.OnPlayerDie += Defeat;
 
@@ -51,11 +55,52 @@ public class GameLoop : IDisposable
         _tick.Register(_mapManager);
     }
 
+    public void Dispose()
+    {
+        _waveController.OnAllWavesCompleted -= Victory;
+        _levelManager.OnLevelLoaded -= HandleLevelLoaded;
+        _player.OnPlayerDie -= Defeat;
+
+        DisposeGameStateHandlers();
+    }
+
+    private void InitGameStateHandlers()
+    {
+        _state.OnStateChanged += HandleGameStateChanged;
+        _state.OnStateChanged += _waveController.HandleGameStateChanged;
+    }
+
+    private void DisposeGameStateHandlers()
+    {
+        _state.OnStateChanged -= HandleGameStateChanged;
+        _state.OnStateChanged -= _waveController.HandleGameStateChanged;
+    }
+
     #endregion
 
     public void Tick(float dt)
     {
         _tick.Tick(dt);
+    }
+
+    private void HandleGameStateChanged(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.MainMenu:
+                break;
+            case GameState.GameplayLoading:
+                StartLevel(0);
+                break;
+            case GameState.Preparing:
+                break;
+            case GameState.Wave:
+                break;
+            case GameState.Victory:
+                break;
+            case GameState.Defeat:
+                break;
+        }
     }
 
     private void StartLevel(int index)
@@ -72,22 +117,16 @@ public class GameLoop : IDisposable
     {
         _mapManager.TryBuildMap(level);
         _waveController.InitData(level.Waves);
-        _state.SetState(GameState.LevelStarted);
+        _state.SetState(GameState.Preparing);
     }
 
     private void Defeat()
     {
-        _state.SetState(GameState.GameDefeat);
+        _state.SetState(GameState.Defeat);
     }
 
     private void Victory()
     {
-        _state.SetState(GameState.GameVictory);
-    }
-
-    public void Dispose()
-    {
-        _levelManager.OnLevelLoaded -= HandleLevelLoaded;
-        _player.OnPlayerDie -= Defeat;  
+        _state.SetState(GameState.Victory);
     }
 }

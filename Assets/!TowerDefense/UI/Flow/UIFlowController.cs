@@ -1,3 +1,4 @@
+using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.UI.Button;
 
 namespace TToTT.TowerDefense.UI
@@ -24,7 +25,7 @@ namespace TToTT.TowerDefense.UI
             _buttons = buttons;
 
             _mainMenu.Init(OpenGameplay, buttons);
-            _gameplay.Init(OpenMain, buttons);
+            _gameplay.Init(OpenMain,StartWave, buttons);
             _windows.Init();
 
             _gameState.OnStateChanged += HandleGameStateChanged;
@@ -36,16 +37,16 @@ namespace TToTT.TowerDefense.UI
         {
             switch (state)
             {
-                case GameState.LevelStarted:
+                case GameState.Wave:
                     _gameplay.OpenWave();
                     break;
-                case GameState.WaveEnded:
+                case GameState.Preparing:
                     _gameplay.OpenPreparing();
                     break;
-                case GameState.GameVictory:
+                case GameState.Victory:
                     _gameplay.OpenVictory();
                     break;
-                case GameState.GameDefeat:
+                case GameState.Defeat:
                     _gameplay.OpenDefeat();
                     break;
             }
@@ -55,13 +56,19 @@ namespace TToTT.TowerDefense.UI
         {
             _windows.OpenWindow(WindowType.Main);
             _windows.CloseWindow(WindowType.Gameplay);
+            _gameState.SetState(GameState.MainMenu);
         }
 
         private void OpenGameplay()
         {
             _windows.CloseWindow(WindowType.Main);
             _windows.OpenWindow(WindowType.Gameplay);
-            _gameplay.OpenPreparing();
+            _gameState.SetState(GameState.GameplayLoading);
+        }
+
+        private void StartWave()
+        {
+            _gameState.SetState(GameState.Wave);
         }
     }
 }

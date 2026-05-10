@@ -12,6 +12,7 @@ public class Player : IPlayerTarget
     private float _maxHP = 20;
     private float _currHp;
 
+    // TODO: create reactive class include value bounds
     public float CurrHP
     {
         get => _currHp;
@@ -46,6 +47,4 @@ public class Player : IPlayerTarget
     }
 
     private void Defeat() => OnPlayerDie?.Invoke();
-
-    //GameLoop.Instance.PlayerBaseDestroyed();
 }

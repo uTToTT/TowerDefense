@@ -1,5 +1,6 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
+using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.Towers;
 
 namespace TToTT.TowerDefense.Installers

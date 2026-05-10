@@ -1,11 +1,9 @@
 public enum GameState
 {
-    InMainMenu,
-    LevelStarted,
-    Preparing,
-    WaveStarted,
-    WaveEnded,
-
-    GameVictory,
-    GameDefeat,
+    MainMenu,
+    GameplayLoading,
+    Preparing, 
+    Wave, 
+    Victory,
+    Defeat,
 }

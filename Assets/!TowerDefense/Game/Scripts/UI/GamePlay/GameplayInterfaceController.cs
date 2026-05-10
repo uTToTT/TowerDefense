@@ -5,16 +5,19 @@ namespace TToTT.TowerDefense.UI
 {
     public class GameplayInterfaceController : InterfaceContorller
     {
-        private IUIButton _fromVictoryToMainButton;
-        private IUIButton _fromDefeatToMainButton;
+        private IUIButton _fromVictoryToMain;
+        private IUIButton _fromDefeatToMain;
+        private IUIButton _startWave;
 
-        public void Init(Action onBackToMain, ButtonRegistry buttons)
+        public void Init(Action onBackToMain,Action startWave, ButtonRegistry buttons)
         {
-            _fromVictoryToMainButton = buttons.Get(ButtonId.FromVictoryToMain);
-            _fromDefeatToMainButton = buttons.Get(ButtonId.FromDefeatToMain);
+            _fromVictoryToMain = buttons.Get(ButtonId.FromVictoryToMain);
+            _fromDefeatToMain = buttons.Get(ButtonId.FromDefeatToMain);
+            _startWave = buttons.Get(ButtonId.StartWave);
 
-            _fromVictoryToMainButton.OnClick += onBackToMain;
-            _fromDefeatToMainButton.OnClick += onBackToMain;
+            _fromVictoryToMain.OnClick += onBackToMain;
+            _fromDefeatToMain.OnClick += onBackToMain;
+            _startWave.OnClick += startWave;
         }
 
         public void OpenVictory() { CloseAll(); OpenFrame(FrameType.Victory); }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TToTT.TowerDefense.UI.Label;
 
@@ -5,6 +6,8 @@ namespace TToTT.TowerDefense.Enemies
 {
     public class WaveController
     {
+        public event Action OnAllWavesCompleted;
+
         private readonly WaveStateMachine _state;
         private readonly EnemySpawner _spawner;
         private readonly ILabelView _waveText;
@@ -33,7 +36,6 @@ namespace TToTT.TowerDefense.Enemies
         public void InitData(WavesData waves)
         {
             _waves = waves;
-            PrepareNextWave();
         }
 
         public void Restart()
@@ -44,12 +46,12 @@ namespace TToTT.TowerDefense.Enemies
             _waveDelayTimer = 0;
 
             _state.SetState(WaveState.Pause);
-
         }
 
         public void Tick(float dt)
         {
-            if (_state.State == WaveState.Pause) return;
+            if (_state.State == WaveState.Pause ||
+                _state.State == WaveState.Completed) return;
 
             switch (_state.State)
             {
@@ -59,6 +61,19 @@ namespace TToTT.TowerDefense.Enemies
 
                 case WaveState.Spawning:
                     UpdateSpawning(dt);
+                    break;
+            }
+        }
+
+        public void HandleGameStateChanged(GameState state)
+        {
+            switch (state)
+            {
+                case GameState.Preparing:
+                    PrepareNextWave();
+                    break;
+                case GameState.Wave:
+                    _state.SetState(WaveState.Start);
                     break;
             }
         }
@@ -99,22 +114,17 @@ namespace TToTT.TowerDefense.Enemies
         private void PrepareNextWave()
         {
             _currWaveIndex++;
-            _waveText.SetText($"Wave {_currWaveIndex + 1}/{LastWave}");
+
             if (_currWaveIndex >= _waves.Waves.Length)
             {
                 _state.SetState(WaveState.Completed);
+                OnAllWavesCompleted?.Invoke() ;
                 return;
             }
 
-            Wave wave = _waves.Waves[_currWaveIndex];
-
+            _waveText.SetText($"Wave {_currWaveIndex + 1}/{LastWave}"); 
             _waveDelayTimer = _delayBeforeWave;
-            _state.SetState(WaveState.Start);
-
-            // TODO: implement IDebugger
-            //Debug.Log($"Wave {_currWaveIndex + 1} will start in {_delayBeforeWave} sec");
         }
-
 
         private void StartWave()
         {
@@ -128,9 +138,6 @@ namespace TToTT.TowerDefense.Enemies
             }
 
             _state.SetState(WaveState.Spawning);
-
-            // TODO: implement IDebugger
-            //Debug.Log($"Wave {_currWaveIndex + 1} started");
         }
     }
 }
