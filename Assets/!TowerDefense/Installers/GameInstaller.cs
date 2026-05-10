@@ -8,35 +8,37 @@ namespace TToTT.TowerDefense.Installers
     {
         private readonly MapContext _mapCtx;
         private readonly ShopContext _shopCtx;
-        private readonly Player _player;
         private readonly EnemyContext _enemyCtx;
         private readonly LevelContext _levelCtx;
+        private readonly VFXContext _vfxContext;
 
         public GameInstaller(
             MapContext mapContext,
             ShopContext shopCtx,
-            Player player,
             EnemyContext enemyCtx,
-            LevelContext levelCtx)
+            LevelContext levelCtx,
+            VFXContext vfxContext)
         {
-            _player = player;
             _mapCtx = mapContext;
             _shopCtx = shopCtx;
-            _player = player;
             _enemyCtx = enemyCtx;
             _levelCtx = levelCtx;
+            _vfxContext = vfxContext;
         }
 
         public void Install(DIContainer container)
         {
             new InputInstaller().Install(container);
-            new VFXInstaller().Install(container);
+            new VFXInstaller(_vfxContext).Install(container);
             new MapInstaller(_mapCtx).Install(container);
             new EconomyInstaller(_shopCtx).Install(container);
             new EnemyInstaller(_enemyCtx).Install(container);
             new LevelInstaller(_levelCtx).Install(container);
 
-            container.BindInstance<IPlayerTarget>(_player);
+            container.Bind<IPlayerTarget, Player>(Lifetime.Singleton);
+            // TODO: use interface
+            container.Bind<Player, Player>(Lifetime.Singleton);
+
             container.Bind<TowerManager>(Lifetime.Singleton);
             container.Bind<GameStateMachine>(Lifetime.Singleton);
             container.Bind<GameLoop>(Lifetime.Singleton);

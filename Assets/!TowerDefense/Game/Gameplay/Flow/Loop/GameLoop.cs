@@ -1,10 +1,11 @@
+using System;
 using TToTT.TowerDefense.Enemies;
 using TToTT.TowerDefense.Level;
 using TToTT.TowerDefense.Map;
 using TToTT.TowerDefense.Towers;
 using TToTT.TowerDefense.UI;
 
-public class GameLoop
+public class GameLoop : IDisposable
 {
     private readonly GameStateMachine _state;
     private readonly TickController _tick;
@@ -15,6 +16,7 @@ public class GameLoop
     private readonly MapManager _mapManager;
     private readonly LevelManager _levelManager;
     private readonly WaveController _waveController;
+    private readonly Player _player;
 
     public GameLoop(
         GameStateMachine gameStateMachine,
@@ -25,7 +27,8 @@ public class GameLoop
         MapManager mapManager,
         EnemyManager enemyManager,
         LevelManager levelManager,
-        WaveController waveController)
+        WaveController waveController,
+        Player player)
     {
         _state = gameStateMachine;
         _tick = tickController;
@@ -36,8 +39,10 @@ public class GameLoop
         _mapManager = mapManager;
         _levelManager = levelManager;
         _waveController = waveController;
+        _player = player;
 
         _levelManager.OnLevelLoaded += HandleLevelLoaded;
+        _player.OnPlayerDie += Defeat;
 
         _tick.Register(_enemyManager);
         _tick.Register(_towerManager);
@@ -67,5 +72,16 @@ public class GameLoop
         _mapManager.TryBuildMap(level);
         _waveController.InitData(level.Waves);
         _state.SetState(GameState.WaveStarted);
+    }
+
+    private void Defeat()
+    {
+        _state.SetState(GameState.GameDefeat);
+    }
+
+    public void Dispose()
+    {
+        _levelManager.OnLevelLoaded -= HandleLevelLoaded;
+        _player.OnPlayerDie -= Defeat;  
     }
 }

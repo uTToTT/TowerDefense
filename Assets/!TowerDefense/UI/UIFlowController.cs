@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace TToTT.TowerDefense.UI
 {
     public class UIFlowController
@@ -26,7 +24,7 @@ namespace TToTT.TowerDefense.UI
 
             _gameState.OnStateChanged += HandleGameStateChanged;
 
-            OpenMain(); // начальный экран
+            OpenMain(); 
         }
 
         private void HandleGameStateChanged(GameState state)
@@ -46,31 +44,16 @@ namespace TToTT.TowerDefense.UI
                     _gameplay.OpenDefeat();
                     break;
             }
-
-#if UNITY_EDITOR
-            Debug.Log($"Open {state}");
-#endif
-
         }
 
         private void OpenMain()
         {
-
-#if UNITY_EDITOR
-            Debug.Log($"Open Main");
-#endif
-
             _windows.OpenWindow(WindowType.Main);
             _windows.CloseWindow(WindowType.Gameplay);
         }
 
         private void OpenGameplay()
         {
-
-#if UNITY_EDITOR
-            Debug.Log($"Open Gameplay");
-#endif
-
             _windows.CloseWindow(WindowType.Main);
             _windows.OpenWindow(WindowType.Gameplay);
             _gameplay.OpenPreparing();

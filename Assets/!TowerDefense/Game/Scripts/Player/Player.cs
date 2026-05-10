@@ -1,35 +1,31 @@
-using NaughtyAttributes;
 using System;
-using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IPlayerTarget
+public class Player : IPlayerTarget
 {
-    [SerializeField] private CameraShaker _shaker;
+    public event Action OnPlayerDie;
 
-    [SerializeField] private float _maxHP;
-    [SerializeField] private float _currHp;
-    [HorizontalLine]
+    private readonly CameraShaker _shaker;
+    private readonly ILabelView _hpBar;
 
-    [SerializeField] private TextMeshProUGUI _hpText;
+    private float _maxHP = 20;
+    private float _currHp;
 
-    public static Player Instance { get; private set; }
     public float CurrHP
     {
         get => _currHp;
         set
         {
             _currHp = Mathf.Max(value, 0);
-            _hpText.text = "HP: " + _currHp.ToString();
+            _hpBar.SetText($"HP {_currHp.ToString()}");
         }
     }
 
-    private void Start() => Init();
-
-    public void Init()
+    // TODO: replace shaker to VFX layer
+    public Player(CameraShaker cameraShaker)
     {
-        Instance = this;
-        CurrHP = _maxHP;
+        _shaker = cameraShaker;
+        Restart();
     }
 
     public void Restart()
@@ -47,7 +43,7 @@ public class Player : MonoBehaviour, IPlayerTarget
             Defeat();
     }
 
-    private void Defeat() => throw new NotImplementedException();
+    private void Defeat() => OnPlayerDie?.Invoke();
 
     //GameLoop.Instance.PlayerBaseDestroyed();
 }

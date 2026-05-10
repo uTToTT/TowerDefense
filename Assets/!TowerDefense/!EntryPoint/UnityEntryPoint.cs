@@ -11,18 +11,22 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private UIContext _ui;
     [SerializeField] private EnemyContext _enemy;
     [SerializeField] private LevelContext _level;
+    [SerializeField] private VFXContext _vfx;
 
     [HorizontalLine]
-    [SerializeField] private Player _player;
+    [SerializeField] private Camera _camera;
 
     private GameLoop _gameLoop;
 
     private void Awake()
     {
         var container = new DIContainer();
+
+        container.BindInstance<Camera>(_camera);
+
         new CoreInstaller().Install(container);
         new UIInstaller(_ui).Install(container);
-        new GameInstaller(_map, _shop, _player, _enemy, _level).Install(container);
+        new GameInstaller(_map, _shop, _enemy, _level, _vfx).Install(container);
         _gameLoop = container.Resolve<GameLoop>();
     }
 
