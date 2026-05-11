@@ -59,6 +59,9 @@ namespace TToTT.TowerDefense.Map
             return true;
         }
 
+        public bool TryGetObject(Vector2Int mapPos, out MapObject mapObject) =>
+            _dataService.TryGetObject(mapPos, out mapObject);
+
         public bool IsAreaAvailable(Vector2Int pos, MapObjectShape shape)
         {
             var occupiedCells = MapUtils.GetOccupiedCells(pos, shape);

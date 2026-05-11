@@ -8,12 +8,17 @@ public class PlayerInputController
     public event Action OnTapPerformed;
     public event Action OnTapCanceled;
 
-    private InputActions _input;
+    public event Action<Vector2> OnTap;
+    public event Action OnTapReleased;
+
+    private readonly Camera _camera;
+    private readonly InputActions _input;
 
     public bool IsPointerDown { get; private set; }
 
-    public PlayerInputController()
+    public PlayerInputController(Camera camera)
     {
+        _camera = camera;
         _input = new InputActions();
         _input.Enable();
 
@@ -25,20 +30,24 @@ public class PlayerInputController
     {
         IsPointerDown = true;
         OnTapPerformed?.Invoke();
+
+        if (!IsPointerOverUI())
+            OnTap?.Invoke(GetPointerPosition());
     }
 
     private void TapCanceled(InputAction.CallbackContext context)
     {
-        OnTapCanceled?.Invoke();
         IsPointerDown = false;
+        OnTapCanceled?.Invoke();
+        OnTapReleased?.Invoke(); 
     }
 
     public Vector2 GetPointerPosition()
     {
         Vector3 screenPos = _input.GamePlay.PointerPos.ReadValue<Vector2>();
-        screenPos.z = -UnityEngine.Camera.main.transform.position.z;
+        screenPos.z = -_camera.transform.position.z;
 
-        Vector2 worldPos = UnityEngine.Camera.main.ScreenToWorldPoint(screenPos);
+        Vector2 worldPos = _camera.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
 

@@ -31,9 +31,24 @@ namespace TToTT.TowerDefense.Map
             return true;
         }
 
+        public bool TryPlace(MapObject mapObject, Vector2Int pos)
+        {
+            if (!_mapController.TryPlaceObject(pos, mapObject)) return false;
+
+            mapObject.MapPos = pos;
+            mapObject.transform.position = MapUtils.MapToWorld(pos, _gridController.Grid);
+
+            return true;
+        }
+
         public void TearDown(MapObject mapObject)
         {
             _factory.Return(mapObject);
+            _mapController.RemoveMapObject(mapObject);
+        }
+
+        public void Detach(MapObject mapObject)
+        {
             _mapController.RemoveMapObject(mapObject);
         }
     }

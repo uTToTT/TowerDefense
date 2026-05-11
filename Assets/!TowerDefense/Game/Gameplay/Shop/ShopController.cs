@@ -53,8 +53,7 @@ public class ShopController : IDisposable
         }
 
         _reroll.OnClick += TryReroll;
-        _dragAndDrop.OnDropSuccess += HandleDropSuccess;
-        _dragAndDrop.OnDropFailed += HandleDropFailed;
+       
     }
 
     public void Restart()
@@ -103,6 +102,9 @@ public class ShopController : IDisposable
             return;
         }
 
+        _dragAndDrop.OnDropSuccess += HandleDropSuccess;
+        _dragAndDrop.OnDropFailed += HandleDropFailed;
+
         _activeSlot = slot;
         _dragAndDrop.BeginDrag(slot.MapObject);
     }
@@ -129,6 +131,9 @@ public class ShopController : IDisposable
 
         if (_slots.All(s => s.IsEmpty))
             Reroll(free: true);
+
+        _dragAndDrop.OnDropSuccess -= HandleDropSuccess;
+        _dragAndDrop.OnDropFailed -= HandleDropFailed;
     }
 
     private void HandleDropFailed(MapObject preview)
@@ -137,6 +142,9 @@ public class ShopController : IDisposable
             preview.transform.position = _activeSlot.transform.position;
 
         _activeSlot = null;
+
+        _dragAndDrop.OnDropSuccess -= HandleDropSuccess;
+        _dragAndDrop.OnDropFailed -= HandleDropFailed;
     }
 
     private void ClearSlots()
