@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class Wave 
+namespace TToTT.TowerDefense.Enemies.Wave
 {
-    [SerializeField] private Group[] _groups;
+    [Serializable]
+    public class Wave
+    {
+        [SerializeField] private Group[] _groups;
 
-    public Group[] Groups => _groups;
+        public Group[] Groups => _groups;
+    }
 }

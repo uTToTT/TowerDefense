@@ -36,9 +36,11 @@ namespace TToTT.TowerDefense.Installers
             new EnemyInstaller(_enemyCtx).Install(container);
             new LevelInstaller(_levelCtx).Install(container);
 
-            container.Bind<IPlayerTarget, Player>(Lifetime.Singleton);
-            // TODO: use interface
-            container.Bind<Player, Player>(Lifetime.Singleton);
+
+            container.Bind<Player>(Lifetime.Singleton);
+            container.BindFactory<IPlayerTarget>(
+                c => c.Resolve<Player>(),
+                Lifetime.Singleton);
 
             container.Bind<TowerManager>(Lifetime.Singleton);
             container.Bind<GameStateMachine>(Lifetime.Singleton);

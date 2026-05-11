@@ -1,5 +1,6 @@
 using System;
 using TToTT.TowerDefense.Enemies;
+using TToTT.TowerDefense.Enemies.Wave;
 using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.Level;
 using TToTT.TowerDefense.Map;
@@ -27,10 +28,10 @@ public class GameLoop : IDisposable
        TowerManager towerManager,
        ShopController shopController,
        UIFlowController uiFlowController,
+       WaveController waveController,
        MapManager mapManager,
        EnemyManager enemyManager,
        LevelManager levelManager,
-       WaveController waveController,
        Player player)
     {
         _state = gameStateMachine;
@@ -47,6 +48,7 @@ public class GameLoop : IDisposable
         InitGameStateHandlers();
 
         _waveController.OnAllWavesCompleted += Victory;
+        _waveController.OnWaveCleared += HandleWaveCleared;
         _levelManager.OnLevelLoaded += HandleLevelLoaded;
         _player.OnPlayerDie += Defeat;
 
@@ -58,6 +60,7 @@ public class GameLoop : IDisposable
     public void Dispose()
     {
         _waveController.OnAllWavesCompleted -= Victory;
+        _waveController.OnWaveCleared -= HandleWaveCleared;
         _levelManager.OnLevelLoaded -= HandleLevelLoaded;
         _player.OnPlayerDie -= Defeat;
 
@@ -111,6 +114,11 @@ public class GameLoop : IDisposable
         _enemyManager.Restart();
 
         _levelManager.TryLoadLevel(index); 
+    }
+
+    private void HandleWaveCleared()
+    {
+        _state.SetState(GameState.Preparing);
     }
 
     private void HandleLevelLoaded(LevelData level)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.Map;
 
 namespace TToTT.TowerDefense.Towers
@@ -11,15 +12,17 @@ namespace TToTT.TowerDefense.Towers
         private readonly List<Tower> _toRemove = new();
 
         private readonly BuildController _buildController;
-
+        private readonly GameStateMachine _gameState;
         public List<Tower> Towers => _builtTowers;
 
         #region Init
 
         public TowerManager(
-            BuildController buildController)
+            BuildController buildController,
+            GameStateMachine gameState)
         {
             _buildController = buildController;
+            _gameState = gameState;
         }
 
         #endregion
@@ -43,6 +46,9 @@ namespace TToTT.TowerDefense.Towers
 
         public void Tick(float dt)
         {
+            if (_gameState.State != GameState.Wave &&
+               _gameState.State != GameState.Preparing) return;
+
             UpdateColleciton();
 
             foreach (var tower in _builtTowers)

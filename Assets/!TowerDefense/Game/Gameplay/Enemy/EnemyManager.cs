@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TToTT.TowerDefense.Enemies.Wave;
+using TToTT.TowerDefense.Gameloop;
 
 namespace TToTT.TowerDefense.Enemies
 {
@@ -7,6 +9,7 @@ namespace TToTT.TowerDefense.Enemies
     {
         private readonly WaveController _waveController;
         private readonly EnemySpawner _enemySpawner;
+        private readonly GameStateMachine _gameState;
 
         private readonly List<Enemy> _enemies = new();
         private readonly List<Enemy> _toAdd = new();
@@ -18,10 +21,12 @@ namespace TToTT.TowerDefense.Enemies
 
         public EnemyManager(
             WaveController waveController,
-            EnemySpawner enemySpawner)
+            EnemySpawner enemySpawner,
+            GameStateMachine gameState)
         {
             _waveController = waveController;
             _enemySpawner = enemySpawner;
+            _gameState = gameState;
 
             _enemySpawner.OnSpawned += Register;
             _enemySpawner.OnDeath += Unregister;
@@ -41,6 +46,8 @@ namespace TToTT.TowerDefense.Enemies
 
         public void Tick(float dt)
         {
+            if (_gameState.State != GameState.Wave) return;
+
             UpdateColleciton();
 
             foreach (var enemy in _enemies)

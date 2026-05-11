@@ -1,3 +1,4 @@
+using TToTT.TowerDefense.Enemies.Wave;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WavesData_", menuName = "TD/Enemy/Waves Data")]

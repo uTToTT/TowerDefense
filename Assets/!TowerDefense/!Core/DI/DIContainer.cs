@@ -41,7 +41,7 @@ namespace TToTT.Core.DI
                 InterfaceType = typeof(TInterface),
                 ImplementationType = null,
                 Lifetime = lifetime,
-                Instance = factory
+                Factory = factory
             };
         }
 
@@ -96,11 +96,8 @@ namespace TToTT.Core.DI
 
         private object CreateBindingInstance(Binding binding, HashSet<Type> resolvingStack, List<Type> resolvingPath)
         {
-            // Factory
-            if (binding.Instance is Func<DIContainer, object> factory)
-            {
-                return factory(this);
-            }
+            if (binding.Factory != null)
+                return binding.Factory(this); 
 
             return CreateInstance(binding.ImplementationType, resolvingStack, resolvingPath);
         }
@@ -131,7 +128,23 @@ namespace TToTT.Core.DI
                 args[i] = Resolve(parameters[i].ParameterType, resolvingStack, resolvingPath);
             }
 
-            return Activator.CreateInstance(type, args);
+            try
+            {
+                return Activator.CreateInstance(type, args);
+            }
+            catch (Exception e)
+            {
+                var path = string.Join(" -> ", resolvingPath.Select(t => t.Name));
+                var expectedParams = string.Join(", ", parameters.Select(p => p.ParameterType.Name));
+                var actualArgs = string.Join(", ", args.Select(a => a?.GetType().Name ?? "null"));
+
+                throw new Exception(
+                    $"Failed to create [{type.Name}]\n" +
+                    $"Dependency path: {path}\n" +
+                    $"Expected params: ({expectedParams})\n" +
+                    $"Actual args:     ({actualArgs})\n" +
+                    $"Original: {e.Message}");
+            }
         }
     }
 }

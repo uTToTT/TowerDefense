@@ -1,4 +1,5 @@
 using System;
+using TToTT.Core.DI;
 
 public class Binding
 {
@@ -7,4 +8,5 @@ public class Binding
     public Lifetime Lifetime;
 
     public object Instance;
+    public Func<DIContainer, object> Factory;
 }

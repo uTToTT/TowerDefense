@@ -1,32 +1,35 @@
-public class GroupRuntime
+namespace TToTT.TowerDefense.Enemies.Wave
 {
-    public Group Data { get; }
-    public int SpawnedCount { get; private set; }
-    public float Timer { get; private set; }
-
-    public bool IsCompleted => SpawnedCount >= Data.EnemyCount;
-
-    public GroupRuntime(Group data)
+    public class GroupRuntime
     {
-        Data = data;
-        Timer = 0f;
-        SpawnedCount = 0;
-    }
+        public Group Data { get; }
+        public int SpawnedCount { get; private set; }
+        public float Timer { get; private set; }
 
-    public bool CanSpawn(float deltaTime)
-    {
-        if (IsCompleted)
-            return false;
+        public bool IsCompleted => SpawnedCount >= Data.EnemyCount;
 
-        Timer += deltaTime;
-
-        if (Timer >= Data.TimeBtwSpawn)
+        public GroupRuntime(Group data)
         {
-            Timer -= Data.TimeBtwSpawn;
-            SpawnedCount++;
-            return true;
+            Data = data;
+            Timer = 0f;
+            SpawnedCount = 0;
         }
 
-        return false;
+        public bool CanSpawn(float deltaTime)
+        {
+            if (IsCompleted)
+                return false;
+
+            Timer += deltaTime;
+
+            if (Timer >= Data.TimeBtwSpawn)
+            {
+                Timer -= Data.TimeBtwSpawn;
+                SpawnedCount++;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

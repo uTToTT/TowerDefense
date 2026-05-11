@@ -1,5 +1,6 @@
 using System;
 using TToTT.TowerDefense.Economy;
+using TToTT.TowerDefense.Enemies.Wave;
 using TToTT.TowerDefense.Map;
 
 namespace TToTT.TowerDefense.Enemies

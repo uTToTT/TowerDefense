@@ -1,6 +1,7 @@
 using TToTT.Core.DI;
 using TToTT.Core.Installers;
 using TToTT.TowerDefense.Enemies;
+using TToTT.TowerDefense.Enemies.Wave;
 
 namespace TToTT.TowerDefense.Installers
 {

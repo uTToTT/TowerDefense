@@ -1,4 +1,5 @@
 using System;
+using TToTT.TowerDefense.Gameloop;
 using TToTT.TowerDefense.Level;
 
 /// <summary> 
@@ -17,6 +18,7 @@ namespace TToTT.TowerDefense.Map
         private readonly MapController _controller;
         private readonly MapLoader _loader;
         private readonly MapComposer _composer;
+        private readonly GameStateMachine _gameState;
 
         #region Init
 
@@ -25,13 +27,15 @@ namespace TToTT.TowerDefense.Map
             MapLoader mapLoader,
             MapComposer mapComposer,
             SellectionController objectSelector,
-            PlacementController placementController)
+            PlacementController placementController,
+            GameStateMachine gameState)
         {
             _controller = mapController;
             _loader = mapLoader;
             _composer = mapComposer;
             _objectSelector = objectSelector;
             _placementController = placementController;
+            _gameState = gameState;
         }
 
         public void Dispose()
@@ -47,6 +51,8 @@ namespace TToTT.TowerDefense.Map
 
         public void Tick(float dt)
         {
+            if (_gameState.State != GameState.Preparing) return;
+
             _placementController.Tick(dt);
             _objectSelector.Tick(dt);
         }
