@@ -22,7 +22,7 @@ namespace TToTT.TowerDefense.Economy
             _money -= amount;
 
             if (amount != 0)
-                OnBalanceChanged?.Invoke(amount);
+                OnBalanceChanged?.Invoke(_money);
 
             return true;
         }
@@ -35,7 +35,7 @@ namespace TToTT.TowerDefense.Economy
             _money += amount;
 
             if (amount != 0)
-                OnBalanceChanged?.Invoke(amount);
+                OnBalanceChanged?.Invoke(_money);
         }
 
         #endregion

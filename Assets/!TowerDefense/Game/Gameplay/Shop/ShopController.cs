@@ -6,6 +6,7 @@ using TToTT.TowerDefense.Towers;
 using TToTT.TowerDefense.UI.Button;
 using UnityEngine;
 
+// refactor dragging
 public class ShopController : IDisposable
 {
     private readonly ILogger _logger;

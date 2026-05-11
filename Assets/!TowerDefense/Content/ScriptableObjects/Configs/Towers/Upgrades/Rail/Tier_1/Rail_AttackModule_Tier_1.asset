@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Rail_AttackModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
   _damage: 97
-  _fireRate: 15
+  _baseFireRate: 0.1
   _piercing: 0
-  _rotationSpeed: 720
+  _rotationSpeed: 120

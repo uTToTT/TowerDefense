@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
   m_Name: Minigun_AttackModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
-  _damage: 1
-  _baseFireRate: 10
+  _damage: 5
+  _baseFireRate: 3
   _piercing: 0
   _rotationSpeed: 720

@@ -12,8 +12,8 @@ public abstract class MapObject : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public bool IsActive { get; set; }
 
-    public void SetRenderOrder(int order) => _spriteRenderer.sortingOrder = order;
-    public void SetRenderLayer(string layerName) => _spriteRenderer.sortingLayerName = layerName;
+    //public void SetRenderOrder(int order) => _spriteRenderer.sortingOrder = order;
+    //public void SetRenderLayer(string layerName) => _spriteRenderer.sortingLayerName = layerName;
    
 
     public virtual void Dispose() { }

@@ -28,10 +28,6 @@ PrefabInstance:
       propertyPath: _towerShape
       value: 
       objectReference: {fileID: 11400000, guid: fe916982a3111ca4a8a5eec91300aebd, type: 2}
-    - target: {fileID: 2620142187718937548, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
-      propertyPath: _spriteRenderer
-      value: 
-      objectReference: {fileID: 7130529083307314087}
     - target: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -97,7 +93,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8906312594652465634, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       insertIndex: 0
@@ -107,11 +104,6 @@ PrefabInstance:
 --- !u!4 &132324256500236774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
-  m_PrefabInstance: {fileID: 4302355191132257368}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &7130529083307314087 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6431618746298742783, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
   m_PrefabInstance: {fileID: 4302355191132257368}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7715022510579630476

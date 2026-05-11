@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834cb59b9bda2d3408f02954d97877a2, type: 3}
   m_Name: ShopConfig
   m_EditorClassIdentifier: Assembly-CSharp::ShopConfig
+  _startBalance: 25000
   _startRerollCost: 5
   _rerollDelta: 2
   _products:

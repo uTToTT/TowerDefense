@@ -36,11 +36,10 @@ public class ProductSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void PositionMapObject()
     {
-        MapObject.transform.position = _productContainer.transform.position;
+        MapObject.transform.position = new(_productContainer.transform.position.x, _productContainer.transform.position.y) ;
         MapObject.transform.parent = _productContainer.transform;
 
-        MapObject.SetRenderLayer(RenderLayers.UI);
-        MapObject.SetRenderOrder(100);
+     
     }
 
     public void OnPointerDown(PointerEventData eventData)

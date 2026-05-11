@@ -15,8 +15,8 @@ MonoBehaviour:
   _hp: 25
   _armor: 0
   _damage: 1
-  _speed: 4.9
+  _speed: 5
   _minSpeed: 0.01
-  _dropMoney: 7.9
+  _dropMoney: 6
   _maxFreezeStack: 0
   _freezingTime: 0

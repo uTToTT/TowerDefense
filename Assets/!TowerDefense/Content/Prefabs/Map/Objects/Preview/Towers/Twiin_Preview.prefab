@@ -85,6 +85,10 @@ PrefabInstance:
       value: Tower 1
       objectReference: {fileID: 0}
     - target: {fileID: 7762207701692982705, guid: 6ea056ed7bb7b2f4e8fe2a84938056b9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7762207701692982705, guid: 6ea056ed7bb7b2f4e8fe2a84938056b9, type: 3}
       propertyPath: m_SortingLayer
       value: 8
       objectReference: {fileID: 0}
@@ -100,6 +104,11 @@ PrefabInstance:
 --- !u!4 &6868813372945701301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6684198615119753101, guid: 6ea056ed7bb7b2f4e8fe2a84938056b9, type: 3}
+  m_PrefabInstance: {fileID: 257239984275158584}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &7505530942267151241 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7762207701692982705, guid: 6ea056ed7bb7b2f4e8fe2a84938056b9, type: 3}
   m_PrefabInstance: {fileID: 257239984275158584}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4302355191132257368
@@ -141,7 +150,7 @@ PrefabInstance:
     - target: {fileID: 2620142187718937548, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: _spriteRenderer
       value: 
-      objectReference: {fileID: 7130529083307314087}
+      objectReference: {fileID: 7505530942267151241}
     - target: {fileID: 2961690654004475707, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -219,7 +228,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8906312594652465634, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
       insertIndex: 0
@@ -229,10 +239,5 @@ PrefabInstance:
 --- !u!4 &132324256500236774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4207230072087887294, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
-  m_PrefabInstance: {fileID: 4302355191132257368}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &7130529083307314087 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6431618746298742783, guid: 4e38527e86e722e43932ebbcacb386ab, type: 3}
   m_PrefabInstance: {fileID: 4302355191132257368}
   m_PrefabAsset: {fileID: 0}
