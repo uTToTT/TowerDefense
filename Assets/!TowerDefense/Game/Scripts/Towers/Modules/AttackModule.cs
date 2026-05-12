@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TToTT.TowerDefense.Enemies;
+using UnityEngine;
 
 public sealed class AttackModule : ITowerModule
 {
@@ -59,7 +60,9 @@ public sealed class AttackModule : ITowerModule
         //    $"Piercing [{_config.Piercing}]\n" +
         //    $"Target [{_target.name}]");
 
-        _target.TakeDamage(_config.Damage, _config.Piercing);
+        Vector2 hitDir = (_target.transform.position - _tower.transform.position).normalized;
+
+        _target.TakeDamage(_config.Damage, _config.Piercing, hitDir);
         _tower.TowerRecoil.PlayRecoil();
         _tower.PlayParticle();
 
@@ -67,7 +70,8 @@ public sealed class AttackModule : ITowerModule
         {
             Enemy = _target,
             Damage = _config.Damage,
-            HitPoint = _target.transform.position
+            HitPoint = _target.transform.position,
+            HitDirection = hitDir,
         };
 
         foreach (var effect in _onHitEffects)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: migrate to pure class
 namespace TToTT.TowerDefense.Enemies
 {
     public class Enemy : MonoBehaviour,
@@ -29,6 +30,7 @@ namespace TToTT.TowerDefense.Enemies
         private BuffController _buffController;
         private PathController _pathController;
         private EnemyMovementController _movement;
+        private ParticlesGenerator _particlesGenerator;
 
         private List<Vector3> _points;
 
@@ -52,6 +54,11 @@ namespace TToTT.TowerDefense.Enemies
         public EnemyType EnemyType => _type;
 
         #region Init
+
+        public void Init(ParticlesGenerator particlesGenerator)
+        {
+            _particlesGenerator = particlesGenerator;
+        }
 
         private void Awake()
         {
@@ -113,12 +120,10 @@ namespace TToTT.TowerDefense.Enemies
             }
         }
 
-        public void TakeDamage(float damage, float armorPiercing)
+        public void TakeDamage(float damage, float armorPiercing, Vector2 hitDirection = default)
         {
             var tmpArmor = Armor;
-
             tmpArmor = Mathf.Max(0, tmpArmor - armorPiercing);
-
             damage *= 1 - tmpArmor;
 
             _currHP = Mathf.Max(_currHP - damage, 0);
@@ -129,9 +134,11 @@ namespace TToTT.TowerDefense.Enemies
                 return;
             }
 
-            _hitVFX.Play();
+            var request = hitDirection != default
+                ? ParticleRequest.WithDirection(ParticlesType.Blood, transform.position, hitDirection)
+                : ParticleRequest.At(ParticlesType.Blood, transform.position);
 
-            //ParticlesGenerator.Instance.PlayParticles(ParticlesType.Blood, transform.position);
+            _particlesGenerator.Play(request);
         }
 
         private void FinishReached()

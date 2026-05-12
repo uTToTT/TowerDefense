@@ -14,6 +14,7 @@ namespace TToTT.TowerDefense.Enemies
         private readonly RouteController _routes;
         private readonly GridController _grid;
         private readonly EconomyController _economyController;
+        private readonly ParticlesGenerator _particlesGenerator; 
         private readonly IPlayerTarget _playerTarget;
 
         private int _spawnedCount = 0;
@@ -25,6 +26,7 @@ namespace TToTT.TowerDefense.Enemies
             RouteController routes,
             GridController grid,
             EconomyController economyController,
+            ParticlesGenerator particlesGenerator,
             IPlayerTarget playerTarget)
         {
             _factory = factory;
@@ -32,6 +34,7 @@ namespace TToTT.TowerDefense.Enemies
             _routes = routes;
             _grid = grid;
             _economyController = economyController;
+            _particlesGenerator = particlesGenerator;
             _playerTarget = playerTarget;
         }
 
@@ -107,6 +110,7 @@ namespace TToTT.TowerDefense.Enemies
             enemy.BuffController.AddOrReplace(moneyBuff);
             enemy.SetLane(lane);
             enemy.BuildRoute(routePoints);
+            enemy.Init(_particlesGenerator);
 
             enemy.OnReachedFinish += _playerTarget.TakeDamage;
             enemy.OnDeath += Death;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260d9b614864f4e4882a6c3074980307, type: 3}
   m_Name: Blood_ParticlesFactory
   m_EditorClassIdentifier: Assembly-CSharp::ParticlesFactory
-  _prefab: {fileID: 4644119481566741238, guid: 26042d4e397184a43b113859a36b6265, type: 3}
+  _prefab: {fileID: -5921465165967305369, guid: 71936db0a17702944b41f224289d4ee4, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

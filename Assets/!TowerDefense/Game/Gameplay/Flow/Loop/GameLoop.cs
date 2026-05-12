@@ -19,6 +19,7 @@ public class GameLoop : IDisposable
     private readonly LevelManager _levelManager;
     private readonly WaveController _waveController;
     private readonly Player _player;
+    private readonly ParticlesGenerator _particlesGenerator;
 
     #region Init
 
@@ -32,7 +33,8 @@ public class GameLoop : IDisposable
        MapManager mapManager,
        EnemyManager enemyManager,
        LevelManager levelManager,
-       Player player)
+       Player player,
+       ParticlesGenerator particlesGenerator)
     {
         _state = gameStateMachine;
         _tick = tickController;
@@ -44,6 +46,7 @@ public class GameLoop : IDisposable
         _levelManager = levelManager;
         _waveController = waveController;
         _player = player;
+        _particlesGenerator = particlesGenerator;
 
         InitGameStateHandlers();
 
@@ -112,6 +115,7 @@ public class GameLoop : IDisposable
         _towerManager.Restart();
         _shopController.Restart();
         _enemyManager.Restart();
+        _particlesGenerator.Restart();
 
         _levelManager.TryLoadLevel(index); 
     }
