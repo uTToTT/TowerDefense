@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: migrate to pure class
+// TODO: migrate to pure C# class
 namespace TToTT.TowerDefense.Enemies
 {
     public class Enemy : MonoBehaviour,
