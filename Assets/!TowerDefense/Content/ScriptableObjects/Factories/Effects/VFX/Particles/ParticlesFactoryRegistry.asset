@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ParticlesFactoryRegistry
   _factories:
   - {fileID: 11400000, guid: cea08dd0923a85444b6caf8f77939e2b, type: 2}
+  - {fileID: 11400000, guid: 2079bdf8c540bc249a2f7d5818b8242c, type: 2}

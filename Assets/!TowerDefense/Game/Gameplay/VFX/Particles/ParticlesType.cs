@@ -2,5 +2,6 @@ public enum ParticlesType
 {
     None,
     Blood,
-    Bullet
+    Bullet,
+    EnemyDeath
 }

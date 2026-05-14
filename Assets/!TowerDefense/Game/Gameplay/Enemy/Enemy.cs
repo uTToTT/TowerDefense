@@ -161,6 +161,11 @@ namespace TToTT.TowerDefense.Enemies
         {
             if (!IsAlive) return;
             IsAlive = false;
+
+            var request =  ParticleRequest.At(ParticlesType.EnemyDeath, transform.position);
+
+            _particlesGenerator.Play(request);
+
             OnDeath?.Invoke(this);
         }
 

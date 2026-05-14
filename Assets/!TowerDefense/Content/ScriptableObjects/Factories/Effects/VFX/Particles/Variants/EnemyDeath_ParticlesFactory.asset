@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 260d9b614864f4e4882a6c3074980307, type: 3}
-  m_Name: Blood_ParticlesFactory
+  m_Name: EnemyDeath_ParticlesFactory
   m_EditorClassIdentifier: Assembly-CSharp::ParticlesFactory
-  _prefab: {fileID: -2181498612484021253, guid: 9df52dc5514dd71478837c8be3a2f66d, type: 3}
+  _prefab: {fileID: 5058776221591463034, guid: 72a72dc4aed1ad34bb5f66692f79e35c, type: 3}
   _capacity: 10
   _maxCount: 100
   _totalPreload: 0

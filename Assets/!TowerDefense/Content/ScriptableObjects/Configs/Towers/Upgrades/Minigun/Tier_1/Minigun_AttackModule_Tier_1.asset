@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Minigun_AttackModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
   _damage: 5
-  _baseFireRate: 3
+  _baseFireRate: 4
   _piercing: 0
   _rotationSpeed: 720
