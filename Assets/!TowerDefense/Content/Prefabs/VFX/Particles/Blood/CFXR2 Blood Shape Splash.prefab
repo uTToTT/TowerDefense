@@ -4665,6 +4665,7 @@ MonoBehaviour:
   _particleType: 1
   _particleSystem: {fileID: 4553287630450876387}
   _baseRotation: {x: 0, y: 0, z: 0}
+  _scale: 1
 --- !u!199 &4553287630450876386
 ParticleSystemRenderer:
   serializedVersion: 6

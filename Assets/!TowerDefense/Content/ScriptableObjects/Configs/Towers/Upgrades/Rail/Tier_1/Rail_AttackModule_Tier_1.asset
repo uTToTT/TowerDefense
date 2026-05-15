@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333526d500fd545499d7442127da7150, type: 3}
   m_Name: Rail_AttackModule_Tier_1
   m_EditorClassIdentifier: Assembly-CSharp::AttackModuleConfig
-  _damage: 97
-  _baseFireRate: 0.1
+  _damage: 111
+  _baseFireRate: 0.5
   _piercing: 0
   _rotationSpeed: 120
+  _aimThresholdDegress: 5
+  _fireParticle: 6
+  _fireSound: 9

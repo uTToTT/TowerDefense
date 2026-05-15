@@ -15,6 +15,7 @@ namespace TToTT.TowerDefense.Enemies
         private readonly GridController _grid;
         private readonly EconomyController _economyController;
         private readonly ParticlesGenerator _particlesGenerator; 
+        private readonly AudioService _audioservice; 
         private readonly IPlayerTarget _playerTarget;
 
         private int _spawnedCount = 0;
@@ -27,7 +28,8 @@ namespace TToTT.TowerDefense.Enemies
             GridController grid,
             EconomyController economyController,
             ParticlesGenerator particlesGenerator,
-            IPlayerTarget playerTarget)
+            IPlayerTarget playerTarget,
+            AudioService audioService)
         {
             _factory = factory;
             _factory.Init();
@@ -36,6 +38,7 @@ namespace TToTT.TowerDefense.Enemies
             _economyController = economyController;
             _particlesGenerator = particlesGenerator;
             _playerTarget = playerTarget;
+            _audioservice = audioService;
         }
 
         #endregion
@@ -110,7 +113,7 @@ namespace TToTT.TowerDefense.Enemies
             enemy.BuffController.AddOrReplace(moneyBuff);
             enemy.SetLane(lane);
             enemy.BuildRoute(routePoints);
-            enemy.Init(_particlesGenerator);
+            enemy.Init(_particlesGenerator, _audioservice);
 
             enemy.OnReachedFinish += _playerTarget.TakeDamage;
             enemy.OnDeath += Death;

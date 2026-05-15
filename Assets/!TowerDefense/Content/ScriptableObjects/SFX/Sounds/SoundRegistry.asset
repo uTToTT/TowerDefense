@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a3fbf9965616543ac0c0530bccaad6, type: 3}
+  m_Name: SoundRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::SoundRegistry
+  _entries:
+  - Id: 8
+    Config: {fileID: 11400000, guid: b5dbdfc0b2da3fa4db4e6514122fc869, type: 2}
+  - Id: 9
+    Config: {fileID: 11400000, guid: 4cebf5b34cc82c041adbc09cc9bc4df0, type: 2}
+  - Id: 2
+    Config: {fileID: 11400000, guid: 9d9cd2cb09f29be40a48d566305cda96, type: 2}
+  - Id: 3
+    Config: {fileID: 11400000, guid: 8866deaba9018634b9ed9454591fcc40, type: 2}

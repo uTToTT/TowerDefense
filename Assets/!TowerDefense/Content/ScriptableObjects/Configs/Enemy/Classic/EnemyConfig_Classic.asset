@@ -20,3 +20,5 @@ MonoBehaviour:
   _dropMoney: 6
   _maxFreezeStack: 0
   _freezingTime: 0
+  _hit: 3
+  _death: 2

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+// TODO: migrate to pure C# class
 [RequireComponent(typeof(TargetingModule))]
 public class Tower : MapObject, IPoolable, IEntityLifecycle
 {
@@ -12,12 +14,15 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
 
     [SerializeField] private UpgradeNodeConfig _upgradeTree;
     [SerializeField] private TowerPreview _towerPreview;
-    [SerializeField] private CustomParticleSystem _particles;
     [SerializeField] private TowerRecoil _towerRecoil;
     [SerializeField] private Transform _towerTransform;
+    [SerializeField] private Transform _firePoint;
 
     private TowerUpgradeController _upgradeController;
     private TargetingModule _targetingModule;
+    private ParticlesGenerator _particlesGenerator;
+    private AudioService _audioService;
+
     private readonly Dictionary<ModuleType, ITowerModule> _modules = new();
 
     public UpgradeNodeConfig UpgradeTree => _upgradeTree;
@@ -25,6 +30,9 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public TargetingModule TargetingModule => _targetingModule;
     public TowerRecoil TowerRecoil => _towerRecoil;
     public Transform TowerTransform => _towerTransform;
+    public Transform FirePoint => _firePoint;
+    public ParticlesGenerator ParticlesGenerator => _particlesGenerator;
+    public AudioService AudioService => _audioService;
 
     public bool IsEnabled=> _enabled; 
     public Transform Transform => transform;
@@ -36,9 +44,15 @@ public class Tower : MapObject, IPoolable, IEntityLifecycle
     public void ShowRange() => _towerPreview.Enable();
     public void HideRange() => _towerPreview.Disable();
 
-    public void PlayParticle() => _particles?.Play();
-
     #region Init
+
+    public void Init(
+        ParticlesGenerator particlesGenerator, 
+        AudioService audioService)
+    {
+        _particlesGenerator = particlesGenerator;
+        _audioService = audioService;
+    }
 
     private void Awake()
     {

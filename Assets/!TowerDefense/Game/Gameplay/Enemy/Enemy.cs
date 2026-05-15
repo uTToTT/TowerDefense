@@ -16,13 +16,6 @@ namespace TToTT.TowerDefense.Enemies
         [Expandable]
         [SerializeField] private EnemyConfig _config;
 
-
-        [HorizontalLine]
-        // TODO: refactor
-        [SerializeField] private ParticleSystem _deathExmplosion;
-        [SerializeField] private CustomParticleSystem _hitVFX;
-        //
-
         private float _currHP;
 
         private PathLane _lane;
@@ -31,6 +24,7 @@ namespace TToTT.TowerDefense.Enemies
         private PathController _pathController;
         private EnemyMovementController _movement;
         private ParticlesGenerator _particlesGenerator;
+        private AudioService _audioService;
 
         private List<Vector3> _points;
 
@@ -55,9 +49,10 @@ namespace TToTT.TowerDefense.Enemies
 
         #region Init
 
-        public void Init(ParticlesGenerator particlesGenerator)
+        public void Init(ParticlesGenerator particlesGenerator, AudioService audioService)
         {
             _particlesGenerator = particlesGenerator;
+            _audioService = audioService;
         }
 
         private void Awake()
@@ -130,7 +125,7 @@ namespace TToTT.TowerDefense.Enemies
 
             if (_currHP <= 0)
             {
-                Death();
+                DeathByPlayer();
                 return;
             }
 
@@ -139,6 +134,7 @@ namespace TToTT.TowerDefense.Enemies
                 : ParticleRequest.At(ParticlesType.Blood, transform.position);
 
             _particlesGenerator.Play(request);
+            _audioService.Play(_config.HitSound);
         }
 
         private void FinishReached()
@@ -157,14 +153,21 @@ namespace TToTT.TowerDefense.Enemies
             IsAlive = true;
         }
 
-        private void Death()
+        private void DeathByPlayer()
         {
             if (!IsAlive) return;
             IsAlive = false;
 
-            var request =  ParticleRequest.At(ParticlesType.EnemyDeath, transform.position);
-
+            var request = ParticleRequest.At(ParticlesType.EnemyDeath, transform.position);
             _particlesGenerator.Play(request);
+            _audioService.Play(_config.DeathSound);
+            OnDeath?.Invoke(this);
+        }
+
+        private void Death()
+        {
+            if (!IsAlive) return;
+            IsAlive = false;
 
             OnDeath?.Invoke(this);
         }

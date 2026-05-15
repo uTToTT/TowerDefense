@@ -18,6 +18,10 @@ public class EnemyConfig : ScriptableObject
     [SerializeField, Range(0, 50)] private int _maxFreezeStack;
     [SerializeField, Range(0, 20)] private float _freezingTime;
 
+    [HorizontalLine]
+    [Header("Effects")]
+    [SerializeField] private SoundId _hit = SoundId.EnemyHit;
+    [SerializeField] private SoundId _death = SoundId.EnemyDeath;
 
     public float HP => _hp;
     public float Armor => _armor;
@@ -27,4 +31,6 @@ public class EnemyConfig : ScriptableObject
     public float DropMoney => _dropMoney;
     public int MaxFreezeStack => _maxFreezeStack;
     public float FreezingTime => _freezingTime;
+    public SoundId HitSound => _hit;
+    public SoundId DeathSound => _death;
 }

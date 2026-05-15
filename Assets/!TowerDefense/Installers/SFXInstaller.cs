@@ -1,16 +1,17 @@
-using UnityEngine;
+using TToTT.Core.DI;
+using TToTT.Core.Installers;
 
-public class SFXInstaller : MonoBehaviour
+public class SFXInstaller : IInstaller
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private readonly SFXContext _ctx;
 
-    // Update is called once per frame
-    void Update()
+    public SFXInstaller(SFXContext context) { _ctx = context; }
+
+    public void Install(DIContainer container)
     {
+        container.BindInstance<SoundRegistry>(_ctx.Sounds);   
+        container.BindInstance<AudioPlayerFactory>(_ctx.PlayerFactory);
         
+        container.Bind<AudioService>(Lifetime.Singleton);
     }
 }

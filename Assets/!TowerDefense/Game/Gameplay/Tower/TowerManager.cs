@@ -13,16 +13,23 @@ namespace TToTT.TowerDefense.Towers
 
         private readonly BuildController _buildController;
         private readonly GameStateMachine _gameState;
+        private readonly ParticlesGenerator _particlesGenerator;
+        private readonly AudioService _audioService;
+
         public List<Tower> Towers => _builtTowers;
 
         #region Init
 
         public TowerManager(
             BuildController buildController,
-            GameStateMachine gameState)
+            GameStateMachine gameState,
+            ParticlesGenerator particlesGenerator,
+            AudioService audioService)
         {
             _buildController = buildController;
             _gameState = gameState;
+            _particlesGenerator = particlesGenerator;
+            _audioService = audioService;
         }
 
         #endregion
@@ -59,7 +66,12 @@ namespace TToTT.TowerDefense.Towers
 
         #region Registering
 
-        public void Register(Tower tower) => _toAdd.Add(tower);
+        public void Register(Tower tower)
+        {
+            tower.Init(_particlesGenerator, _audioService);
+            _toAdd.Add(tower);
+        }
+
         public void Unregister(Tower tower) => _toRemove.Add(tower);
 
         #endregion

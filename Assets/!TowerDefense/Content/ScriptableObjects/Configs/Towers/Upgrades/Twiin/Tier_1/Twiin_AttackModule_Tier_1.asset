@@ -16,3 +16,6 @@ MonoBehaviour:
   _baseFireRate: 1
   _piercing: 0.05
   _rotationSpeed: 360
+  _aimThresholdDegress: 1
+  _fireParticle: 4
+  _fireSound: 10

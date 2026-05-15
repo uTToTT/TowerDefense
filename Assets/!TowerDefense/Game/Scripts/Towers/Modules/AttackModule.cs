@@ -13,7 +13,9 @@ public sealed class AttackModule : ITowerModule
 
     public ModuleType ModuleType => ModuleType.Attack;
 
-    public AttackModule(AttackModuleConfig config, Tower tower)
+    public AttackModule(
+        AttackModuleConfig config,
+        Tower tower)
     {
         _config = config;
         _tower = tower;
@@ -42,6 +44,9 @@ public sealed class AttackModule : ITowerModule
         if (_target == null)
             return;
 
+        if (!IsAimedAtTarget()) 
+            return;
+
         if (_cooldown > 0)
         {
             _cooldown -= dt;
@@ -64,7 +69,11 @@ public sealed class AttackModule : ITowerModule
 
         _target.TakeDamage(_config.Damage, _config.Piercing, hitDir);
         _tower.TowerRecoil.PlayRecoil();
-        _tower.PlayParticle();
+
+        var request = ParticleRequest.At(_config.FireParticle, _tower.FirePoint.position);
+
+        _tower.ParticlesGenerator.Play(request);
+        _tower.AudioService.Play(_config.FireSound);
 
         var hit = new HitContext
         {
@@ -92,5 +101,16 @@ public sealed class AttackModule : ITowerModule
             return;
 
         _target = _tower.TargetingModule.GetTarget();
+    }
+
+    private bool IsAimedAtTarget()
+    {
+        Vector2 toTarget = (_target.transform.position - _tower.TowerTransform.position).normalized;
+        Vector2 towerForward = _tower.TowerTransform.up;
+
+        float dot = Vector2.Dot(towerForward, toTarget);
+        float threshold = Mathf.Cos(_config.AimThresholdDegrees * Mathf.Deg2Rad);
+
+        return dot >= threshold;
     }
 }

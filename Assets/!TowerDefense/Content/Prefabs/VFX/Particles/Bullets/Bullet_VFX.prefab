@@ -4909,3 +4909,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomParticleSystem
   _particleType: 2
   _particleSystem: {fileID: 7635289848239096691}
+  _baseRotation: {x: 0, y: 0, z: 0}
+  _scale: 1

@@ -4844,6 +4844,7 @@ MonoBehaviour:
   _particleType: 1
   _particleSystem: {fileID: 6823200998282874672}
   _baseRotation: {x: -180, y: -90, z: -90}
+  _scale: 1
 --- !u!199 &6823200998282874673
 ParticleSystemRenderer:
   serializedVersion: 6

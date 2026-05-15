@@ -12,6 +12,7 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private EnemyContext _enemy;
     [SerializeField] private LevelContext _level;
     [SerializeField] private VFXContext _vfx;
+    [SerializeField] private SFXContext _sfx;
 
     [HorizontalLine]
     [SerializeField] private Camera _camera;
@@ -26,7 +27,7 @@ public class UnityEntryPoint : MonoBehaviour
 
         new CoreInstaller().Install(container);
         new UIInstaller(_ui).Install(container);
-        new GameInstaller(_map, _shop, _enemy, _level, _vfx).Install(container);
+        new GameInstaller(_map, _shop, _enemy, _level, _vfx, _sfx).Install(container);
         _gameLoop = container.Resolve<GameLoop>();
     }
 
