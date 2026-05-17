@@ -21,7 +21,7 @@ namespace TToTT.TowerDefense.Enemies
         {
             if (state == _state) return;
             _state = state;
-            _logger.Log($"Set [{_state}] wave state");
+            //_logger.Log($"Set [{_state}] wave state");
             OnStateChanged?.Invoke(state);
         }
     }

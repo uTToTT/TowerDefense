@@ -17,6 +17,7 @@ public class ShopController : IDisposable
     private readonly MapObjectPreviewFactoryRegistry _previewFactory;
     private readonly ShopConfig _config;
     private readonly IUIButton _reroll;
+    private readonly IAnalyticsService _analytics;
 
     private ProductSlot[] _slots;
     private ProductSlot _activeSlot;
@@ -32,7 +33,8 @@ public class ShopController : IDisposable
         ShopConfig config,
         ShopSlots slots,
         ButtonRegistry buttons,
-        ILogger logger)
+        ILogger logger,
+        IAnalyticsService analytics)
     {
         _economy = economy;
         _dragAndDrop = dragAndDrop;
@@ -42,6 +44,7 @@ public class ShopController : IDisposable
         _slots = slots.Slots;
         _reroll = buttons.Get(ButtonId.Reroll);
         _logger = logger;
+        _analytics = analytics;
 
         _previewFactory.Init();
         _totalWeight = CalculateTotalWeight();
@@ -54,7 +57,6 @@ public class ShopController : IDisposable
         }
 
         _reroll.OnClick += TryReroll;
-       
     }
 
     public void Restart()
@@ -124,6 +126,7 @@ public class ShopController : IDisposable
             tower.HideRange();
             tower.Enable();
             _towerManager.Register(tower);
+            _analytics.TrackTowerPurchased(tower.TowerType.ToString(), _activeSlot.ProductConfig.Cost);
         }
 
         _economy.Spend(_activeSlot.ProductConfig.Cost);

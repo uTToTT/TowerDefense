@@ -1,9 +1,6 @@
-// Services/Analytics/FirebaseAnalyticsService.cs
 using Firebase;
 using Firebase.Analytics;
 using Firebase.Extensions;
-using System;
-using System.Data.Common;
 using UnityEngine;
 
 public class FirebaseAnalyticsService : IAnalyticsService
@@ -41,6 +38,15 @@ public class FirebaseAnalyticsService : IAnalyticsService
 
         FirebaseAnalytics.LogEvent("ad_watched",
             new Parameter("placement", placement));
+    }
+
+    public void TrackTowerPurchased(string type, int cost)
+    {
+        if(!_isInitialized) return;
+
+        FirebaseAnalytics.LogEvent("tower_purchased",
+            new Parameter("type", type),
+            new Parameter("cost", cost));
     }
 
     public void TrackPurchase(string productId)

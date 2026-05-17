@@ -12,11 +12,13 @@ namespace TToTT.TowerDefense.Enemies.Wave
         private readonly WaveStateMachine _state;
         private readonly EnemySpawner _spawner;
         private readonly ILabelView _waveText;
+        private readonly IAnalyticsService _analyticsService;
 
         private float _delayBeforeWave;
         private float _waveDelayTimer;
         private int _currWaveIndex = -1;
         private int _aliveCount = 0;
+        private int _killedCount = 0;
         private bool _spawningFinished;
 
         private List<GroupRuntime> _activeGroups;
@@ -28,12 +30,14 @@ namespace TToTT.TowerDefense.Enemies.Wave
         public WaveController(
             WaveStateMachine state,
             EnemySpawner spawner,
-            LabelRegistry labels)
+            LabelRegistry labels,
+            IAnalyticsService analyticsService)
         {
             _delayBeforeWave = 3;
             _state = state;
             _spawner = spawner;
             _waveText = labels.Get(LabelId.Wave);
+            _analyticsService = analyticsService;
 
             _spawner.OnSpawned += OnEnemySpawned;
             _spawner.OnDeath += OnEnemyDied;
@@ -47,6 +51,7 @@ namespace TToTT.TowerDefense.Enemies.Wave
             _currWaveIndex = -1;
             _waveDelayTimer = 0;
             _aliveCount = 0;
+            _killedCount = 0;
             _spawningFinished = false;
             _state.SetState(WaveState.Pause);
         }
@@ -88,6 +93,7 @@ namespace TToTT.TowerDefense.Enemies.Wave
         private void OnEnemyDied(Enemy enemy)
         {
             _aliveCount--;
+            _killedCount++;
             CheckWaveCleared();
         }
 
@@ -97,6 +103,7 @@ namespace TToTT.TowerDefense.Enemies.Wave
             if (_aliveCount > 0) return;
 
             OnWaveCleared?.Invoke();
+            _analyticsService.TrackWaveCompleted(_currWaveIndex + 1, _killedCount);
             PrepareNextWave();
         }
 
@@ -141,6 +148,7 @@ namespace TToTT.TowerDefense.Enemies.Wave
             }
 
             _aliveCount = 0;
+            _killedCount = 0;
             _spawningFinished = false;
             _waveDelayTimer = _delayBeforeWave;
             _waveText.SetText($"Wave {_currWaveIndex + 1}/{LastWave}");
