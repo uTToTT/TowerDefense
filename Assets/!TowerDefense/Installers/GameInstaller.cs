@@ -39,7 +39,7 @@ namespace TToTT.TowerDefense.Installers
             new EconomyInstaller(_shopCtx).Install(container);
             new EnemyInstaller(_enemyCtx).Install(container);
             new LevelInstaller(_levelCtx).Install(container);
-
+            new MonetizationInstaller().Install(container);
 
             container.Bind<Player>(Lifetime.Singleton);
             container.BindFactory<IPlayerTarget>(
