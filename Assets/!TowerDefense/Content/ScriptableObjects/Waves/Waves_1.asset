@@ -17,7 +17,7 @@ MonoBehaviour:
     - _route: 1
       _lane: 1
       _enemyType: 0
-      _enemyCount: 200
+      _enemyCount: 20
       _timeBtwSpawn: 0.25
       _hpAdditionalPercent: 0
       _moneyDropAdditionalPercent: 0

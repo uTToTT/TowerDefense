@@ -32,9 +32,9 @@ public class AdMobAdsService : IAdsService
     {
         if (_rewardedAd == null) return;
 
-        //_rewardedAd.FullScreenContentCallback = new FullScreenContentCallback
+        //_rewardedAd.OnAdFullScreenContentClosed += ()=>
         //{
-        //    OnAdDismissedFullScreenContent = _ => LoadRewardedAd() 
+        //    OnAdDismissedFullScreenContent = _ => LoadRewardedAd();
         //};
 
         _rewardedAd.Show(_ =>
