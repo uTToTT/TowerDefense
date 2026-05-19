@@ -13,6 +13,7 @@ namespace TToTT.TowerDefense.Installers
         private readonly LevelContext _levelCtx;
         private readonly VFXContext _vfxContext;
         private readonly SFXContext _sfxContext;
+        private readonly MonetizationContext _monetizationContext;
 
         public GameInstaller(
             MapContext mapContext,
@@ -20,7 +21,8 @@ namespace TToTT.TowerDefense.Installers
             EnemyContext enemyCtx,
             LevelContext levelCtx,
             VFXContext vfxContext,
-            SFXContext sfxContext)
+            SFXContext sfxContext,
+            MonetizationContext monetizationContext)
         {
             _mapCtx = mapContext;
             _shopCtx = shopCtx;
@@ -28,6 +30,7 @@ namespace TToTT.TowerDefense.Installers
             _levelCtx = levelCtx;
             _vfxContext = vfxContext;
             _sfxContext = sfxContext;
+            _monetizationContext = monetizationContext;
         }
 
         public void Install(DIContainer container)
@@ -39,7 +42,7 @@ namespace TToTT.TowerDefense.Installers
             new EconomyInstaller(_shopCtx).Install(container);
             new EnemyInstaller(_enemyCtx).Install(container);
             new LevelInstaller(_levelCtx).Install(container);
-            new MonetizationInstaller().Install(container);
+            new MonetizationInstaller(_monetizationContext).Install(container);
 
             container.Bind<Player>(Lifetime.Singleton);
             container.BindFactory<IPlayerTarget>(

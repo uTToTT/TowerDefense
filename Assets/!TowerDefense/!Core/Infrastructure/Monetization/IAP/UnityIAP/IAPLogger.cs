@@ -2,11 +2,16 @@ using System.Collections.Generic;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Security;
 
-namespace Samples.Purchasing.IAP5.Demo
+namespace TToTT.Core.Purchasing
 {
     public class IAPLogger
     {
         private ILogger _logger;
+
+        public IAPLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public void LogFetchedProducts(List<Product> products)
         {

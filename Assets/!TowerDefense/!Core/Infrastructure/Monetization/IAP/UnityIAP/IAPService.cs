@@ -2,7 +2,7 @@ using System;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 
-namespace Samples.Purchasing.IAP5.Demo
+namespace TToTT.Core.Purchasing
 {
     static class IAPService
     {

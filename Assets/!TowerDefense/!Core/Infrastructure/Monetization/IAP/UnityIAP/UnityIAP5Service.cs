@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TToTT.TowerDefense.Economy;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 using UnityEngine.Purchasing.Security;
 
-namespace Samples.Purchasing.IAP5.Demo
+namespace TToTT.Core.Purchasing
 {
     // implement Analytics
     public class UnityIAP5Service : IIAPService
@@ -21,15 +22,23 @@ namespace Samples.Purchasing.IAP5.Demo
         ICatalogProvider _catalog = new CatalogProvider();
         CrossPlatformValidator _crossPlatformValidator;
 
-        readonly List<ProductPurchaseButtonHelper> _activePurchaseButtons = new List<ProductPurchaseButtonHelper>();
-        readonly IAPPaywallCallbacks _callbacks;
+        private readonly List<ProductPurchaseButtonHelper> _activePurchaseButtons = new List<ProductPurchaseButtonHelper>();
+        private readonly IAPPaywallCallbacks _callbacks;
+        private readonly EconomyController _economy;
 
-        public bool IsNoAdsPurchased { get; private set; }
+        public bool IsNoAdsPurchased { get; set; }
 
-        public UnityIAP5Service(IAnalyticsService analytics)
+        public UnityIAP5Service(
+            IAnalyticsService analytics,
+            EconomyController economy,
+            IAPButtonInitializer buttonInitializer,
+            IAPLogger logger)
         {
+            buttonInitializer.Initialize(this);
+            _IAPLogger= logger;
             _callbacks = new IAPPaywallCallbacks(this, _IAPLogger);
             _analytics = analytics;
+            _economy = economy;
 
             CreateServices();
 
@@ -324,14 +333,14 @@ namespace Samples.Purchasing.IAP5.Demo
             return Application.platform == RuntimePlatform.Android && DefaultStoreHelper.GetDefaultStoreName() == UnityEngine.Purchasing.GooglePlay.Name;
         }
 
-        public void BuyNoAds()
+        public void GetNoAds()
         {
-            throw new NotImplementedException();
+            IsNoAdsPurchased = true;
         }
 
-        public void BuyGoldPack()
+        public void GetGoldPack()
         {
-            throw new NotImplementedException();
+            _economy.AddMoney(100);
         }
     }
 }

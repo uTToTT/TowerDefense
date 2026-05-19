@@ -20,7 +20,9 @@ public class GameLoop : IDisposable
     private readonly WaveController _waveController;
     private readonly Player _player;
     private readonly ParticlesGenerator _particlesGenerator;
-
+    private readonly IAnalyticsService _analytics;
+    private readonly IIAPService _iap;
+    private readonly IAdsService _ads;
     #region Init
 
     public GameLoop(
@@ -34,7 +36,10 @@ public class GameLoop : IDisposable
        EnemyManager enemyManager,
        LevelManager levelManager,
        Player player,
-       ParticlesGenerator particlesGenerator)
+       ParticlesGenerator particlesGenerator,
+       IAnalyticsService analytics,
+       IIAPService iap,
+       IAdsService ads)
     {
         _state = gameStateMachine;
         _tick = tickController;
@@ -47,6 +52,9 @@ public class GameLoop : IDisposable
         _waveController = waveController;
         _player = player;
         _particlesGenerator = particlesGenerator;
+        _analytics = analytics;
+        _iap = iap;
+        _ads = ads;
 
         InitGameStateHandlers();
 

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using TToTT.TowerDefense.Economy;
 using UnityEngine.Purchasing;
 
-namespace Samples.Purchasing.IAP5.Demo
+namespace TToTT.Core.Purchasing
 {
     public class IAPPaywallCallbacks
     {
@@ -10,7 +11,7 @@ namespace Samples.Purchasing.IAP5.Demo
 
         public IAPPaywallCallbacks(
             UnityIAP5Service IAPservice,
-            IAPLogger logger)
+            IAPLogger logger) 
         {
             _IAPService = IAPservice;
             _logger = logger;
@@ -82,7 +83,7 @@ namespace Samples.Purchasing.IAP5.Demo
             foreach (var cartItem in order.CartOrdered.Items())
             {
                 var product = cartItem.Product;
-
+                HandleConfirmedProduct(product);
                 _logger.LogConfirmedOrder(product, order.Info);
             }
         }
@@ -112,8 +113,15 @@ namespace Samples.Purchasing.IAP5.Demo
             switch (product.definition.id)
             {
                 case ProductIds.NoAds:
-                    
+                    _IAPService.GetNoAds();
+                    break;
+
+                case ProductIds.GoldPack:
+                    _IAPService.GetGoldPack();
+                    break;
+
                 default:
+                    _logger.LogConsole($"Product is not defined: product_id={product.definition.id}");
                     break;
             }
         }
