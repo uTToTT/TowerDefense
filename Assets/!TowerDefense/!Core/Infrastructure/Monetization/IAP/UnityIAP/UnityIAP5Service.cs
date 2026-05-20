@@ -20,7 +20,7 @@ namespace TToTT.Core.Purchasing
         IPurchaseService _purchaseService;
         IAnalyticsService _analytics;
         ICatalogProvider _catalog = new CatalogProvider();
-        CrossPlatformValidator _crossPlatformValidator;
+        //CrossPlatformValidator _crossPlatformValidator;
 
         private readonly List<ProductPurchaseButtonHelper> _activePurchaseButtons = new List<ProductPurchaseButtonHelper>();
         private readonly IAPPaywallCallbacks _callbacks;
@@ -44,7 +44,7 @@ namespace TToTT.Core.Purchasing
 
             InitCatalog();
             InitializeIapService();
-            CreateCrossPlatformValidator();
+            //CreateCrossPlatformValidator();
 
             ConnectToStore();
         }
@@ -129,27 +129,28 @@ namespace TToTT.Core.Purchasing
             });
         }
 
-        private void CreateCrossPlatformValidator()
-        {
-#if !UNITY_EDITOR
-            try
-            {
-                if (CanCrossPlatformValidate())
-                {
-#if !DEBUG_STOREKIT_TEST
-                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
-#else
-                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
-#endif
-                }   
-            }   
-            catch (NotImplementedException exception)
-            {
-                _IAPLogger.LogConsole("===========");
-                _IAPLogger.LogConsole($"Cross Platform Validator Not Implemented: {exception}");
-            }
-#endif
-        }
+//        private void CreateCrossPlatformValidator()
+//        {
+
+//#if !UNITY_EDITOR
+//            try
+//            {
+//                if (CanCrossPlatformValidate())
+//                {
+//#if !DEBUG_STOREKIT_TEST
+//                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
+//#else
+//                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
+//#endif
+//                }   
+//            }   
+//            catch (NotImplementedException exception)
+//            {
+//                _IAPLogger.LogConsole("===========");
+//                _IAPLogger.LogConsole($"Cross Platform Validator Not Implemented: {exception}");
+//            }
+//#endif
+//        }
 
         private void OnServiceInitialized()
         {
@@ -291,7 +292,7 @@ namespace TToTT.Core.Purchasing
         {
             if (CanCrossPlatformValidate())
             {
-                ValidatePurchase(orderInfo);
+                //ValidatePurchase(orderInfo);
             }
         }
 
@@ -303,30 +304,30 @@ namespace TToTT.Core.Purchasing
                    Application.platform == RuntimePlatform.tvOS;
         }
 
-        private void ValidatePurchase(IOrderInfo orderInfo)
-        {
-            try
-            {
-                var result = _crossPlatformValidator.Validate(orderInfo.Receipt);
+        //private void ValidatePurchase(IOrderInfo orderInfo)
+        //{
+        //    try
+        //    {
+        //        var result = _crossPlatformValidator.Validate(orderInfo.Receipt);
 
-                if (IsGooglePlay())
-                {
-                    _IAPLogger.LogConsole("Validated Receipt. Contents:");
-                    foreach (IPurchaseReceipt productReceipt in result)
-                    {
-                        _IAPLogger.LogReceiptValidation(productReceipt);
-                    }
-                }
-                else
-                {
-                    _IAPLogger.LogConsole("Validated Receipt.");
-                }
-            }
-            catch (IAPSecurityException ex)
-            {
-                _IAPLogger.LogConsole("Invalid receipt, not unlocking content. " + ex);
-            }
-        }
+        //        if (IsGooglePlay())
+        //        {
+        //            _IAPLogger.LogConsole("Validated Receipt. Contents:");
+        //            foreach (IPurchaseReceipt productReceipt in result)
+        //            {
+        //                _IAPLogger.LogReceiptValidation(productReceipt);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _IAPLogger.LogConsole("Validated Receipt.");
+        //        }
+        //    }
+        //    catch (IAPSecurityException ex)
+        //    {
+        //        _IAPLogger.LogConsole("Invalid receipt, not unlocking content. " + ex);
+        //    }
+        //}
 
         private bool IsGooglePlay()
         {

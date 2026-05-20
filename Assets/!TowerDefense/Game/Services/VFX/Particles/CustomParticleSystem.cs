@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class CustomParticleSystem : MonoBehaviour, IPoolable, IEntityLifecycle

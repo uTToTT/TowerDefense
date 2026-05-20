@@ -8,7 +8,7 @@ public class AdMobAdsService : IAdsService
 #if UNITY_EDITOR
         "ca-app-pub-3940256099942544/5224354917";
 #else
-        ""; 
+        "ca-app-pub-3940256099942544/5224354917";
 #endif
 
     private readonly IAnalyticsService _analytics;

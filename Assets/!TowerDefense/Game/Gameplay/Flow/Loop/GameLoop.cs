@@ -148,5 +148,6 @@ public class GameLoop : IDisposable
     private void Victory()
     {
         _state.SetState(GameState.Victory);
+        _ads.ShowRewardedAd("victory_rewarded_ad", null);
     }
 }
