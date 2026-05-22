@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TToTT.TowerDefense.Economy;
 using UnityEngine.Purchasing;
 
 namespace TToTT.Core.Purchasing
@@ -19,30 +18,30 @@ namespace TToTT.Core.Purchasing
 
         public void OnInitialProductsFetched(List<Product> products)
         {
-            _logger.LogConsole("===========");
-            _logger.LogConsole("OnInitialProductsFetched:");
             _logger.LogFetchedProducts(products);
             _IAPService.UpdateActivePurchaseButtons();
             _IAPService.FetchExistingPurchases();
         }
+
         public void OnInitialProductsFetchFailed(ProductFetchFailed failure)
         {
-            _logger.LogConsole("===========");
-            _logger.LogConsole("OnInitialProductsFetchFailed:");
-            _logger.LogConsole(failure.FailureReason);
+            _logger.Log($"OnInitialProductsFetchFailed | {failure.FailureReason}");
         }
+
         public void OnExistingPurchasesFetched(Orders existingOrders)
         {
-            _logger.LogConsole("===========");
-            _logger.LogConsole("OnExistingPurchasesFetched:");
-            _logger.LogConsole(UnityIAP5Service.IsReceiptAvailable(existingOrders) ? "Success - Found Existing Orders with receipts" : "Notice: - No Existing Orders with receipts");
+            var result = UnityIAP5Service.IsReceiptAvailable(existingOrders) ?
+                "Success - Found Existing Orders with receipts" :
+                "Notice: - No Existing Orders with receipts";
+
+            _logger.Log($"OnExistingPurchasesFetched | result={result}");
         }
+
         public void OnExistingPurchasesFetchFailed(PurchasesFetchFailureDescription failure)
         {
-            _logger.LogConsole("===========");
-            _logger.LogConsole("OnExistingPurchasesFetchFailed:");
-            _logger.LogConsole(failure.Message);
+            _logger.Log($"OnExistingPurchasesFetchFailed | msg{failure.Message}");
         }
+
         public void OnPurchasePending(PendingOrder order)
         {
             foreach (var cartItem in order.CartOrdered.Items())
@@ -54,6 +53,7 @@ namespace TToTT.Core.Purchasing
 
             _IAPService.ConfirmOrderIfAutomatic(order);
         }
+
         public void OnPurchaseConfirmed(Order order)
         {
             switch (order)
@@ -86,6 +86,7 @@ namespace TToTT.Core.Purchasing
                 _logger.LogConfirmedOrder(product, order.Info);
             }
         }
+
         public void OnPurchaseFailed(FailedOrder failedOrder)
         {
             var reason = failedOrder.FailureReason;
@@ -95,6 +96,7 @@ namespace TToTT.Core.Purchasing
                 _logger.LogFailedPurchase(cartItem.Product, reason);
             }
         }
+
         public void OnOrderDeferred(DeferredOrder deferredOrder)
         {
             foreach (var cartItem in deferredOrder.CartOrdered.Items())
@@ -102,10 +104,6 @@ namespace TToTT.Core.Purchasing
                 _logger.LogDeferredPurchase(cartItem.Product);
             }
         }
-
-        // ===================
-        //      Handlers
-        // ===================
 
         private void HandleConfirmedProduct(Product product)
         {
@@ -120,7 +118,7 @@ namespace TToTT.Core.Purchasing
                     break;
 
                 default:
-                    _logger.LogConsole($"Product is not defined: product_id={product.definition.id}");
+                    _logger.Log($"Product is not defined | product_id={product.definition.id}");
                     break;
             }
         }

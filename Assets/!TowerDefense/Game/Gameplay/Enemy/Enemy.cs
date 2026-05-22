@@ -99,6 +99,7 @@ namespace TToTT.TowerDefense.Enemies
 
         private void OnDrawGizmos()
         {
+#if UNITY_EDITOR
             if (_points == null || _points.Count == 0)
                 return;
 
@@ -113,6 +114,7 @@ namespace TToTT.TowerDefense.Enemies
                     Gizmos.DrawLine(_points[i], _points[i + 1]);
                 }
             }
+#endif
         }
 
         public void TakeDamage(float damage, float armorPiercing, Vector2 hitDirection = default)

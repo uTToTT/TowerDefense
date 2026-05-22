@@ -4,14 +4,14 @@ namespace TToTT.Core.Purchasing
 {
     public class IAPButtonInitializer : MonoBehaviour
     {
-        public void Initialize(UnityIAP5Service iapService)
+        public void Initialize(UnityIAP5Service iapService, IAPLogger logger)
         {
             var buttons = FindObjectsByType<ProductPurchaseButtonHelper>(FindObjectsSortMode.None);
 
             foreach (var button in buttons)
-                button.Initialize(iapService);
+                button.Initialize(iapService, logger);
 
-            Debug.Log($"[IAPButtonInitializer] Initialized {buttons.Length} IAP buttons");
+            logger.Log($"Initialized [{buttons.Length}] IAP buttons");
         }
     }
 }

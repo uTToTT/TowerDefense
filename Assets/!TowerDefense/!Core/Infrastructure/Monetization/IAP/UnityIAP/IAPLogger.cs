@@ -1,97 +1,78 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine.Purchasing;
-using UnityEngine.Purchasing.Security;
 
 namespace TToTT.Core.Purchasing
 {
     public class IAPLogger
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
+
+        #region Init
 
         public IAPLogger(ILogger logger)
         {
             _logger = logger;
         }
 
+        #endregion
+
+        public void Log(string msg) => _logger.Log(msg);
+
         public void LogFetchedProducts(List<Product> products)
         {
+            var sb = new StringBuilder();
+
             if (products.Count > 0)
             {
                 foreach (var product in products)
                 {
-                    LogConsole($"Fetched {product.definition.id}");
+                    sb.AppendLine($"Fetched {product.definition.id}");
                 }
             }
             else
             {
-                LogConsole("No Products Fetched.");
+                Log("No Products Fetched.");
+                return;
             }
+
+            Log(sb.ToString());
         }
 
         public void LogConfirmedOrder(Product product, IOrderInfo orderInfo)
         {
-            LogConsole("===========");
-            LogConsole($"Confirmed Product: '{product.definition.id}'");
-            LogConsole($"Product transaction id: {orderInfo.TransactionID}.");
-            LogConsole($"Product receipt length: {orderInfo.Receipt?.Length}.");
-            LogConsole($"Product Type: '{product.definition.type}'");
+            Log($"Confirmed Product | product={product.definition.id}\n" +
+                $"Product transaction id: {orderInfo.TransactionID}.\n" +
+                $"Product receipt length: {orderInfo.Receipt?.Length}.\n" +
+                $"Product Type: {product.definition.type}");
         }
 
-        public void LogReceiptValidation(IPurchaseReceipt productReceipt)
-        {
-            LogConsole($"Product ID: '{productReceipt.productID}', Date: '{productReceipt.purchaseDate}', Transaction ID: '{productReceipt.transactionID}'");
-            LogGooglePlayReceiptValidationInfo(productReceipt);
-            LogAppleReceiptValidationInfo(productReceipt);
-        }
-        public void LogGooglePlayReceiptValidationInfo(IPurchaseReceipt productReceipt)
-        {
-            GooglePlayReceipt googleReceipt = productReceipt as GooglePlayReceipt;
-            if (googleReceipt != null)
-            {
-                LogConsole($"GooglePlay - State: '{googleReceipt.purchaseState}', Token: '{googleReceipt.purchaseToken}'");
-            }
-        }
-        public void LogAppleReceiptValidationInfo(IPurchaseReceipt productReceipt)
-        {
-            AppleInAppPurchaseReceipt appleReceipt = productReceipt as AppleInAppPurchaseReceipt;
-            if (appleReceipt != null)
-            {
-                LogConsole($"Apple - Original Transaction: '{appleReceipt.originalTransactionIdentifier}', Expiration Date : '{appleReceipt.subscriptionExpirationDate}', Cancellation Date : '{appleReceipt.cancellationDate}', Quandtity : '{appleReceipt.quantity}'");
-            }
-        }
         public void LogCompletedPurchase(Product product, IOrderInfo orderInfo)
         {
-            LogConsole("===========");
-            LogConsole($"Purchased Product: '{product.definition.id}'");
-            LogConsole($"Product transaction id: {orderInfo.TransactionID}.");
-            LogConsole($"Product receipt length: {orderInfo.Receipt?.Length}.");
-            LogConsole($"Product Type: '{product.definition.type}'");
+            Log($"Purchased Product | product={product.definition.id}\n" +
+                $"Product transaction id: {orderInfo.TransactionID}.\n" +
+                $"Product receipt length: {orderInfo.Receipt?.Length}.\n" +
+                $"Product Type: '{product.definition.type}'");
         }
 
         public void LogFailedConfirmation(Product product, PurchaseFailureReason reason)
         {
-            LogConsole("===========");
-            LogConsole("Purchase Confirmation Failed");
-            LogConsole($"Product: '{product.definition.storeSpecificId}'");
-            LogConsole($"FailureReason: {reason.ToString()}.");
-        }
-        public void LogFailedPurchase(Product product, PurchaseFailureReason reason)
-        {
-            LogConsole("===========");
-            LogConsole("PurchaseFailed");
-            LogConsole($"Product: '{product.definition.storeSpecificId}'");
-            LogConsole($"FailureReason: {reason.ToString()}.");
-        }
-        public void LogDeferredPurchase(Product product)
-        {
-            LogConsole("===========");
-            LogConsole("PurchaseDeferred");
-            LogConsole($"Product: '{product.definition.storeSpecificId}'");
+            Log("Purchase Confirmation Failed\n" +
+                $"Product: '{product.definition.storeSpecificId}'\n" +
+                $"FailureReason: {reason.ToString()}.");
         }
 
-        public void LogConsole(string msg)
+        public void LogFailedPurchase(Product product, PurchaseFailureReason reason)
         {
-            _logger.Log(msg);
+            Log("PurchaseFailed\n" +
+                $"Product: '{product.definition.storeSpecificId}'\n" +
+                $"FailureReason: {reason.ToString()}.");
+        }
+
+        public void LogDeferredPurchase(Product product)
+        {
+            Log("PurchaseDeferred\n" +
+                $"Product: '{product.definition.storeSpecificId}'");
         }
     }
 }

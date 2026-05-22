@@ -2,13 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using TToTT.TowerDefense.Economy;
-using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
 namespace TToTT.Core.Purchasing
 {
-    // implement Analytics
+    // TODO: implement Analytics
     public class UnityIAP5Service : IIAPService
     {
         private IAPLogger _IAPLogger;
@@ -31,7 +30,7 @@ namespace TToTT.Core.Purchasing
             IAPButtonInitializer buttonInitializer,
             IAPLogger logger)
         {
-            buttonInitializer.Initialize(this);
+            buttonInitializer.Initialize(this, logger);
             _IAPLogger= logger;
             _callbacks = new IAPPaywallCallbacks(this, _IAPLogger);
             _analytics = analytics;
@@ -107,7 +106,7 @@ namespace TToTT.Core.Purchasing
 
         private void OnTransactionsRestored(bool success, string error)
         {
-            _IAPLogger.LogConsole("Transactions restored: " + success);
+            _IAPLogger.Log("Transactions restored: " + success);
         }
 
         public static bool IsReceiptAvailable(Orders existingOrders)
@@ -121,7 +120,7 @@ namespace TToTT.Core.Purchasing
         {
             IAPService.Initialize(OnServiceInitialized, (message) =>
             {
-                _IAPLogger.LogConsole($"Initialization failed, IAP service dependency error: {message}");
+                _IAPLogger.Log($"Initialization failed, IAP service dependency error: {message}");
             });
         }
 
@@ -129,14 +128,13 @@ namespace TToTT.Core.Purchasing
 
         private void OnServiceInitialized()
         {
-            _IAPLogger.LogConsole("Services Initialized.");
+            _IAPLogger.Log("Services Initialized.");
         }
 
         private async void ConnectToStore()
         {
             await _storeService.Connect();
-            _IAPLogger.LogConsole("===========");
-            _IAPLogger.LogConsole("Store Connected.");
+            _IAPLogger.Log("Store Connected.");
             FetchInitialProducts();
         }
 
@@ -155,7 +153,7 @@ namespace TToTT.Core.Purchasing
             }
             else
             {
-                _IAPLogger.LogConsole($"The product service has no product with the ID {productId}");
+                _IAPLogger.Log($"The product service has no product with the ID {productId}");
             }
         }
 
@@ -201,8 +199,7 @@ namespace TToTT.Core.Purchasing
 
             if (containsItemToNotAutoConfirm && containsItemToAutoConfirm)
             {
-                _IAPLogger.LogConsole("===========");
-                _IAPLogger.LogConsole("Pending Order contains some products to not confirm. Confirming by default!");
+                _IAPLogger.Log("Pending Order contains some products to not confirm. Confirming by default!");
             }
 
             return containsItemToAutoConfirm;

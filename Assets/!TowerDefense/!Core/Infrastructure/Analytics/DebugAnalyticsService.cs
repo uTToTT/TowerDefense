@@ -8,14 +8,14 @@ public class DebugAnalyticsService : IAnalyticsService
     }
 
     public void TrackAdWatched(string placement) =>
-        _logger.Log($"[Analytics] ad_watched | placement={placement}");
+        _logger.Log($"ad_watched | placement={placement}");
 
     public void TrackPurchase(string productId) =>
-        _logger.Log($"[Analytics] purchase | product={productId}");
+        _logger.Log($"purchase | product={productId}");
 
     public void TrackTowerPurchased(string type, int cost) =>
-        _logger.Log($"[Analytics] tower_purchased | type={type} cost={cost}");
+        _logger.Log($"tower_purchased | type={type} cost={cost}");
 
     public void TrackWaveCompleted(int wave, int enemiesKilled) =>
-        _logger.Log($"[Analytics] wave_completed | wave={wave} enemies={enemiesKilled}");
+        _logger.Log($"wave_completed | wave={wave} enemies={enemiesKilled}");
 }

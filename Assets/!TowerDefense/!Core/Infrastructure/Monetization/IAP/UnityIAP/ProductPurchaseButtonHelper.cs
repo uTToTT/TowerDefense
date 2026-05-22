@@ -7,7 +7,8 @@ namespace TToTT.Core.Purchasing
     [RequireComponent(typeof(Button))]
     public class ProductPurchaseButtonHelper : MonoBehaviour
     {
-        private UnityIAP5Service _IAPService;
+        private UnityIAP5Service _iapService;
+        private IAPLogger _logger;
 
         public string productId;
         public bool consumePurchase = true;
@@ -17,49 +18,47 @@ namespace TToTT.Core.Purchasing
 
         private bool _initialized;
 
-        public void Initialize(UnityIAP5Service iapService)
+        #region Init
+
+        public void Initialize(UnityIAP5Service iapService, IAPLogger logger)
         {
-            _IAPService = iapService;
+            _iapService = iapService;
+            _logger = logger;
             _initialized = true;
 
             if (gameObject.activeInHierarchy)
             {
-                _IAPService.RegisterButton(this);
+                _iapService.RegisterButton(this);
                 UpdateText();
             }
         }
 
+        #endregion
+
+        #region Unity API
+
         void Start()
         {
             if (!_initialized)
-                Debug.LogError($"[{nameof(ProductPurchaseButtonHelper)}] Not initialized on {gameObject.name}. Call Initialize() first.");
+                _logger.Log($"Not initialized on {gameObject.name}. Call Initialize() first.");
 
             ConfigureButton();
         }
 
-        private void ConfigureButton()
-        {
-            var button = GetComponent<Button>();
-            button?.onClick.AddListener(PurchaseProduct);
-
-            if (string.IsNullOrEmpty(productId))
-                Debug.LogError($"[{nameof(ProductPurchaseButtonHelper)}] productId is empty on {gameObject.name}");
-        }
-
-        void PurchaseProduct() => _IAPService?.InitiatePurchase(productId);
-
         void OnEnable()
         {
             if (!_initialized) return;
-            _IAPService?.RegisterButton(this);
+            _iapService?.RegisterButton(this);
             UpdateText();
         }
 
-        void OnDisable() => _IAPService?.UnregisterButton(this);
+        void OnDisable() => _iapService?.UnregisterButton(this);
 
-        internal void UpdateText()
+        #endregion
+
+        public void UpdateText()
         {
-            var product = _IAPService?.FindProduct(productId);
+            var product = _iapService?.FindProduct(productId);
             if (product == null) return;
 
             if (titleText != null)
@@ -69,5 +68,16 @@ namespace TToTT.Core.Purchasing
             if (priceText != null)
                 priceText.text = product.metadata.localizedPriceString;
         }
+
+        private void ConfigureButton()
+        {
+            var button = GetComponent<Button>();
+            button?.onClick.AddListener(PurchaseProduct);
+
+            if (string.IsNullOrEmpty(productId))
+                _logger.Log($"ProductId is empty on {gameObject.name}");
+        }
+
+        private void PurchaseProduct() => _iapService?.InitiatePurchase(productId);
     }
 }
