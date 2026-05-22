@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TToTT.TowerDefense.Economy;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
-using UnityEngine.Purchasing.Security;
 
 namespace TToTT.Core.Purchasing
 {
@@ -20,7 +18,6 @@ namespace TToTT.Core.Purchasing
         IPurchaseService _purchaseService;
         IAnalyticsService _analytics;
         ICatalogProvider _catalog = new CatalogProvider();
-        //CrossPlatformValidator _crossPlatformValidator;
 
         private readonly List<ProductPurchaseButtonHelper> _activePurchaseButtons = new List<ProductPurchaseButtonHelper>();
         private readonly IAPPaywallCallbacks _callbacks;
@@ -44,7 +41,6 @@ namespace TToTT.Core.Purchasing
 
             InitCatalog();
             InitializeIapService();
-            //CreateCrossPlatformValidator();
 
             ConnectToStore();
         }
@@ -129,28 +125,7 @@ namespace TToTT.Core.Purchasing
             });
         }
 
-//        private void CreateCrossPlatformValidator()
-//        {
 
-//#if !UNITY_EDITOR
-//            try
-//            {
-//                if (CanCrossPlatformValidate())
-//                {
-//#if !DEBUG_STOREKIT_TEST
-//                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
-//#else
-//                    _crossPlatformValidator = new CrossPlatformValidator(GooglePlayTangle.Data(), Application.identifier);
-//#endif
-//                }   
-//            }   
-//            catch (NotImplementedException exception)
-//            {
-//                _IAPLogger.LogConsole("===========");
-//                _IAPLogger.LogConsole($"Cross Platform Validator Not Implemented: {exception}");
-//            }
-//#endif
-//        }
 
         private void OnServiceInitialized()
         {
@@ -286,52 +261,6 @@ namespace TToTT.Core.Purchasing
             }
 
             return null;
-        }
-
-        public void ValidatePurchaseIfPossible(IOrderInfo orderInfo)
-        {
-            if (CanCrossPlatformValidate())
-            {
-                //ValidatePurchase(orderInfo);
-            }
-        }
-
-        private bool CanCrossPlatformValidate()
-        {
-            return IsGooglePlay() ||
-                   Application.platform == RuntimePlatform.IPhonePlayer ||
-                   Application.platform == RuntimePlatform.OSXPlayer ||
-                   Application.platform == RuntimePlatform.tvOS;
-        }
-
-        //private void ValidatePurchase(IOrderInfo orderInfo)
-        //{
-        //    try
-        //    {
-        //        var result = _crossPlatformValidator.Validate(orderInfo.Receipt);
-
-        //        if (IsGooglePlay())
-        //        {
-        //            _IAPLogger.LogConsole("Validated Receipt. Contents:");
-        //            foreach (IPurchaseReceipt productReceipt in result)
-        //            {
-        //                _IAPLogger.LogReceiptValidation(productReceipt);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            _IAPLogger.LogConsole("Validated Receipt.");
-        //        }
-        //    }
-        //    catch (IAPSecurityException ex)
-        //    {
-        //        _IAPLogger.LogConsole("Invalid receipt, not unlocking content. " + ex);
-        //    }
-        //}
-
-        private bool IsGooglePlay()
-        {
-            return Application.platform == RuntimePlatform.Android && DefaultStoreHelper.GetDefaultStoreName() == UnityEngine.Purchasing.GooglePlay.Name;
         }
 
         public void GetNoAds()

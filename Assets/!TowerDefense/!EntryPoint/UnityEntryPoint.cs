@@ -22,6 +22,8 @@ public class UnityEntryPoint : MonoBehaviour
 
     private void Awake()
     {
+        Debug.unityLogger.logHandler = new CustomLogHandler();
+
         var container = new DIContainer();
 
         container.BindInstance<Camera>(_camera);

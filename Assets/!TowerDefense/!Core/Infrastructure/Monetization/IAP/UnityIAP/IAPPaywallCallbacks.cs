@@ -50,7 +50,6 @@ namespace TToTT.Core.Purchasing
                 var product = cartItem.Product;
 
                 _logger.LogCompletedPurchase(product, order.Info);
-                _IAPService.ValidatePurchaseIfPossible(order.Info);
             }
 
             _IAPService.ConfirmOrderIfAutomatic(order);
