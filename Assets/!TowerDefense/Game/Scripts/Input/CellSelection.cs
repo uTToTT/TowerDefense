@@ -16,13 +16,18 @@ public class CellSelection : MonoBehaviour, IPoolable, IEntityLifecycle
 
     public void SetFreeColor()
     {
-        _border.color = _isFreeColorBorder;
-        _background.color = _isFreeColorBackground;
+        if (_border != null)
+            _border.color = _isFreeColorBorder;
+        if (_background != null)
+            _background.color = _isFreeColorBackground;
     }
+
     public void SetBusyColor()
     {
-        _border.color = _isBusyColorBorder;
-        _background.color = _isBusyColorBackground;
+        if (_border != null)
+            _border.color = _isBusyColorBorder;
+        if (_background != null)
+            _background.color = _isBusyColorBackground;
     }
 
     public void Dispose() { }

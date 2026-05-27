@@ -19,9 +19,11 @@ public class UnityEntryPoint : MonoBehaviour
     [SerializeField] private Camera _camera;
 
     private GameLoop _gameLoop;
+    private ILogHandler _previousLogHandler;
 
     private void Awake()
     {
+        _previousLogHandler = Debug.unityLogger.logHandler;
         Debug.unityLogger.logHandler = new CustomLogHandler();
 
         var container = new DIContainer();
@@ -37,5 +39,11 @@ public class UnityEntryPoint : MonoBehaviour
     private void Update()
     {
         _gameLoop.Tick(Time.deltaTime);
+    }
+
+    private void OnDestroy()
+    {
+        if (_previousLogHandler != null)
+            Debug.unityLogger.logHandler = _previousLogHandler;
     }
 }

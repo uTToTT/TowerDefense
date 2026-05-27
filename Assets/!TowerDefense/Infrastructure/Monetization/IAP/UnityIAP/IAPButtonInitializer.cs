@@ -6,7 +6,10 @@ namespace TToTT.Core.Purchasing
     {
         public void Initialize(UnityIAP5Service iapService, IAPLogger logger)
         {
-            var buttons = FindObjectsByType<ProductPurchaseButtonHelper>(FindObjectsSortMode.None);
+            var buttons = FindObjectsByType<ProductPurchaseButtonHelper>(
+                FindObjectsInactive.Include,  
+                FindObjectsSortMode.None
+                );
 
             foreach (var button in buttons)
                 button.Initialize(iapService, logger);
